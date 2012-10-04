@@ -1,6 +1,6 @@
 /**
  * TODO:
- * This is ALAN - simple Assembler LANguage interpreter.
+ * This is ALAN - simple Assembler LANguage interpreter
  */
 var fs        = require('fs');
 var speculoos = require('./../../lib/speculoos.js');
