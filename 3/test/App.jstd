@@ -1,0 +1,12 @@
+load:
+  - ../../lib/*.js
+  - ../lib/*.js
+  - ../app/Core.js
+  - ../app/Fs.js
+  - ../app/SatelliteFs.js
+  - ../app/Terminal.js
+
+test:
+  - Helper.js
+  - Fs-test.js
+  - SatelliteFs-test.js

@@ -1,0 +1,48 @@
+#
+# Initialize variables
+#
+set kw,        ['break', 'case']
+set i,         0
+set ch,        ''
+set res,       ''
+set chlim,     123
+set n,         0
+set empty,     ''
+set file4read, 'file'
+set file4save, 'result'
+
+#
+# Reads the file into variable and starts file content reading loop
+#
+read file4read, file
+:loop
+    #
+    # Reads one symbol from file string
+    #
+    cut    file, i, ch
+    asc    ch, n
+    #
+    # If it is replace symbol, go to the sub routine. If not, continue loop
+    #
+    gotog  ch, chlim, replace
+    goto   cloop
+
+    #
+    # Adds string with keyword into result string and continue loop
+    #
+:replace
+    sub    n, chlim
+    cut    kw, n, ch
+    append res, ch
+    set    ch, empty
+
+:cloop
+    #
+    # Append current symbol to result string
+    #
+    append res, ch
+    inc    i
+goto loop
+
+:endloop
+save file4save, res

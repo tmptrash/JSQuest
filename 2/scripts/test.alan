@@ -1,0 +1,6 @@
+set  a, ['12', '34', '56']
+set  b, ''
+set  i, 1
+
+cut  a, i, b
+echo b
