@@ -90,10 +90,10 @@ var Simple = Class({
         if (config.separator !== undefined && (!Helper.isString(config.separator) || config.separator.length < 1)) {
             throw new Error('Invalid script separator configuration');
         }
-        if (config.commentRe !== undefined && !Helper.isObject(commentRe)) {
+        if (config.commentRe !== undefined && !Helper.isRegexp(config.commentRe)) {
             throw new Error('Invalid comment configuration');
         }
-        if (config.labelRe !== undefined && !Helper.isObject(labelRe)) {
+        if (config.labelRe !== undefined && !Helper.isObject(config.labelRe)) {
             throw new Error('Invalid label configuration');
         }
         if (!Helper.isObject(config.commands)) {

@@ -70,5 +70,31 @@ exports.testRun = function (test) {
         assert.strictEqual(s.source[0], '', 'Check empty script');
     }, undefined, 'Check fileExtension config property');
 
+    assert.doesNotThrow(function () {
+        var s = new Simple({
+            separator: ';',
+            commands : {}
+        });
+
+        s.run(';;');
+        assert.strictEqual(s.source.length, 3, 'Check two separators');
+        assert.strictEqual(s.source[0], '', 'Check empty lines');
+        assert.strictEqual(s.source[1], '', 'Check empty lines');
+        assert.strictEqual(s.source[2], '', 'Check empty lines');
+    }, undefined, 'Check separator config property');
+
+    assert.doesNotThrow(function () {
+        var s = new Simple({
+            commentRe: /^\s*\/\//,
+            commands : {}
+        });
+
+        s.run('// test\n//123\n//');
+        assert.strictEqual(s.source.length, 3, 'Check comments amount');
+        assert.strictEqual(s.source[0], '', 'Check row after comment');
+        assert.strictEqual(s.source[1], '', 'Check row after comment');
+        assert.strictEqual(s.source[2], '', 'Check row after comment');
+    }, undefined, 'Check C style comments');
+
     test.done();
 };
