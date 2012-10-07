@@ -93,7 +93,7 @@ var Simple = Class({
         if (config.commentRe !== undefined && !Helper.isRegexp(config.commentRe)) {
             throw new Error('Invalid comment configuration');
         }
-        if (config.labelRe !== undefined && !Helper.isObject(config.labelRe)) {
+        if (config.labelRe !== undefined && !Helper.isRegexp(config.labelRe)) {
             throw new Error('Invalid label configuration');
         }
         if (!Helper.isObject(config.commands)) {
@@ -443,6 +443,15 @@ var Simple = Class({
      */
     setVar: function (v, val) {
         return this._vars[v] = val;
+    },
+
+    /**
+     * Checks whenever specified variable is exists.
+     * @param {String} label Name of label to check
+     * @return {Boolean}
+     */
+    hasLabel: function (label) {
+        return this._labels[label] !== undefined;
     },
 
     /**

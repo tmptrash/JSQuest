@@ -96,5 +96,19 @@ exports.testRun = function (test) {
         assert.strictEqual(s.source[2], '', 'Check row after comment');
     }, undefined, 'Check C style comments');
 
+    assert.doesNotThrow(function () {
+        var s = new Simple({
+            labelRe: /^\s*:([0-9]+)\s*/,
+            commands : {}
+        });
+
+        s.run('#\n:1\n');
+        assert.strictEqual(s.source.length, 3, 'Check rows amount');
+        assert.strictEqual(s.source[0], '', 'Check first row');
+        assert.strictEqual(s.source[1], '', 'Check second row');
+        assert.strictEqual(s.source[2], '', 'Check third row');
+        assert.strictEqual(s.hasLabel('1'), true, 'Check label existance');
+    }, undefined, 'Check labels');
+
     test.done();
 };
