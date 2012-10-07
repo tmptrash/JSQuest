@@ -110,5 +110,6 @@ exports.testRun = function (test) {
         assert.strictEqual(s.hasLabel('1'), true, 'Check label existance');
     }, undefined, 'Check labels');
 
+
     test.done();
 };

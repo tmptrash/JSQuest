@@ -446,7 +446,7 @@ var Simple = Class({
     },
 
     /**
-     * Checks whenever specified variable is exists.
+     * Checks whenever specified variable is exists. You should use this method after preprocess() method
      * @param {String} label Name of label to check
      * @return {Boolean}
      */
