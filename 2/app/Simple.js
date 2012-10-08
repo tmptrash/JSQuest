@@ -196,6 +196,9 @@ var Simple = Class({
         var len;
         var line;
 
+
+        this.reset();
+
         if (!Helper.isString(lines)) {
             throw new Error('Invalid script parameter in preprocess() method.');
         }
@@ -254,6 +257,14 @@ var Simple = Class({
                 line = this.runCommand(line, scriptLine);
             }
         }
+    },
+
+    /**
+     * Resets state of interpreter. It means it have to reset to state before script was ran.
+     */
+    reset: function () {
+        this._vars   = {};
+        this._labels = {};
     },
 
     /**

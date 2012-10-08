@@ -94,7 +94,7 @@ exports.testRun = function (test) {
         assert.strictEqual(s.source[0], '', 'Check row after comment');
         assert.strictEqual(s.source[1], '', 'Check row after comment');
         assert.strictEqual(s.source[2], '', 'Check row after comment');
-    }, undefined, 'Check C style comments');
+    }, undefined, 'Check custom (C style) comments');
 
     assert.doesNotThrow(function () {
         var s = new Simple({
@@ -107,9 +107,17 @@ exports.testRun = function (test) {
         assert.strictEqual(s.source[0], '', 'Check first row');
         assert.strictEqual(s.source[1], '', 'Check second row');
         assert.strictEqual(s.source[2], '', 'Check third row');
-        assert.strictEqual(s.hasLabel('1'), true, 'Check label existance');
-    }, undefined, 'Check labels');
+        assert.strictEqual(s.hasLabel('1'), true, 'Check label existence');
+    }, undefined, 'Check custom labels');
 
+    assert.doesNotThrow(function () {
+        var s = new Simple({
+           commands: {}
+        });
+
+        s.run('#\n:l\n#\n\n');
+        s.run('../2/scripts/runTest.simple');
+    }, undefined, 'Checks run() method');
 
     test.done();
 };
