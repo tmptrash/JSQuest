@@ -42,7 +42,7 @@ exports.testRun = function (test) {
             commands     : {}
         });
 
-        NUnitHelper.callWithAllTypes('Check constructor', function (arg) {
+        NUnitHelper.callWithAllTypes('Check rin() method', function (arg) {
             if (Helper.isString(arg)) {
                 throw new Error('String');
             }
@@ -117,6 +117,11 @@ exports.testRun = function (test) {
 
         s.run('#\n:l\n#\n\n');
         s.run('../2/scripts/runTest.simple');
+        s.run('');
+        s.run('#');
+        s.run(':l');
+        s.run(':l');
+        s.run(' ');
     }, undefined, 'Checks run() method');
 
     test.done();

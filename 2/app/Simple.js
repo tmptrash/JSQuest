@@ -209,10 +209,13 @@ var Simple = Class({
         this.source = lines = lines.split(this._getSeparator(lines));
         for (i = 0, len = lines.length; i < len; i++) {
             line = lines[i];
+
+            if (this.isEmpty(line)) {
+                this.onEmpty(lines, i, line);
             /**
              * Parses comment
              */
-            if (this.isComment(line)) {
+            } else if (this.isComment(line)) {
                 this.onComment(lines, i, line);
             /**
              * Parses label
@@ -268,6 +271,16 @@ var Simple = Class({
     },
 
     /**
+     * Calls every time then, preprocessor finds an en empty line
+     * @param {Array} lines Array of script lines
+     * @param {Number} index Number of current line
+     * @param {String} line Current script line
+     */
+    onEmpty: function (lines, index, line) {
+        lines[index] = '';
+    },
+
+    /**
      * Calls every time then preprocessor find a comment. By default we clear this line.
      * @param {Array} lines Array of script lines
      * @param {Number} index Number of current line
@@ -319,6 +332,14 @@ var Simple = Class({
         var args   = this.getArguments(scriptLine, Helper.isNumber(count) ? count : count.args, regexp);
 
         return this['on' + cmd.charAt(0).toUpperCase() + cmd.slice(1)].apply(this, [line, scriptLine].concat(args));
+    },
+
+    /**
+     * Returns true if specified line is empty. Empty means ' \t' symbols.
+     * @param {String} line One script line
+     */
+    isEmpty: function (line) {
+        return Helper.trim(line) === '';
     },
 
     /**
