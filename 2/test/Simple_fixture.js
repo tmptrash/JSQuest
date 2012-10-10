@@ -65,7 +65,7 @@ exports.testRun = function (test) {
             commands     : {}
         });
 
-        s.run('../2/scripts/empty.alan');
+        s.run('../2/test/scripts/Simple/empty.alan');
         assert.strictEqual(s.source.length, 1, 'Check empty script');
         assert.strictEqual(s.source[0], '', 'Check empty script');
     }, undefined, 'Check fileExtension config property');
@@ -116,7 +116,7 @@ exports.testRun = function (test) {
         });
 
         s.run('#\n:l\n#\n\n');
-        s.run('../2/scripts/runTest.simple');
+        s.run('../2/test/scripts/Simple/runTest.simple');
         s.run('');
         s.run('#');
         s.run(':l');
@@ -124,5 +124,70 @@ exports.testRun = function (test) {
         s.run(' ');
     }, undefined, 'Checks run() method');
 
+    assert.throws(function () {
+        var s = new Simple({
+            commands: {}
+        });
+
+        s.run();
+    }, undefined, 'Checks run() method without parameters.');
+
+    test.done();
+};
+
+exports.testPreprocess = function (test) {
+    assert.doesNotThrow(function () {
+        var s = new Simple({
+            commands: {}
+        });
+
+        NUnitHelper.callWithAllTypes('Check preprocess() method', function (arg) {
+            if (Helper.isString(arg)) {
+                throw new Error('String');
+            }
+
+            s.preprocess(arg);
+        });
+    }, undefined, 'create Simple class instance');
+
+    assert.throws(function () {
+        var s = new Simple({
+            commands: {}
+        });
+
+        s.preprocess();
+    }, undefined, 'Calls preprocessor without arguments');
+
+    assert.doesNotThrow(function () {
+        var s = new Simple({
+            commands: {}
+        });
+
+        s.preprocess('');
+        assert.strictEqual(s.source.length, 1, 'check empty script');
+        s.preprocess(' ');
+        assert.strictEqual(s.source.length, 1, 'check empty script');
+        s.preprocess('#\n#\n\n');
+        assert.strictEqual(s.source.length, 4, 'check comments and empty lines');
+        assert.strictEqual(s.source[0], '', 'check comments and empty lines');
+        assert.strictEqual(s.source[1], '', 'check comments and empty lines');
+        assert.strictEqual(s.source[2], '', 'check comments and empty lines');
+        assert.strictEqual(s.source[3], '', 'check comments and empty lines');
+        s.preprocess('\n');
+        assert.strictEqual(s.source.length, 2, 'check comments and empty lines');
+        assert.strictEqual(s.source[0], '', 'check comments and empty lines');
+    }, undefined, 'create Simple class instance');
+
+    test.done();
+};
+
+exports.testScripts = function (test) {
+    assert.doesNotThrow(function () {
+        var s = new Simple({
+            commands: {}
+        });
+
+        s.run('../2/test/scripts/Simple/comments.simple');
+    }, undefined, 'Check scripts');
     test.done();
 };
