@@ -187,7 +187,26 @@ exports.testScripts = function (test) {
             commands: {}
         });
 
-        s.run('../2/test/scripts/Simple/comments.simple');
+        assert.doesNotThrow(function () {
+            s.run('../2/test/scripts/Simple/comments.simple');
+            assert.strictEqual(s.source.length, 13, 'Checks parsed script length');
+            for (var i = 0; i < 13; i++) {
+                assert.strictEqual(s.source[i], '', 'check empty line after parsing');
+            }
+        }, undefined, 'Check comments');
+
+        assert.doesNotThrow(function () {
+            s.run('../2/test/scripts/Simple/labels.simple');
+            assert.strictEqual(s.source.length, 9, 'Checks parsed script length');
+            assert.strictEqual(s.hasLabel('simple'), true, 'Checks label');
+            assert.strictEqual(s.hasLabel('space'), true, 'Checks label');
+            assert.strictEqual(s.hasLabel('dblspace'), true, 'Checks label');
+            assert.strictEqual(s.hasLabel('aftercomment'), true, 'Checks label');
+            for (var i = 0; i < 9; i++) {
+                assert.strictEqual(s.source[i], '', 'check empty line after parsing');
+            }
+        }, undefined, 'Check labels');
+
     }, undefined, 'Check scripts');
     test.done();
 };

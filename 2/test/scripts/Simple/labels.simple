@@ -1,0 +1,8 @@
+#
+# This is test script file for label testing
+#
+:simple
+ :space
+ : dblspace
+#
+:aftercomment
