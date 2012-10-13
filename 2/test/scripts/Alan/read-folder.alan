@@ -1,0 +1,3 @@
+set f, './data'
+set d, ''
+read f, d

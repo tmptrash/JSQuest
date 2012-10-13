@@ -1,0 +1,2 @@
+set f, './data/empty.txt'
+read f, d

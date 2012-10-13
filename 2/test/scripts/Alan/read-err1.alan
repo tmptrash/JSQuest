@@ -1,0 +1,3 @@
+set f, 'undefined.txt'
+set d, ''
+read f, d

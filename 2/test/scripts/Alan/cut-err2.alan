@@ -1,0 +1,5 @@
+set v1, ['q', 'w']
+set d1, ''
+set i1, 2
+
+cut v1, i1, d1

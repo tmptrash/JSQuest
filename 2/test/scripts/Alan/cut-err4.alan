@@ -1,0 +1,4 @@
+set v1, ['q', 'w']
+set d1, ''
+
+cut v1, undefined, d1

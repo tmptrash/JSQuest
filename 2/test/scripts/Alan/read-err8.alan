@@ -1,3 +1,2 @@
 set f, './data/data.txt'
-set d, ''
-read f, d
+read f

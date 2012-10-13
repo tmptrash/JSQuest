@@ -13,6 +13,12 @@ var Simple    = require('./Simple.js').Simple;
 var Alan = Class({
     extends      : Simple,
 
+    /**
+     * @const
+     * {String} Default charset for file operations.
+     */
+    _FILES_CHARSET: 'utf-8',
+
 
     /**
      * ctor. Instantiates the object. Creates all public/private properties
@@ -81,7 +87,7 @@ var Alan = Class({
     },
 
     /**
-     * read command handler. Reads specified utf-8 file into variable
+     * read command handler. Reads specified file into variable
      * @param {Number} line Current line number in script
      * @param {String} scriptLine Current line of script
      * @param {String} file Name of file to read from
@@ -92,13 +98,18 @@ var Alan = Class({
         this._checkVar(file);
         this._checkVar(v);
 
-        this.setVar(v, fs.readFileSync(this._vars[file], 'utf-8'));
+        file = this.getVar(file);
+
+        if (!fs.existsSync(file)) {
+            throw new Error('File doesn\'t exists "' + file + '"');
+        }
+        this.setVar(v, fs.readFileSync(file, this._FILES_CHARSET));
 
         return ++line;
     },
 
     /**
-     * Cut one symbol or one array element from string or array
+     * Cut one symbol or one array's element from string or array
      * @param {Number} line Current line number
      * @param {String} scriptLine Current script line
      * @param {String} v Name of variable where we should get a symbol/element
@@ -109,6 +120,7 @@ var Alan = Class({
     onCut: function (line, scriptLine, v, index, dest) {
         this._checkVar(v);
         this._checkVar(dest);
+
         if (index < 0 || index >= this.getVar(v).length) {
             throw new Error('Invalid index within variable at line "' + scriptLine + '"');
         }
