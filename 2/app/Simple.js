@@ -9,9 +9,17 @@
  *
  * The interpreter works only with variables. Constants are not supported, but can be implemented
  * in command callback methods within child classes.
- * Every script line should be separater by separator. See separator config property. By default
+ * Every script line should be separated by separator. See separator config property. By default
  * it is '\r\n' or '\n' symbols. Charset of the script should be set in charset configuration. It's
  * utf-8 by default.
+ *
+ * It also supports comments and labels. By default, comment looks like this:
+ * #
+ * # This is a comment
+ * #
+ *
+ * Default label looks like this:
+ * :labelName
  *
  * Available configuration is:
  *     fileExtension - extension of script files. e.g.: 'script' or 'txt'. 'simple' by default
@@ -21,11 +29,23 @@
  *     labelRe       - RegExp expression for label. Default format is: :labelName. See _LABEL_RE constant.
  *
  * Usage:
- * You should create child class with command handler methods and commands configuration. Example:
- * // TODO:
+ * //
+ * // The simplest example, how we can use this class directly.
+ * // In this case, it can parse comments and labels, but without command support.
+ * //
+ * var simple = new Simple({
+ *     commands: {}
+ * });
+ *
+ * s.run('#\n# Comment\n#\n:label\n# end of script');
+ *
  *
  * @author DeadbraiN
  * @email deadbrainman@gmail.com
+ */
+
+/**
+ * This is where requires section begins. We include the libraries, we want to use.
  */
 var fs     = require('fs');
 var Class  = require('./../../lib/speculoos.js').Class;
@@ -37,44 +57,49 @@ var Helper = require('./../../lib/Helper.js').Helper;
 var Simple = Class({
     /**
      * @const
-     * {String} Return symbols for Windows OS
+     * {String} Return symbols for Windows OS. It uses by preprocessor as line separator by default.
      */
     _RETURN_WIN  : '\r\n',
     /**
      * @const
-     * {String} Return symbols for UNIX OS
+     * {String} Return symbols for UNIX OS. It uses by preprocessor as line separator by default.
      */
     _RETURN_UNIX : '\n',
     /**
      * @const
-     * {RegExp} Expression for command and first parameter. e.g. inc i
+     * {RegExp} Expression for command and first parameter. e.g. inc i. You should use round brackets
+     * for command and first argument. Preprocessor uses these expressions for splitting command and
+     * the parameter. Command must be on a first place, before the argument. Other symbols will be ignored.
      */
-    _CMD_RE      : /^\s*([a-z]+)\s+([a-z]+[0-9]*[a-z]*)+\s*$/,
+    _CMD_RE      : /^\s*([a-z]+)\s+([a-z]+[0-9]*[a-z]*)+\s*.*$/,
     /**
      * @const
-     * {RegExp} Expression for command only (without first parameter).
+     * {RegExp} Expression for command only (without first parameter). e.g.: inc ... Don't forget about
+     * round brackets. First brackets interprets as a command. Other symbols will be ignored.
      */
-    _CMD_ONLY_RE : /^\s*([a-z]+)\s+/,
+    _CMD_ONLY_RE : /^\s*([a-z]+)\s+.*/,
     /**
      * @const
-     * {RegExp} Expression for one variable within one command. e.g.: asc ch, n; where ch and n - variables
+     * {RegExp} Expression for one variable within one command. e.g.: asc ch, n; where ch and n - variables.
+     * You must use one round brackets for the variable.
      */
     _VAR_RE      : /^\s*([a-z]+[0-9]*[a-z]*)+\s*$/,
     /**
      * @const
-     * {RegExp} Expression for label. e.g: :label
+     * {RegExp} Expression for label. e.g: :label. You must use round brackets around label name.
      */
     _LABEL_RE    : /^\s*:\s*([a-z]+[0-9]*[a-z]*)+\s*$/,
     /**
      * @const
-     * Default comment regexp
+     * Default comment regexp. This is line comment. So, if line starts from comment symbol. It will
+     * be removed.
      * @private
      */
     _COMMENT_RE  : /^\s*#/,
 
 
     /**
-     * ctor. Instantiate the object. Creates all public/private properties
+     * ctor. Instantiates the class. Creates all public/private properties
      * @param {Object} config Class configuration in format {commands: {cmd1: argAmount, cmd2: argAmount,...}}
      */
     constructor: function (config) {
@@ -145,6 +170,7 @@ var Simple = Class({
         /**
          * @prop
          * {Object} Map of commands. Key - command name, value - object in format {arguments-count: callback}
+         * or amount of arguments.
          * @private
          */
         this._commands = config.commands;
@@ -160,7 +186,8 @@ var Simple = Class({
     },
 
     /**
-     * Sets script file or script string for translating and run it. Source code should be in UTF-8 charset.
+     * Sets script file or script string for translating and run it. Source code should be in UTF-8 charset if
+     * you use file. In a simple case you should use only this method, after you created the instance.
      * @param {String} script Path to the file with script or script string
      */
     run: function (script) {
@@ -187,9 +214,10 @@ var Simple = Class({
     },
 
     /**
-     * Prepares source code for interpreting. Remove comments and process labels.
+     * Prepares source code for interpreting. Remove comments and process labels. It also do some stuff
+     * if child class overrides onPreprocessLine() method. You should pass raw script code here.
      * @param {String} lines Source code of script
-     * @return {Array} Array of prepared lines
+     * @return {Array} Array of prepared for translation lines
      */
     preprocess: function (lines) {
         var i;
@@ -205,23 +233,25 @@ var Simple = Class({
 
         /**
          * Splits code into the lines and remove comments. Also it process labels.
+         * Public source property will be store an array of preprocessed script lines.
          */
         this.source = lines = lines.split(this._getSeparator(lines));
+
         for (i = 0, len = lines.length; i < len; i++) {
             line = lines[i];
 
             if (this.isEmpty(line)) {
-                this.onEmpty(lines, i, line);
+                this.onPreprocessEmpty(lines, i, line);
             /**
              * Parses comment
              */
             } else if (this.isComment(line)) {
-                this.onComment(lines, i, line);
+                this.onPreprocessComment(lines, i, line);
             /**
              * Parses label
              */
             } else if (this.isLabel(line)) {
-                this.onLabel(lines, i, line);
+                this.onPreprocessLabel(lines, i, line);
             /**
              * Parses or just skips all other lines
              */
@@ -234,7 +264,8 @@ var Simple = Class({
     },
 
     /**
-     * Interprets script text
+     * Interprets script text. This method should be called after preprocess() method. It works with
+     * an array of preprocessed script lines.
      * @param {Array} lines Source code of script in lines
      */
     interpret: function (lines) {
@@ -263,7 +294,7 @@ var Simple = Class({
     },
 
     /**
-     * Resets state of interpreter. It means it have to reset to state before script was ran.
+     * Resets state of interpreter. It means that, it will remove all internal data of interpreter.
      */
     reset: function () {
         this._vars   = {};
@@ -271,22 +302,22 @@ var Simple = Class({
     },
 
     /**
-     * Calls every time then, preprocessor finds an en empty line
+     * Calls every time then, preprocessor finds an empty line.
      * @param {Array} lines Array of script lines
      * @param {Number} index Number of current line
      * @param {String} line Current script line
      */
-    onEmpty: function (lines, index, line) {
+    onPreprocessEmpty: function (lines, index, line) {
         lines[index] = '';
     },
 
     /**
-     * Calls every time then preprocessor find a comment. By default we clear this line.
+     * Calls every time then preprocessor finds a comment. By default we clear this line.
      * @param {Array} lines Array of script lines
      * @param {Number} index Number of current line
      * @param {String} line Current script line
      */
-    onComment: function (lines, index, line) {
+    onPreprocessComment: function (lines, index, line) {
         /**
          * Remove comment by default. It will be just an empty line.
          * You shouldn't remove line, because labels can be broken.
@@ -295,12 +326,12 @@ var Simple = Class({
     },
 
     /**
-     * Calls every time then preprocessor find a label. By default we clear this line.
+     * Calls every time then preprocessor finds a label. By default we clear this line.
      * @param {Array} lines Array of script lines
      * @param {Number} index Number of current line
      * @param {String} line Current script line
      */
-    onLabel: function (lines, index, line) {
+    onPreprocessLabel: function (lines, index, line) {
         var label = this.getLabel(line);
 
         if (this._labels[label]) {
@@ -320,7 +351,7 @@ var Simple = Class({
     onPreprocessLine: function (lines, index, line) {},
 
     /**
-     * Run one command and return new line position in script
+     * Run one command and return new line position in script. It calls from interpreter.
      * @param {Number} line Line number in script
      * @param {String} scriptLine Current script line
      * @return {Number}
@@ -330,21 +361,26 @@ var Simple = Class({
         var count  = this._commands[cmd];
         var regexp = Helper.isNumber(count) ? this._commands[cmd].regexp : undefined;
         var args   = this.getArguments(scriptLine, Helper.isNumber(count) ? count : count.args, regexp);
+        var cmdFn  = this['on' + cmd.charAt(0).toUpperCase() + cmd.slice(1)];
 
-        return this['on' + cmd.charAt(0).toUpperCase() + cmd.slice(1)].apply(this, [line, scriptLine].concat(args));
+        if (Helper.isFunction(cmdFn)) {
+            return this[cmdFn].apply(this, [line, scriptLine].concat(args));
+        }
+
+        throw new Error('Command was set, but it has no handler at line "' + line + '"');
     },
 
     /**
-     * Returns true if specified line is empty. Empty means ' \t' symbols.
-     * @param {String} line One script line
+     * Returns true if specified line is empty. Empty means ' \t' symbols. It calls from preprocessor.
+     * @param {String} line Raw one script line
      */
     isEmpty: function (line) {
         return Helper.trim(line) === '';
     },
 
     /**
-     * Checks if specified line is comment
-     * @param {String} line One script line
+     * Checks if specified line is comment. It calls from preprocessor.
+     * @param {String} line Raw one script line
      * @return {Boolean}
      */
     isComment: function (line) {
@@ -352,8 +388,8 @@ var Simple = Class({
     },
 
     /**
-     * Checks if specified line is the label
-     * @param {String} line One script line
+     * Checks if specified line is the label. It calls from preprocessor.
+     * @param {String} line Raw one script line
      * @return {Boolean}
      */
     isLabel: function (line) {
@@ -361,8 +397,8 @@ var Simple = Class({
     },
 
     /**
-     * Return name of label in specified line of code
-     * @param {String} line Code line
+     * Return name of label in specified raw line of code. It calls from preprocessor.
+     * @param {String} line Raw code line
      * @return {String}
      * @throw {Error}
      */
@@ -377,8 +413,8 @@ var Simple = Class({
     },
 
     /**
-     * Return name of the command in specified line of script
-     * @param {String} line One script line
+     * Return name of the command in specified raw line of script. It calls from interpreter.
+     * @param {String} line One raw script line
      * @return {String} Command name
      */
     getCommand: function (line) {
@@ -395,7 +431,7 @@ var Simple = Class({
     },
 
     /**
-     * Gets one argument from specified string
+     * Gets one argument from specified string. Calls from interpreter.
      * @param {String} line Current raw script line
      * @param {String} part String with raw argument
      * @param {Boolean} isFirst true if this is first argument
@@ -428,7 +464,8 @@ var Simple = Class({
     },
 
     /**
-     * Return arguments array with 1, 2 and so on arguments
+     * Return arguments array with 1, 2 and so on arguments. Every item of array - is a name of the variable
+     * within the script.
      * @param {String} line One script line
      * @param {Number} argCount Amount of arguments in current command
      * @param {RegExp} regexp RegExp for script line
@@ -461,7 +498,7 @@ var Simple = Class({
     },
 
     /**
-     * Return variable's value
+     * Return variable's value. It calls after script ran.
      * @param {String} v Name of variable to return
      * @return {String|Number|Boolean} value of the variable or false if undefined
      */

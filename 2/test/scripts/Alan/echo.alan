@@ -1,0 +1,6 @@
+set v1, 123
+echo v1
+set v2, 'test'
+echo v2
+set v3, ['q', 'w']
+echo v3

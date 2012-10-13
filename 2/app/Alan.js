@@ -1,33 +1,31 @@
 /**
- * TODO:
+ * TODO: add comments for all public methods
  * This is ALAN - simple Assembler LANguage interpreter
  */
 var fs        = require('fs');
-var speculoos = require('./../../lib/speculoos.js');
-var helper    = require('./../../lib/Helper.js').Helper;
+var Class     = require('./../../lib/speculoos.js').Class;
+var Helper    = require('./../../lib/Helper.js').Helper;
 var Simple    = require('./Simple.js').Simple;
 
 /**
- * Alan interpreter
- * @type {Object}
+ * {Function} Alan interpreter
  */
-var Alan = speculoos.Class({
+var Alan = Class({
     extends      : Simple,
 
-    /**
-     * @const
-     * {String} Name of the set command
-     */
-     // TODO: Why do we need this?
-    _CMD_SET     : 'set',
-
 
     /**
-     * ctor. Instantiate the object. Creates all public/private properties
+     * ctor. Instantiates the object. Creates all public/private properties
      */
     constructor: function () {
         Alan.super.constructor.call(this, {
-            // TODO: add commands description comment here
+            /**
+             * {String} Script files extension
+             */
+            filesExtension: 'alan',
+            /**
+             * {Object} Available script commands
+             */
             commands       : {
                 read  : 2,
                 echo  : 1,
@@ -60,7 +58,7 @@ var Alan = speculoos.Class({
         //
         // set var, Number
         //
-        if (helper.isNumeric(val)) {
+        if (Helper.isNumeric(val)) {
             this.setVar(v, parseFloat(val));
         //
         // set var, String
@@ -142,43 +140,8 @@ var Alan = speculoos.Class({
     },
 
     /**
-     * Run one special command and return new line position in script
-     * @param {Number} line Line number in script
-     * @param {String} scriptLine Current script line
-     * @return {Number} New scipt's line position
-     */
-    runSpecialCommand: function (line, scriptLine) {
-        var cmd = this.getCommand(scriptLine);
-
-        if (cmd === this._CMD_SET) {
-            line = this.runCommand(line, scriptLine, this._getSetArguments);
-        } else {
-            throw new Error('Invalid special command at line "' + scriptLine + '"');
-        }
-
-        return line;
-    },
-
-    /**
-     * Return arguments array with 2 arguments - variable and the array reference
-     * @param {String} line One script line
-     * @param {Number} argCount Amount of arguments in current command
-     * @return {Array} Arguments
-     * @private
-     */
-    _getSetArguments: function (line, argCount) {
-        var regexp;
-
-        regexp = this._CMD_SET_RE.exec(line);
-        if (!regexp || regexp.length < argCount + 1) {
-            throw new Error('Invalid arguments for set command at line "' + line + '"');
-        }
-
-        return [regexp[2], regexp[3]];
-    },
-
-    /**
-     * Return array from it's string representation
+     * Return array from it's string representation. It supports only
+     * array of strings.
      * @param {String} part Array string representation
      * @return {Array}
      * @private
@@ -192,7 +155,7 @@ var Alan = speculoos.Class({
         part = part.slice(1, part.length - 1).split(',');
 
         for (i = 0, len = part.length; i < len; i++) {
-            item = helper.trim(part[i]);
+            item = Helper.trim(part[i]);
             arr.push(item.slice(1, item.length - 1));
         }
 
