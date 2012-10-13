@@ -1,8 +1,7 @@
 set v1, 0
 set v2, 'str'
 set v3, ['q', 'w']
-set v4, -12
 
-set    v5,   12.
- set  v6   , 'qwerty'
+set    v4,   12
+ set  v5   , 'qwerty'
 

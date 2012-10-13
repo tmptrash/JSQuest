@@ -106,7 +106,7 @@ var Simple = Class({
         if (!Helper.isObject(config)) {
             throw new Error('Invalid configuration object passed to the Simple class constructor');
         }
-        if (config.filesExtension !== undefined && (!Helper.isString(config.filesExtension) || config.filesExtension.length < 1)) {
+        if (config.fileExtension !== undefined && (!Helper.isString(config.fileExtension) || config.fileExtension.length < 1)) {
             throw new Error('Invalid script file extension configuration');
         }
         if (config.charSet !== undefined && (!Helper.isString(config.charSet) || config.charSet.length < 1)) {
@@ -142,7 +142,7 @@ var Simple = Class({
          * {String} Script files extension. Can be changed by fileExtension config parameter.
          * @private
          */
-        this._filesExtension = config.fileExtension || 'simple';
+        this._fileExtension = config.fileExtension || 'simple';
         /**
          * @prop
          * {String} Script file charset. Can be changed by charset config parameter.
@@ -191,7 +191,7 @@ var Simple = Class({
      * @param {String} script Path to the file with script or script string
      */
     run: function (script) {
-        var ext    = this._filesExtension;
+        var ext    = this._fileExtension;
         var extLen = ext.length;
 
         /**
@@ -359,12 +359,12 @@ var Simple = Class({
     runCommand: function (line, scriptLine) {
         var cmd    = this.getCommand(scriptLine);
         var count  = this._commands[cmd];
-        var regexp = Helper.isNumber(count) ? this._commands[cmd].regexp : undefined;
+        var regexp = Helper.isObject(count) ? this._commands[cmd].regexp : undefined;
         var args   = this.getArguments(scriptLine, Helper.isNumber(count) ? count : count.args, regexp);
         var cmdFn  = this['on' + cmd.charAt(0).toUpperCase() + cmd.slice(1)];
 
         if (Helper.isFunction(cmdFn)) {
-            return this[cmdFn].apply(this, [line, scriptLine].concat(args));
+            return cmdFn.apply(this, [line, scriptLine].concat(args));
         }
 
         throw new Error('Command was set, but it has no handler at line "' + line + '"');
@@ -477,7 +477,7 @@ var Simple = Class({
         var params = [];
         var i;
 
-        if (regexp && Helper.isObject(regexp)) {
+        if (regexp && Helper.isRegexp(regexp)) {
             params = regexp.exec(line);
             /**
              * Remove entire string and the operator at the beginning

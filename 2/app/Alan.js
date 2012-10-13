@@ -28,7 +28,7 @@ var Alan = Class({
             /**
              * {String} Script files extension
              */
-            filesExtension: 'alan',
+            fileExtension: 'alan',
             /**
              * {Object} Available script commands
              */
