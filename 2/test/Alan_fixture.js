@@ -20,5 +20,8 @@ exports.testScripts = function (test) {
     NUnitHelper.runScript(path + 'cut.alan', false, {d1: 'q', d2: 'q'});
     NUnitHelper.runScripts(path + 'cut', 1, 9);
 
+    NUnitHelper.runScript(path + 'echo.alan', false);
+    NUnitHelper.runScripts(path + 'echo', 1, 4);
+
     test.done();
 };

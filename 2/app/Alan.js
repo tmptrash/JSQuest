@@ -48,6 +48,8 @@ var Alan = Class({
      * @param {String} v Name of the variable
      */
     onEcho: function (line, scriptLine, v) {
+        this._checkVar(v);
+
         console.log(this.getVar(v));
         return ++line;
     },
