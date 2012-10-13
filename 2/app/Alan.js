@@ -119,13 +119,17 @@ var Alan = Class({
      */
     onCut: function (line, scriptLine, v, index, dest) {
         this._checkVar(v);
+        this._checkVar(index);
         this._checkVar(dest);
 
-        if (index < 0 || index >= this.getVar(v).length) {
+        v     = this.getVar(v);
+        index = this.getVar(index);
+
+        if (index < 0 || index >= v.length) {
             throw new Error('Invalid index within variable at line "' + scriptLine + '"');
         }
 
-        this.setVar(dest, this.getVar(v)[this.getVar(index)]);
+        this.setVar(dest, v[index]);
 
         return ++line;
     },
