@@ -36,6 +36,7 @@ var Alan = Class({
                 read  : 2,
                 echo  : 1,
                 cut   : 3,
+                asc   : 2,
                 'set' : {args: 2, regexp: /^\s*([a-z]+)\s+([a-z]+[0-9]*[a-z]*)+\s*,\s*((\[.+\])|(\'.*\')|([0-9]+))\s*$/}
             }
         });
@@ -141,18 +142,20 @@ var Alan = Class({
      * @param {Number} line Current line number
      * @param {String} scriptLine Current script line
      * @param {String} v Name of variable where we should get a symbol
-     * @param {String} n Name of variable with for result
+     * @param {String} n Name of variable for result
      * @return {Number} Line number
      */
     onAsc: function (line, scriptLine, v, n) {
         this._checkVar(v);
         this._checkVar(n);
 
-        if (this.getVar(v).length < 1) {
-            throw new Error('Invalid source variable length at line "' + scriptLine + '"');
+        v = this.getVar(v);
+
+        if (!Helper.isString(v) || v.length < 1) {
+            throw new Error('Invalid source variable length or type at line "' + scriptLine + '"');
         }
 
-        this.setVar(n, this.getVar(v)[0]);
+        this.setVar(n, v.charCodeAt(0));
 
         return ++line;
     },

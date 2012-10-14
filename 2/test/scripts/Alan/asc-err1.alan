@@ -1,0 +1,3 @@
+set a, ''
+set n, 0
+asc a, n

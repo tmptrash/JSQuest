@@ -1,0 +1,7 @@
+set a1, 'A'
+set n1, 0
+set a2, 'AB'
+set n2, 0
+
+asc a1, n1
+asc a2, n2
