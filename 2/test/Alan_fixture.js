@@ -22,8 +22,8 @@ exports.testScripts = function (test) {
 
     NUnitHelper.runScript(path + 'read.alan', false);
     NUnitHelper.runScript(path + 'read-empty.alan', false);
-    //NUnitHelper.runScript(path + 'read-folder.alan', true);
-    //NUnitHelper.runScripts(path + 'read', 1, 8);
+    NUnitHelper.runScript(path + 'read-folder.alan', true);
+    NUnitHelper.runScripts(path + 'read', 1, 8);
 
     NUnitHelper.runScript(path + 'echo.alan', false);
     NUnitHelper.runScripts(path + 'echo', 1, 4);
