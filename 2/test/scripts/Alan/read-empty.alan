@@ -1,2 +1,3 @@
-set f, './data/empty.txt'
+set f, './../2/test/scripts/Alan/data/empty.txt'
+set d, ''
 read f, d
