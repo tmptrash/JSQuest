@@ -35,7 +35,7 @@ exports.testScripts = function (test) {
     NUnitHelper.runScripts(path + 'goto', 1, 4);
 
     NUnitHelper.runScript(path + 'gotog.alan', false, {a: 1, b: 3});
-    NUnitHelper.runScripts(path + 'gotog', 1, 1);
+    NUnitHelper.runScripts(path + 'gotog', 1, 9);
 
 
     test.done();
