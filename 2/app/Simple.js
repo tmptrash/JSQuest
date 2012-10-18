@@ -515,6 +515,15 @@ var Simple = Class({
     },
 
     /**
+     * Return script line number, where specified label was defined.
+     * @param {String} label Name of label
+     * @return {Number} Line number or -1 if label is undefined
+     */
+    getLineByLabel: function (label) {
+        return this._labels[label] || -1;
+    },
+
+    /**
      * Checks whenever specified variable is exists. You should use this method after preprocess() method
      * @param {String} label Name of label to check
      * @return {Boolean}

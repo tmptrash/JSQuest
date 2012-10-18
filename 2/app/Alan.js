@@ -37,6 +37,8 @@ var Alan = Class({
                 echo  : 1,
                 cut   : 3,
                 asc   : 2,
+                goto  : 1,
+                gotog : 3,
                 'set' : {args: 2, regexp: /^\s*([a-z]+)\s+([a-z]+[0-9]*[a-z]*)+\s*,\s*((\[.+\])|(\'.*\')|([0-9]+))\s*$/}
             }
         });
@@ -158,6 +160,43 @@ var Alan = Class({
         this.setVar(n, v.charCodeAt(0));
 
         return ++line;
+    },
+
+    /**
+     * Jumps into the line with specified label
+     * @param {Number} line Current line number
+     * @param {String} scriptLine Current script line
+     * @param {String} label Name of label we need to jump
+     * @return {Number} Line number
+     */
+    onGoto: function (line, scriptLine, label) {
+        if (!this.hasLabel(label)) {
+            throw new Error('Invalid label at line "' + scriptLine + '"');
+        }
+
+        return this.getLineByLabel(label);
+    },
+
+    /**
+     * Jumps into the line with specified label if first argument greater then second
+     * @param {Number} line Current line number
+     * @param {String} scriptLine Current script line
+     * @param {String|Number} left Value, that should be greater, then right
+     * @param {String|Number} right Value, that should be less, then left
+     * @param {String} label Name of label we need to jump
+     * @return {Number} Line number
+     */
+    onGotog: function (line, scriptLine, left, right, label) {
+         this._checkVar(left);
+         this._checkVar(right);
+         if (!this.hasLabel(label)) {
+             throw new Error('Invalid label at line "' + scriptLine + '"');
+         }
+
+         if (this.getVar(left) > this.getVar(right)) {
+             return this.getLineByLabel(label);
+         }
+         return ++line;
     },
 
     /**
