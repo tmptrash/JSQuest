@@ -40,6 +40,7 @@ var Alan = Class({
                 goto  : 1,
                 gotog : 3,
                 sub   : 2,
+                append: 2,
                 'set' : {args: 2, regexp: /^\s*([a-z]+)\s+([a-z]+[0-9]*[a-z]*)+\s*,\s*((\[.+\])|(\'.*\')|([0-9]+))\s*$/}
             }
         });
@@ -201,13 +202,12 @@ var Alan = Class({
     },
 
     /**
-     * Substitute two variables and save the result into the first one
+     * Substitutes two variables and save the result into the first one
      * @param {Number} line Current line number
      * @param {String} scriptLine Current script line
      * @param {String} src Source variable name
      * @param {String} dst Destination variable name
      * @return {Number} New line number
-     * @private
      */
     onSub: function (line, scriptLine, src, dst) {
         this._checkVar(src, scriptLine);
@@ -216,6 +216,23 @@ var Alan = Class({
         this.setVar(src, this.getVar(src) - this.getVar(dst));
 
         return ++line;
+    },
+
+    /**
+      * Appends destination value to the source
+      * @param {Number} line Current line number
+      * @param {String} scriptLine Current script line
+      * @param {String} dst Destination variable name
+      * @param {String} src Source variable name
+      * @return {Number} New line number
+      */
+    onAppend: function (line, scriptLine, dst, src) {
+         this._checkVar(src, scriptLine);
+         this._checkVar(dst, scriptLine);
+
+         this.setVar(dst, this.getVar(dst) + this.getVar(src));
+
+         return ++line;
     },
 
     /**
