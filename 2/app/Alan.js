@@ -39,6 +39,7 @@ var Alan = Class({
                 asc   : 2,
                 goto  : 1,
                 gotog : 3,
+                sub   : 2,
                 'set' : {args: 2, regexp: /^\s*([a-z]+)\s+([a-z]+[0-9]*[a-z]*)+\s*,\s*((\[.+\])|(\'.*\')|([0-9]+))\s*$/}
             }
         });
@@ -51,7 +52,7 @@ var Alan = Class({
      * @param {String} v Name of the variable
      */
     onEcho: function (line, scriptLine, v) {
-        this._checkVar(v);
+        this._checkVar(v, scriptLine);
 
         console.log(this.getVar(v));
         return ++line;
@@ -100,8 +101,8 @@ var Alan = Class({
      * @return {Number} New position (line number) within the script
      */
     onRead: function (line, scriptLine, file, v) {
-        this._checkVar(file);
-        this._checkVar(v);
+        this._checkVar(file, scriptLine);
+        this._checkVar(v, scriptLine);
 
         file = this.getVar(file);
 
@@ -123,9 +124,9 @@ var Alan = Class({
      * @return {Number}
      */
     onCut: function (line, scriptLine, v, index, dest) {
-        this._checkVar(v);
-        this._checkVar(index);
-        this._checkVar(dest);
+        this._checkVar(v, scriptLine);
+        this._checkVar(index, scriptLine);
+        this._checkVar(dest, scriptLine);
 
         v     = this.getVar(v);
         index = this.getVar(index);
@@ -148,8 +149,8 @@ var Alan = Class({
      * @return {Number} Line number
      */
     onAsc: function (line, scriptLine, v, n) {
-        this._checkVar(v);
-        this._checkVar(n);
+        this._checkVar(v, scriptLine);
+        this._checkVar(n, scriptLine);
 
         v = this.getVar(v);
 
@@ -187,8 +188,8 @@ var Alan = Class({
      * @return {Number} Line number
      */
     onGotog: function (line, scriptLine, left, right, label) {
-         this._checkVar(left);
-         this._checkVar(right);
+         this._checkVar(left, scriptLine);
+         this._checkVar(right, scriptLine);
          if (!this.hasLabel(label)) {
              throw new Error('Invalid label at line "' + scriptLine + '"');
          }
@@ -197,6 +198,24 @@ var Alan = Class({
              return this.getLineByLabel(label);
          }
          return ++line;
+    },
+
+    /**
+     * Substitute two variables and save the result into the first one
+     * @param {Number} line Current line number
+     * @param {String} scriptLine Current script line
+     * @param {String} src Source variable name
+     * @param {String} dst Destination variable name
+     * @return {Number} New line number
+     * @private
+     */
+    onSub: function (line, scriptLine, src, dst) {
+        this._checkVar(src, scriptLine);
+        this._checkVar(dst, scriptLine);
+
+        this.setVar(src, this.getVar(src) - this.getVar(dst));
+
+        return ++line;
     },
 
     /**
