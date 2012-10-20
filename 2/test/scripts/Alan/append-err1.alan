@@ -1,0 +1,4 @@
+set v1, ['q']
+set v2, 2
+
+append v1, v2

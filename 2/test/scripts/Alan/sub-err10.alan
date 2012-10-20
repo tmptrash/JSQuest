@@ -1,0 +1,4 @@
+set v1, 3
+set v2, ['1']
+
+sub v1, v2

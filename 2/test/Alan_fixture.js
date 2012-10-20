@@ -38,9 +38,10 @@ exports.testScripts = function (test) {
     NUnitHelper.runScripts(path + 'gotog', 1, 9);
 
     NUnitHelper.runScript(path + 'sub.alan', false, {v1: 1});
-    NUnitHelper.runScripts(path + 'sub', 1, 8);
+    NUnitHelper.runScripts(path + 'sub', 1, 10);
 
     NUnitHelper.runScript(path + 'append.alan', false, {v1: 5, s1: 'qwerty'});
+    NUnitHelper.runScripts(path + 'append', 1, 2);
 
 
     test.done();

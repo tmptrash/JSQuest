@@ -213,7 +213,18 @@ var Alan = Class({
         this._checkVar(src, scriptLine);
         this._checkVar(dst, scriptLine);
 
-        this.setVar(src, this.getVar(src) - this.getVar(dst));
+        var srcVar = src;
+        src = this.getVar(src);
+        dst = this.getVar(dst);
+
+        //
+        // Only Numbers are supported
+        //
+        if (!Helper.isNumber(src) || !Helper.isNumber(dst)) {
+            throw new Error('sub command supports only numbers. Error at line "' + scriptLine + '"');
+        }
+
+        this.setVar(srcVar, src - dst);
 
         return ++line;
     },
@@ -227,12 +238,23 @@ var Alan = Class({
       * @return {Number} New line number
       */
     onAppend: function (line, scriptLine, dst, src) {
-         this._checkVar(src, scriptLine);
-         this._checkVar(dst, scriptLine);
+        this._checkVar(src, scriptLine);
+        this._checkVar(dst, scriptLine);
 
-         this.setVar(dst, this.getVar(dst) + this.getVar(src));
+        var dstVar = dst;
+        src = this.getVar(src);
+        dst = this.getVar(dst);
 
-         return ++line;
+        //
+        // Only Strings and Numbers are supported
+        //
+        if (!(Helper.isNumber(src) && Helper.isNumber(dst) || Helper.isString(src) && Helper.isString(dst))) {
+            throw new Error('append command supports only numbers and strings. Error at line "' + scriptLine + '"');
+        }
+
+        this.setVar(dstVar, dst + src);
+
+        return ++line;
     },
 
     /**
