@@ -1,0 +1,2 @@
+set v, 1
+append v, undefined

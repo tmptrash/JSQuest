@@ -41,6 +41,7 @@ var Alan = Class({
                 gotog : 3,
                 sub   : 2,
                 append: 2,
+                inc   : 1,
                 'set' : {args: 2, regexp: /^\s*([a-z]+)\s+([a-z]+[0-9]*[a-z]*)+\s*,\s*((\[.+\])|(\'.*\')|([0-9]+))\s*$/}
             }
         });
@@ -253,6 +254,31 @@ var Alan = Class({
         }
 
         this.setVar(dstVar, dst + src);
+
+        return ++line;
+    },
+
+    /**
+      * Increments numeric value of variable
+      * @param {Number} line Current line number
+      * @param {String} scriptLine Current script line
+      * @param {String} v Variable name
+      * @return {Number} New line number
+      */
+    onInc: function (line, scriptLine, v) {
+        var variable = v;
+
+        this._checkVar(v, scriptLine);
+        v = this.getVar(v);
+
+        //
+        // Only Numbers are supported
+        //
+        if (!Helper.isNumber(v)) {
+            throw new Error('inc command supports only numbers. Error at line "' + scriptLine + '"');
+        }
+
+        this.setVar(variable, ++v);
 
         return ++line;
     },

@@ -2,6 +2,9 @@ set v1, 3
 set v2, 2
 set s1, 'qwe'
 set s2, 'rty'
+set s3, ''
+set s4, ''
 
 append v1, v2
 append s1, s2
+append s3, s4
