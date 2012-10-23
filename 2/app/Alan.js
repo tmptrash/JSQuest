@@ -1,14 +1,50 @@
 /**
- * TODO: add comments for all public methods
- * This is ALAN - simple Assembler LANguage interpreter
+ * This is ALAN - simple Assembler LANguage interpreter. It implements concrete
+ * bundle of commands and inherited from Simple class. It is very simple. It contains
+ * commands (commands property) and file extension configurations. This is how it
+ * pass a list of supported commands into the Simple class. It also, contains a list
+ * of handlers in format onXxx(). Every command from commands configuration should
+ * has an pair in handlers list. For example:
+ *
+ * ...
+ * commands: {
+ *     inc: 1, // tell the Simple class, that we supports inc command with one argument
+ *     set: 2  // tell the Simple class, that we supports set command with two arguments
+ * }
+ * ...
+ * //
+ * // This handler will be called if inc command will be met in script.
+ * // First two arguments are the same for all handlers and means current line number
+ * // and script string line. Last argument it is a name of variable, we should to increase.
+ * //
+ * onInc: function (line, script, v) {
+ *     // do something...
+ * },
+ *
+ * onSet: function (line, script, from, to) {
+ *     // do something
+ * },
+ *
+ * this peace of code will parse and handle script like this:
+ * set a, 1
+ * inc a
+ *
+ * @author DeadbraiN
+ * @email deadbrainman@gmail.com
+ */
+
+/**
+ * Include all required classes.
  */
 var fs        = require('fs');
 var Class     = require('./../../lib/speculoos.js').Class;
 var Helper    = require('./../../lib/Helper.js').Helper;
 var Simple    = require('./Simple.js').Simple;
 
+
 /**
- * {Function} Alan interpreter
+ * @class
+ * {Alan} Interpreter class implementation
  */
 var Alan = Class({
     extends      : Simple,
@@ -21,16 +57,19 @@ var Alan = Class({
 
 
     /**
-     * ctor. Instantiates the object. Creates all public/private properties
+     * ctor. Instantiates the object. Creates all public/private properties. It passes a configuration
+     * of Alan commands and file extension into the Simple interpreter class.
      */
     constructor: function () {
         Alan.super.constructor.call(this, {
             /**
+             * @conf
              * {String} Script files extension
              */
             fileExtension: 'alan',
             /**
-             * {Object} Available script commands
+             * @conf
+             * {Object} Available script commands with amount of supported arguments.
              */
             commands       : {
                 read  : 2,
@@ -48,10 +87,11 @@ var Alan = Class({
     },
 
     /**
-     * Echoes data to the terminal
+     * Echoes value of variable to the console
      * @param {Number} line Current line number in script
      * @param {String} scriptLine Current line of script
      * @param {String} v Name of the variable
+     * @return {Number} new line number
      */
     onEcho: function (line, scriptLine, v) {
         this._checkVar(v, scriptLine);
