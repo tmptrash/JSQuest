@@ -71,24 +71,24 @@ var Simple = Class({
      * for command and first argument. Preprocessor uses these expressions for splitting command and
      * the parameter. Command must be on a first place, before the argument. Other symbols will be ignored.
      */
-    _CMD_RE      : /^\s*([a-z]+)\s+([a-z]+[0-9]*[a-z]*)+\s*.*$/,
+    _CMD_RE      : /^\s*([a-zA-Z]+)\s+([a-zA-Z]+[0-9]*[a-zA-Z]*)+\s*.*$/,
     /**
      * @const
      * {RegExp} Expression for command only (without first parameter). e.g.: inc ... Don't forget about
      * round brackets. First brackets interprets as a command. Other symbols will be ignored.
      */
-    _CMD_ONLY_RE : /^\s*([a-z]+)\s+.*/,
+    _CMD_ONLY_RE : /^\s*([a-zA-Z]+)\s+.*/,
     /**
      * @const
      * {RegExp} Expression for one variable within one command. e.g.: asc ch, n; where ch and n - variables.
      * You must use one round brackets for the variable.
      */
-    _VAR_RE      : /^\s*([a-z]+[0-9]*[a-z]*)+\s*$/,
+    _VAR_RE      : /^\s*([a-zA-Z]+[0-9]*[a-zA-Z]*)+\s*$/,
     /**
      * @const
      * {RegExp} Expression for label. e.g: :label. You must use round brackets around label name.
      */
-    _LABEL_RE    : /^\s*:\s*([a-z]+[0-9]*[a-z]*)+\s*$/,
+    _LABEL_RE    : /^\s*:\s*([a-zA-Z]+[0-9]*[a-zA-Z]*)+\s*$/,
     /**
      * @const
      * Default comment regexp. This is line comment. So, if line starts from comment symbol. It will

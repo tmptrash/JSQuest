@@ -1,0 +1,17 @@
+# 0x77 analog
+set startEncKey, 179
+
+set src,         '0123456789'
+set srcLen,      9
+set i,           0
+set ch,          ''
+
+:encstart
+    cut   src, i, ch
+    echo  ch
+
+    inc   i
+    gotog i, srcLen, encend
+    goto encstart
+
+:encend
