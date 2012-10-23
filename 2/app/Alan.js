@@ -81,6 +81,8 @@ var Alan = Class({
                 sub   : 2,
                 append: 2,
                 inc   : 1,
+                dec   : 1,
+                len   : 2,
                 'set' : {args: 2, regexp: /^\s*([a-zA-Z]+)\s+([a-zA-Z]+[0-9]*[a-zA-Z]*)+\s*,\s*((\[.+\])|(\'.*\')|([0-9]+))\s*$/}
             }
         });
@@ -319,6 +321,60 @@ var Alan = Class({
         }
 
         this.setVar(variable, ++v);
+
+        return ++line;
+    },
+    /**
+      * Decrements numeric value of variable
+      * @param {Number} line Current line number
+      * @param {String} scriptLine Current script line
+      * @param {String} v Variable name
+      * @return {Number} New line number
+      */
+    onDec: function (line, scriptLine, v) {
+        var variable = v;
+
+        this._checkVar(v, scriptLine);
+        v = this.getVar(v);
+
+        //
+        // Only Numbers are supported
+        //
+        if (!Helper.isNumber(v)) {
+            throw new Error('inc command supports only numbers. Error at line "' + scriptLine + '"');
+        }
+
+        this.setVar(variable, --v);
+
+        return ++line;
+    },
+
+
+    /**
+      * Sets length of string variable into specified variable
+      * @param {Number} line Current line number
+      * @param {String} scriptLine Current script line
+      * @param {String} src Source variable name
+      * @param {String} dst Destination variable name
+      * @return {Number} New line number
+      */
+    onLen: function (line, scriptLine, src, dst) {
+        var dstVar = dst;
+
+        this._checkVar(src, scriptLine);
+        this._checkVar(dst, scriptLine);
+
+        src = this.getVar(src);
+        dst = this.getVar(dst);
+
+        //
+        // Only Strings are supported
+        //
+        if (!Helper.isString(src)) {
+            throw new Error('len command supports only string. Error at line "' + scriptLine + '"');
+        }
+
+        this.setVar(dstVar, src.length);
 
         return ++line;
     },

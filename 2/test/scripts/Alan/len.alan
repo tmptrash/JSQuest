@@ -1,0 +1,4 @@
+set a, 'Abc'
+set l, 0
+
+len a, l
