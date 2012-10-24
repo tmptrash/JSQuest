@@ -83,6 +83,7 @@ var Alan = Class({
                 inc   : 1,
                 dec   : 1,
                 len   : 2,
+                xor   : 3,
                 'set' : {args: 2, regexp: /^\s*([a-zA-Z]+)\s+([a-zA-Z]+[0-9]*[a-zA-Z]*)+\s*,\s*((\[.+\])|(\'.*\')|([0-9]+))\s*$/}
             }
         });
@@ -341,14 +342,13 @@ var Alan = Class({
         // Only Numbers are supported
         //
         if (!Helper.isNumber(v)) {
-            throw new Error('inc command supports only numbers. Error at line "' + scriptLine + '"');
+            throw new Error('dec command supports only numbers. Error at line "' + scriptLine + '"');
         }
 
         this.setVar(variable, --v);
 
         return ++line;
     },
-
 
     /**
       * Sets length of string variable into specified variable
@@ -359,22 +359,48 @@ var Alan = Class({
       * @return {Number} New line number
       */
     onLen: function (line, scriptLine, src, dst) {
-        var dstVar = dst;
-
         this._checkVar(src, scriptLine);
         this._checkVar(dst, scriptLine);
 
         src = this.getVar(src);
-        dst = this.getVar(dst);
 
         //
         // Only Strings are supported
         //
-        if (!Helper.isString(src)) {
-            throw new Error('len command supports only string. Error at line "' + scriptLine + '"');
+        if (!Helper.isString(src) && !Helper.isArray(src)) {
+            throw new Error('len command supports only string and arrays. Error at line "' + scriptLine + '"');
         }
 
-        this.setVar(dstVar, src.length);
+        this.setVar(dst, src.length);
+
+        return ++line;
+    },
+
+    /**
+      * Makes xor operation with two numbers
+      * @param {Number} line Current line number
+      * @param {String} scriptLine Current script line
+      * @param {Number} left Name of variable with left operand
+      * @param {Number} right Name of variable with right operand
+      * @param {Number} dst Name of destination variable
+      * @return {Number} New line number
+      */
+    onXor: function (line, scriptLine, left, right, dst) {
+        this._checkVar(left, scriptLine);
+        this._checkVar(right, scriptLine);
+        this._checkVar(dst, scriptLine);
+
+        left  = this.getVar(left);
+        right = this.getVar(right);
+
+        //
+        // Only Numbers are supported
+        //
+        if (!Helper.isNumber(left) || !Helper.isNumber(right)) {
+            throw new Error('xor command supports only numbers. Error at line "' + scriptLine + '"');
+        }
+
+        this.setVar(dst, left ^ right);
 
         return ++line;
     },

@@ -1,25 +1,26 @@
-# 0x77 analog
-set startEncKey, 179
-
 set src,         ['012', '345', '67890']
+set dst,         []
 set srcLen,      2
 set encLen,      0
 set i,           0
 set k,           0
 set ch,          ''
 set keyword,     ''
+set prevCh,      ''
 
 :KEYWORDSTART
     cut    src, i, keyword
 
     set    k, 0
+    set    prevCh, 179
     len    keyword, encLen
     dec    encLen
     :ENCSTART
         cut    keyword, k, ch
-
+        xor    ch, prevCh, ch
         echo   ch
 
+        set    prevCh, ch
         inc    k
         gotog  k, encLen, ENCEND
         goto   ENCSTART

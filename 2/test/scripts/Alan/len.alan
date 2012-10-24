@@ -1,4 +1,7 @@
-set a, 'Abc'
-set l, 0
+set s, 'Abc'
+set l1, 0
+set a, ['1', '2', '3']
+set l2, 0
 
-len a, l
+len s, l1
+len a, l2

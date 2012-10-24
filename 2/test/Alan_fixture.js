@@ -46,9 +46,14 @@ exports.testScripts = function (test) {
     NUnitHelper.runScript(path + 'inc.alan', false, {v1: 4, v2: 1});
     NUnitHelper.runScripts(path + 'inc', 1, 4);
 
-    NUnitHelper.runScript(path + 'len.alan', false, {l: 3});
-    //NUnitHelper.runScripts(path + 'inc', 1, 4);
+    NUnitHelper.runScript(path + 'len.alan', false, {l1: 3, l2: 3});
+    NUnitHelper.runScripts(path + 'len', 1, 11);
 
+    NUnitHelper.runScript(path + 'dec.alan', false, {v1: 9});
+    NUnitHelper.runScripts(path + 'dec', 1, 5);
+
+    NUnitHelper.runScript(path + 'xor.alan', false, {v3: 164});
+    NUnitHelper.runScripts(path + 'xor', 1, 20);
 
     test.done();
 };
