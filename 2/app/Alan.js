@@ -54,6 +54,11 @@ var Alan = Class({
      * {String} Default charset for file operations.
      */
     _FILES_CHARSET: 'utf-8',
+    /**
+     * @const
+     * {RegExp} Expression for empty array
+     */
+    _EMPTY_ARRAY_RE: /^\s*\[\s*\]\s*$/,
 
 
     /**
@@ -84,7 +89,7 @@ var Alan = Class({
                 dec   : 1,
                 len   : 2,
                 xor   : 3,
-                'set' : {args: 2, regexp: /^\s*([a-zA-Z]+)\s+([a-zA-Z]+[0-9]*[a-zA-Z]*)+\s*,\s*((\[.+\])|(\'.*\')|([0-9]+))\s*$/}
+                'set' : {args: 2, regexp: /^\s*(set)\s+([a-zA-Z]+[0-9]*[a-zA-Z]*)+\s*,\s*((\[.*\])|(\'.*\')|([0-9]+)|([a-zA-Z]+[0-9]*[a-zA-Z]*))\s*$/}
             }
         });
     },
@@ -128,10 +133,15 @@ var Alan = Class({
         } else if (val[0] === "[" && val[val.length - 1] === "]") {
             this.setVar(v, this._getArray(val));
         //
+        // set var, var
+        //
+        } else if (this.hasVar(val)) {
+            this.setVar(v, this.getVar(val));
+        //
         // Unknown argument
         //
         } else {
-            throw new Error('Invalid set command arguments at line "' +  + '"');
+            throw new Error('Invalid set command arguments at line "' + scriptLine + '"');
         }
 
         return ++line;
@@ -235,6 +245,7 @@ var Alan = Class({
     onGotog: function (line, scriptLine, left, right, label) {
          this._checkVar(left, scriptLine);
          this._checkVar(right, scriptLine);
+
          if (!this.hasLabel(label)) {
              throw new Error('Invalid label at line "' + scriptLine + '"');
          }
@@ -418,11 +429,13 @@ var Alan = Class({
         var len;
         var i;
 
-        part = part.slice(1, part.length - 1).split(',');
+        if (!this._EMPTY_ARRAY_RE.test(part)) {
+            part = part.slice(1, part.length - 1).split(',');
 
-        for (i = 0, len = part.length; i < len; i++) {
-            item = Helper.trim(part[i]);
-            arr.push(item.slice(1, item.length - 1));
+            for (i = 0, len = part.length; i < len; i++) {
+                item = Helper.trim(part[i]);
+                arr.push(item.slice(1, item.length - 1));
+            }
         }
 
         return arr;

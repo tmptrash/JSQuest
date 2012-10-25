@@ -17,6 +17,7 @@ set prevCh,      ''
     dec    encLen
     :ENCSTART
         cut    keyword, k, ch
+        asc    ch, ch
         xor    ch, prevCh, ch
         echo   ch
 

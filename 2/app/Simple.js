@@ -533,6 +533,15 @@ var Simple = Class({
     },
 
     /**
+     * Return true if specified variable is exist
+     * @param {String} v Name of variable
+     * @return {Boolean}
+     */
+    hasVar: function (v) {
+        return this._vars[v] !== undefined;
+    },
+
+    /**
      * Return keyword separator string. e.g: ';' symbol in C\C++
      * @param {String} script Script raw code
      * @return {String} separator string or symbol

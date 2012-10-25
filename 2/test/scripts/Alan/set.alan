@@ -1,7 +1,10 @@
 set v1, 0
 set v2, 'str'
 set v3, ['q', 'w']
+set n1, 1
+set n2, 2
 
 set    v4,   12
  set  v5   , 'qwerty'
+ set n1, n2
 
