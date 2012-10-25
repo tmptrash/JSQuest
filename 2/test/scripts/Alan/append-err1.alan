@@ -1,4 +1,3 @@
-set v1, ['q']
-set v2, 2
+set v1, ''
 
-append v1, v2
+append v1, -

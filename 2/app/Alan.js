@@ -81,6 +81,7 @@ var Alan = Class({
                 echo  : 1,
                 cut   : 3,
                 asc   : 2,
+                char  : 2,
                 goto  : 1,
                 gotog : 3,
                 sub   : 2,
@@ -219,6 +220,29 @@ var Alan = Class({
     },
 
     /**
+     * Sets ASCII code into the character
+     * @param {Number} line Current line number
+     * @param {String} scriptLine Current script line
+     * @param {String} n Name of variable with character code
+     * @param {String} v Name of variable for result character
+     * @return {Number} Line number
+     */
+    onChar: function (line, scriptLine, n, v) {
+        this._checkVar(n, scriptLine);
+        this._checkVar(v, scriptLine);
+
+        n = this.getVar(n);
+
+        if (!Helper.isNumber(n) || n < 0 || n > 255) {
+            throw new Error('Invalid source variable value or type at line "' + scriptLine + '"');
+        }
+
+        this.setVar(v, String.fromCharCode(n));
+
+        return ++line;
+    },
+
+    /**
      * Jumps into the line with specified label
      * @param {Number} line Current line number
      * @param {String} scriptLine Current script line
@@ -303,11 +327,15 @@ var Alan = Class({
         //
         // Only Strings and Numbers are supported
         //
-        if (!(Helper.isNumber(src) && Helper.isNumber(dst) || Helper.isString(src) && Helper.isString(dst))) {
+        if (!((Helper.isNumber(src) && Helper.isNumber(dst)) || (Helper.isString(src) && Helper.isString(dst)) || Helper.isArray(dst))) {
             throw new Error('append command supports only numbers and strings. Error at line "' + scriptLine + '"');
         }
 
-        this.setVar(dstVar, dst + src);
+        if (Helper.isArray(dst)) {
+            dst.push(src);
+        } else {
+            this.setVar(dstVar, dst + src);
+        }
 
         return ++line;
     },

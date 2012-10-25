@@ -4,7 +4,9 @@ set s1, 'qwe'
 set s2, 'rty'
 set s3, ''
 set s4, ''
+set a1, []
 
 append v1, v2
 append s1, s2
 append s3, s4
+append a1, s1

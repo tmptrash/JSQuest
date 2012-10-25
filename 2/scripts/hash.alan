@@ -1,3 +1,16 @@
+#
+# Simple XOR based algorithm. It encrypts string of characters into another string using
+# start key number and xor operation. It uses previous symbol XOR next one to produce encrypted symbol.
+# Example:
+#     Input string  : '012'
+#     Encryption key: 179
+#
+#     1. Input string will be converted into sequence: [48, 49, 50], where numbers are ASCII codes of symbols.
+#     2. Encrypt first symbol : 179 xor 48 = 131
+#     3. Encrypt second symbol: 131 xor 49 = 178
+#     4. Encrypt third symbol : 178 xor 50 = 128
+#     Result [131, 178, 128] or 'Г▓А' - encrypted string
+#
 set src,         ['012', '345', '67890']
 set dst,         []
 set srcLen,      2
@@ -7,6 +20,8 @@ set k,           0
 set ch,          ''
 set keyword,     ''
 set prevCh,      ''
+set sep,         '-'
+set n,           0
 
 :KEYWORDSTART
     cut    src, i, keyword
@@ -15,21 +30,24 @@ set prevCh,      ''
     set    prevCh, 179
     len    keyword, encLen
     dec    encLen
+    set    encStr, ''
     :ENCSTART
         cut    keyword, k, ch
         asc    ch, ch
-        xor    ch, prevCh, ch
-        echo   ch
+        xor    ch, prevCh, n
+        char   n,  ch
+        append encStr, ch
 
-        set    prevCh, ch
+        set    prevCh, n
         inc    k
         gotog  k, encLen, ENCEND
         goto   ENCSTART
     :ENCEND
-
+    append dst, encStr
 
     inc    i
     gotog  i, srcLen, KEYWORDEND
     goto   KEYWORDSTART
 
 :KEYWORDEND
+echo dst

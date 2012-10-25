@@ -55,5 +55,8 @@ exports.testScripts = function (test) {
     NUnitHelper.runScript(path + 'xor.alan', false, {v3: 164});
     NUnitHelper.runScripts(path + 'xor', 1, 20);
 
+    NUnitHelper.runScript(path + 'char.alan', false, {v2: 'A'});
+    NUnitHelper.runScripts(path + 'char', 1, 11);
+
     test.done();
 };

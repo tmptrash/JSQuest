@@ -1,0 +1,3 @@
+set v1, 300
+set v2, ''
+char v1, v2
