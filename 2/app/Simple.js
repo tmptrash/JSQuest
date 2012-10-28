@@ -371,7 +371,8 @@ var Simple = Class({
     },
 
     /**
-     * Returns true if specified line is empty. Empty means ' \t' symbols. It calls from preprocessor.
+     * Returns true if specified line is empty. Empty means ' \t'
+     *
      * @param {String} line Raw one script line
      */
     isEmpty: function (line) {

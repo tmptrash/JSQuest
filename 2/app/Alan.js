@@ -127,7 +127,7 @@ var Alan = Class({
         // set var, String
         //
         } else if (val[0] === "'" && val[val.length - 1] === "'") {
-            this.setVar(v, val.slice(1, val.length - 1));
+            this.setVar(v, this._prepareString(val.slice(1, val.length - 1)));
         //
         // ser var, ['xxx', 'xxx', ...]
         //
@@ -462,7 +462,7 @@ var Alan = Class({
 
             for (i = 0, len = part.length; i < len; i++) {
                 item = Helper.trim(part[i]);
-                arr.push(item.slice(1, item.length - 1));
+                arr.push(this._prepareString(item.slice(1, item.length - 1)));
             }
         }
 
@@ -479,6 +479,47 @@ var Alan = Class({
         if (this.getVar(v) === false) {
             throw new Error('Variable is not defined at line "' + line + '"');
         }
+    },
+
+    /**
+     * Converts special characters within string into symbols. e.g. '\x20' into ' '
+     * @param {String} s Source string
+     * @return {String}
+     * @private
+     */
+    _prepareString: function (s) {
+        //
+        // Symbols like this: '\x20'
+        //
+        var conv  = String.fromCharCode;
+        var hexRe = /\\x([0-9a-fA-F]{2})/g;
+        var items = this._getReItems(s, hexRe);
+        var len   = items.length;
+        var item;
+
+        for (item = 0; item < len; item++) {
+            s = s.replace('\\x' + items[item], conv(parseInt(items[item], 16)));
+        }
+
+        return s;
+    },
+
+    /**
+     * Returns items found by regular expression. e.g. /[0-9]/g in string '0123' returns ['0', '1', '2', '3']
+     * @param {String} s Source string
+     * @param {RegExp} re Regular expression for string
+     * @return {Array} Array of found items or empty array if not found
+     * @private
+     */
+    _getReItems: function (s, re) {
+        var arr = [];
+        var a;
+
+        while ((a = re.exec(s))) {
+            arr.push(a[a.length - 1]);
+        }
+
+        return arr;
     }
 });
 

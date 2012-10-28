@@ -38,6 +38,8 @@ set n,           0
         char   n,  ch
         append encStr, ch
 
+        echo n
+
         set    prevCh, n
         inc    k
         gotog  k, encLen, ENCEND

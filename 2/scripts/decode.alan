@@ -1,0 +1,55 @@
+#
+# TODO: add description how it works.
+# Simple XOR based algorithm. It decrypts string of characters into another string using
+# start key number and xor operation. It uses previous symbol XOR next one to produce decrypted symbol.
+# Example:
+#     Input string  : 'Г▓А'
+#     Decryption key: 179
+#
+#     1. Input string will be converted into sequence: [131, 178, 128], where numbers are ASCII codes of symbols.
+#     2. Decrypt first symbol : 179 xor 131 = 48
+#     3. Decrypt second symbol: 131 xor 178 = 49
+#     4. Decrypt third symbol : 178 xor 128 = 50
+#     Result [48, 49, 50] or '012' - decrypted string
+#
+set src,         ['\x83\xB2\x80', '\x80\xB4\x81', '\x85\xB2\x8A\xB3\x83']
+set dst,         []
+set srcLen,      2
+set decLen,      0
+set i,           0
+set k,           0
+set ch,          ''
+set keyword,     ''
+set prevCh,      ''
+set n,           0
+
+:DECKEYWORDSTART
+    cut    src, i, keyword
+
+    set    k, 0
+    set    prevCh, 179
+    len    keyword, decLen
+    dec    decLen
+    set    decStr, ''
+    :DECSTART
+        cut    keyword, k, ch
+        asc    ch, ch
+        xor    ch, prevCh, n
+        set    prevCh, ch
+        char   n,  ch
+        append decStr, ch
+
+        echo n
+
+        inc    k
+        gotog  k, decLen, DECEND
+        goto   DECSTART
+    :DECEND
+    append dst, decStr
+
+    inc    i
+    gotog  i, srcLen, DECKEYWORDEND
+    goto   DECKEYWORDSTART
+
+:DECKEYWORDEND
+echo dst
