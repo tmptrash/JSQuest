@@ -90,6 +90,7 @@ var Alan = Class({
                 dec   : 1,
                 len   : 2,
                 xor   : 3,
+                hex   : 2,
                 'set' : {args: 2, regexp: /^\s*(set)\s+([a-zA-Z]+[0-9]*[a-zA-Z]*)+\s*,\s*((\[.*\])|(\'.*\')|([0-9]+)|([a-zA-Z]+[0-9]*[a-zA-Z]*))\s*$/}
             }
         });
@@ -440,6 +441,38 @@ var Alan = Class({
         }
 
         this.setVar(dst, left ^ right);
+
+        return ++line;
+    },
+
+    /**
+      * Makes xor operation with two numbers
+      * @param {Number} line Current line number
+      * @param {String} scriptLine Current script line
+      * @param {Number} n Name of variable with decimal number
+      * @param {String} hex Name of destination variable
+      * @return {Number} New line number
+      */
+    onHex: function (line, scriptLine, n, hex) {
+        var h;
+
+        this._checkVar(n, scriptLine);
+        this._checkVar(hex, scriptLine);
+
+        n = this.getVar(n);
+
+        //
+        // Only Numbers are supported
+        //
+        if (!Helper.isNumber(n)) {
+            throw new Error('hex command supports only numbers. Error at line "' + scriptLine + '"');
+        }
+        if (n > 255) {
+            throw new Error('hex command supports only numbers in range 0 - 255. Error at line "' + scriptLine + '"');
+        }
+
+        h = n.toString(16);
+        this.setVar(hex, h.length < 2 ? '0' + h : h);
 
         return ++line;
     },

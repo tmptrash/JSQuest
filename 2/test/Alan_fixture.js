@@ -58,5 +58,8 @@ exports.testScripts = function (test) {
     NUnitHelper.runScript(path + 'char.alan', false, {v2: 'A'});
     NUnitHelper.runScripts(path + 'char', 1, 11);
 
+    NUnitHelper.runScript(path + 'hex.alan', false, {hex: '10', hex1: '01'});
+    NUnitHelper.runScripts(path + 'hex', 1, 16);
+
     test.done();
 };

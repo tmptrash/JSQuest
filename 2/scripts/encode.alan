@@ -11,17 +11,24 @@
 #     4. Encrypt third symbol : 178 xor 50 = 128
 #     Result [131, 178, 128] or 'Г▓А' - encrypted string
 #
-set src,         ['012', '345', '67890']
-set dst,         []
-set srcLen,      2
-set encLen,      0
-set i,           0
-set k,           0
-set ch,          ''
-set keyword,     ''
-set prevCh,      ''
-set sep,         '-'
-set n,           0
+set  src,      ['break','case ','continue','default','delete ','do','else','for','function','if',' in ','new ','return','switch','this.','this','typeof ','typeof','var ','while','with','false','true','instanceOf ','null','true','undefined','hasOwnProperty','Object','Boolean','Number','Function','alert','arguments','Array','callee','caller','clearInterval','clearTimeout','confirm','constructor','Date','document','eval','Infinity','isFinite','isNan', 'length','Math','NaN','parseFloat','parseInt','prompt','prototype','RegExp','setInterval','setTimeout','toString','valueOf','window','parent','super','call','apply','try','catch','throw','isString','isObject','isFunction','isArray','isNumber','isBoolean','trim','exec','test','file','folder','get','set','can','Class','split','join','data','slice','splice','===','!==','==','!=','[]','{}','||','&&','is','""','()','++','--']
+set  dst,      []
+set  srcLen,   0
+set  encLen,   0
+set  i,        0
+set  k,        0
+set  ch,       ''
+set  keyword,  ''
+set  prevCh,   ''
+set  sep,      '-'
+set  n,        0
+set  hex,      ''
+
+#
+# Calculates length of source array - 1
+#
+len  src,      srcLen
+dec  srcLen
 
 :KEYWORDSTART
     cut    src, i, keyword
@@ -35,10 +42,10 @@ set n,           0
         cut    keyword, k, ch
         asc    ch, ch
         xor    ch, prevCh, n
-        char   n,  ch
+        set    ch, '\x'
+        hex    n,  hex
+        append ch, hex
         append encStr, ch
-
-        echo n
 
         set    prevCh, n
         inc    k

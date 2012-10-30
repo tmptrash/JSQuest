@@ -1,0 +1,4 @@
+set n, 1000
+set hex, ''
+
+hex n, hex

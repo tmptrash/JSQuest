@@ -1,0 +1,7 @@
+set n, 16
+set n1, 1
+set hex, ''
+set hex1, ''
+
+hex n, hex
+hex n1, hex1

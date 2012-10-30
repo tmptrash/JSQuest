@@ -1,0 +1,4 @@
+set n, ['']
+set hex, ''
+
+hex n, hex

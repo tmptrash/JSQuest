@@ -1,0 +1,4 @@
+set n, 256
+set hex, ''
+
+hex n, hex
