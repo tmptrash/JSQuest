@@ -34,7 +34,7 @@ dec  srcLen
     cut    src, i, keyword
 
     set    k, 0
-    set    prevCh, 179
+    set    prevCh, 119
     len    keyword, encLen
     dec    encLen
     set    encStr, ''

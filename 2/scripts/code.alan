@@ -37,7 +37,7 @@ dec srcLen
     cut    src, i, keyword
 
     set    k, 0
-    set    prevCh, 179
+    set    prevCh, 119
     len    keyword, decLen
     dec    decLen
     set    decStr, ''
@@ -60,13 +60,37 @@ dec srcLen
     goto   DECKEYWORDSTART
 
 :DECKEYWORDEND
-echo dst
-
-
-
-#
 # Here we have dst variable with decrypted array of strings (keywords)
+
+
 #
+# This peace of code decrypts script file usinf start key and xor operator
+#
+    set    file, 'result.dump'
+    set    data, ''
+    read   file, data
+
+    set    k, 0
+    set    prevCh, 119
+    len    data, decLen
+    dec    decLen
+    set    decStr, ''
+    :DECFILESTART
+        cut    data, k, ch
+        asc    ch, ch
+        xor    ch, prevCh, n
+        set    prevCh, ch
+        char   n,  ch
+        append decStr, ch
+
+        inc    k
+        gotog  k, decLen, DECFILEEND
+        goto   DECFILESTART
+    :DECFILEEND
+    set data, decStr
+# Here we have decrypted data in data variable
+    echo data
+    goto end
 
 #
 # Encrypted keywords array
@@ -74,7 +98,7 @@ echo dst
 set i,         0
 set ch,        ''
 set res,       ''
-set chlim,     123
+set chlim,     126
 set n,         0
 set empty,     ''
 set file4read, 'file'
@@ -115,3 +139,5 @@ goto loop
 
 :endloop
 save file4save, res
+
+:end

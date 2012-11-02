@@ -19,7 +19,7 @@ var fs     = require('fs');
 //
 // Entry point of application
 //
-var scriptFile = process.argv.length > 2 ? process.argv[2] : '';
+    var scriptFile = process.argv.length > 2 ? process.argv[2] : '';
 
 if (!Helper.isString(scriptFile)) {
     console.log('Invalid script file: ' + scriptFile);
