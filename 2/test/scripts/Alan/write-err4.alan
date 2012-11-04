@@ -1,0 +1,3 @@
+set s, '1'
+set f, 123
+write s, f

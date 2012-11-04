@@ -130,9 +130,7 @@ dec dataLen
     goto   LOOP
 
 :END
-write decStr, DESTINATION_FILE
+
+
+write decStr, DESTINATION_FILE                      # Creates final output decrypted and unpacked script file
 echo OK_MSG
-
-
-
-

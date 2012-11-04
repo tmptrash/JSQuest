@@ -61,5 +61,12 @@ exports.testScripts = function (test) {
     NUnitHelper.runScript(path + 'hex.alan', false, {hex: '10', hex1: '01'});
     NUnitHelper.runScripts(path + 'hex', 1, 16);
 
+    assert.doesNotThrow(function () {
+        NUnitHelper.runScript(path + 'write.alan', false);
+        assert.strictEqual(fs.existsSync('file'), true, 'file "file" should exists');
+        assert.strictEqual(fs.readFileSync('file', 'utf-8'), '123', 'Check file content after write command');
+    }, undefined, 'test write command');
+    NUnitHelper.runScripts(path + 'write', 1, 12);
+
     test.done();
 };

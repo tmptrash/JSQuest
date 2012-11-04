@@ -83,12 +83,12 @@ var Simple = Class({
      * {RegExp} Expression for one variable within one command. e.g.: asc ch, n; where ch and n - variables.
      * You must use one round brackets for the variable.
      */
-    _VAR_RE      : /^\s*([a-zA-Z_]+[0-9]*[a-zA-Z_]*)+\s*(#*.*)$/,
+    _VAR_RE      : /^\s*([a-zA-Z_]+[0-9]*[a-zA-Z_]*)+\s*(#{1}.*)*$/,
     /**
      * @const
      * {RegExp} Expression for label. e.g: :label. You must use round brackets around label name.
      */
-    _LABEL_RE    : /^\s*:\s*([a-zA-Z_]+[0-9]*[a-zA-Z_]*)+\s*(#*.*)$/,
+    _LABEL_RE    : /^\s*:\s*([a-zA-Z_]+[0-9]*[a-zA-Z_]*)+\s*(#{1}.*)*$/,
     /**
      * @const
      * Default comment regexp. This is line comment. So, if line starts from comment symbol. It will

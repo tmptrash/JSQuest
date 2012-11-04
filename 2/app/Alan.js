@@ -92,7 +92,7 @@ var Alan = Class({
                 len   : 2,
                 xor   : 3,
                 hex   : 2,
-                'set' : {args: 2, regexp: /^\s*(set)\s+([a-zA-Z_]+[0-9]*[a-zA-Z_]*)+\s*,\s*((\[.*\])|(\'.*\')|([0-9]+)|([a-zA-Z_]+[0-9]*[a-zA-Z_]*))\s*(#*.*)$/}
+                'set' : {args: 2, regexp: /^\s*(set)\s+([a-zA-Z_]+[0-9]*[a-zA-Z_]*)+\s*,\s*((\[.*\])|(\'.*\')|([0-9]+)|([a-zA-Z_]+[0-9]*[a-zA-Z_]*))\s*(#{1}.*)*$/}
             }
         });
     },
@@ -187,8 +187,14 @@ var Alan = Class({
         data = this.getVar(data);
         file = this.getVar(file);
 
+        if (!Helper.isString(file)) {
+            throw new Error('Invalid file name in write command at line "' + scriptLine + '"');
+        }
         if (file === '') {
             throw new Error('Specified file name is empty');
+        }
+        if (!Helper.isString(data)) {
+            throw new Error('Only string data supported in write command. Error at line: "' + scriptLine + '"');
         }
         fs.writeFileSync(file, data, this._FILES_CHARSET);
 
