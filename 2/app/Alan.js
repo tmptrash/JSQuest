@@ -78,6 +78,7 @@ var Alan = Class({
              */
             commands       : {
                 read  : 2,
+                write : 2,
                 echo  : 1,
                 cut   : 3,
                 asc   : 2,
@@ -91,7 +92,7 @@ var Alan = Class({
                 len   : 2,
                 xor   : 3,
                 hex   : 2,
-                'set' : {args: 2, regexp: /^\s*(set)\s+([a-zA-Z]+[0-9]*[a-zA-Z]*)+\s*,\s*((\[.*\])|(\'.*\')|([0-9]+)|([a-zA-Z]+[0-9]*[a-zA-Z]*))\s*$/}
+                'set' : {args: 2, regexp: /^\s*(set)\s+([a-zA-Z_]+[0-9]*[a-zA-Z_]*)+\s*,\s*((\[.*\])|(\'.*\')|([0-9]+)|([a-zA-Z_]+[0-9]*[a-zA-Z_]*))\s*(#*.*)$/}
             }
         });
     },
@@ -167,6 +168,29 @@ var Alan = Class({
             throw new Error('File doesn\'t exists "' + file + '"');
         }
         this.setVar(v, fs.readFileSync(file, this._FILES_CHARSET));
+
+        return ++line;
+    },
+
+    /**
+     * write command handler. Writes specified string from variable to specified file
+     * @param {Number} line Current line number in script
+     * @param {String} scriptLine Current line of script
+     * @param {String} data Name of variable with data string
+     * @param {String} file Name of file to write to
+     * @return {Number} New position (line number) within the script
+     */
+    onWrite: function (line, scriptLine, data, file) {
+        this._checkVar(data, scriptLine);
+        this._checkVar(file, scriptLine);
+
+        data = this.getVar(data);
+        file = this.getVar(file);
+
+        if (file === '') {
+            throw new Error('Specified file name is empty');
+        }
+        fs.writeFileSync(file, data, this._FILES_CHARSET);
 
         return ++line;
     },
