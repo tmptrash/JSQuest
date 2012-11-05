@@ -117,18 +117,17 @@ dec dataLen
     gotog  n, chLimit, REPLACE
     goto   CLOOP
 	
-:REPLACE                                            # Adds string with keyword into result string and continue loop
-    sub    n, CHAR_LIMIT
-    cut    decodedKeywords, n, ch
-    append decStr, ch
-    set    ch, empty
+	:REPLACE                                        # Adds string with keyword into result string and continue loop
+		sub    n, CHAR_LIMIT
+		cut    decodedKeywords, n, ch
+		append decStr, ch
+		set    ch, empty
 
-:CLOOP
-    append decStr, ch                               # Append current symbol to result string
-    inc    i
-	gotog  i, dataLen, END
-    goto   LOOP
-
+	:CLOOP
+		append decStr, ch                           # Append current symbol to result string
+		inc    i
+		gotog  i, dataLen, END
+		goto   LOOP
 :END
 
 
