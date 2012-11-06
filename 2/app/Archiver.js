@@ -102,4 +102,4 @@ function main (argv) {
 /**
  * Entry point
  */
-return main(process.argv);
+process.exit(main(process.argv));
