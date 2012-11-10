@@ -4,9 +4,9 @@
  * from 1 to len symbols. Dar archive will be called with all generated passwords.
  *
  * Call format:
- *     node Archiver.js darUtilityPath amountOfSymbols
+ *     node BruteForce.js darUtilityPath amountOfSymbols
  * Usage:
- *     C:\>node Archiver.js dar.exe packedFile 2
+ *     C:\>node BruteForce.js dar.exe packedFile 2
  *   will produce passwords:
  *     '\x0000', '\x0001',... '\x00FF', '\x0000\x0000', '\x0000\x0001',... '\x00FF\x00FF'
  *
