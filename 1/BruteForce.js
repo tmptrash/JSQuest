@@ -43,6 +43,7 @@ var CHAR_INDEX_END   = 125;
  */
 var CHAR_EXCLUDE     = {34: 1, 38: 1, 39: 1, 58: 1, 96: 1, 124: 1, 60: 1, 62: 1};
 
+
 /**
  * Executes DAR utility using current password array. It converts array into a string
  * of characters (character per ASCII index) and joins it. If passed password key is correct,
@@ -57,7 +58,6 @@ function execDar(arr, file, darPath) {
     var pwd = String.fromCharCode.apply(null, arr);
     var stdout;
 
-    console.log(pwd);
     stdout = exec(darPath + ' -x ' + file + ' -O -K ' + pwd, true).stdout;
     if (stdout.indexOf('--------------------------------------------') !== -1) {
         console.log('Password was cracked: "' + pwd + '"');
@@ -133,8 +133,8 @@ function bruteForce(len, file, darPath) {
  * @return {Number} code number. RETURN_OK - ok, RETURN_ERR - error code
  */
 function main (argv) {
-    if (argv.length < 4) {
-        console.log('Incorrect amount of arguments. Usage: C:\>node.exe dar.exe packedFile 6');
+    if (argv.length < 5) {
+        console.log('Incorrect amount of arguments. Usage: C:\>node.exe BruteForce.js dar.exe packedFile 6');
         return RETURN_ERR;
     }
 
