@@ -153,9 +153,9 @@ function main (argv) {
         console.log('Incorrect amount of arguments. Usage: C:\>node.exe BruteForce.js 7z.exe packedFile 6');
         return RETURN_ERR;
     }
-    console.log(formatTime(new Date()));
+    console.log('Started at', formatTime(new Date()));
     ret = bruteForce(parseInt(argv[4]), argv[3], argv[2]);
-    console.log(formatTime(new Date()));
+    console.log('Finished at', formatTime(new Date()));
 
     return ret;
 }
