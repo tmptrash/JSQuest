@@ -101,7 +101,9 @@ function execUnpacker(arr) {
 /**
  * This function iterates by character codes from 0 to 255 and calls unpacker utility in command line. It recursive
  * and calls itself on every symbol in the password. If arr.length === 3, then it will be called 103^3 times. 103,
- * means amount of symbols for the password.
+ * means amount of symbols for the password. This function operates by array of ASCII codes. Every code is a number
+ * in ASCII table. e.g.: [65, 66, 67] means, that current password is 'ABC'. Next one will be 'ABD', the next 'ABE'
+ * and so on.
  * @param {Array} arr Array of symbol's codes
  * @param {Number} pos Position of the symbol in arr array
  * @return {Boolean} true - password found, false - password was not found
