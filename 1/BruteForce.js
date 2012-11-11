@@ -45,10 +45,20 @@ var CHAR_INDEX_END   = 122;
 /**
  * @const
  * {Object} Character which we should exclude from password string. The values meaning nothing.
- * Symbols by code:     "      &      `      |       <      >
+ * Symbols by code:     "      &      <      >      `      |
  */
-var CHAR_EXCLUDE     = {34: 1, 38: 1, 96: 1, 124: 1, 60: 1, 62: 1};
+var CHAR_EXCLUDE     = {34: 1, 38: 1, 60: 1, 62: 1, 96: 1, 124: 1};
 
+/**
+ * @prop
+ * {String} Path to the packed file, that we should to brute force. User will pass this parameter thought command line argument
+ */
+var packedFile       = null;
+/**
+ * @prop
+ * {String} Path to the unpacker command line utility. User will pass this parameter thought command line argument
+ */
+var unpackerPath     = null;
 
 /**
  * Formats date and time like this: YYYY-MM-DD hh:mm:ss
@@ -70,17 +80,16 @@ function formatTime(dt) {
  * This report should starts with string: 'Everything is Ok'.
  * It will be our success text marker.
  * @param {Array} arr Array of symbol codes. e.g.: [65, 66] means 'AB'
- * @param {String} file Path to the packed file
- * @param {String} unpackerPath Path to the unpacker command line utility
+ * @return {Boolean} true means that password found, false otherwise
  */
-function execUnpacker(arr, file, unpackerPath) {
+function execUnpacker(arr) {
     var pwd = String.fromCharCode.apply(null, arr);
     var stdout;
 
     //
     // This is how data file was compressed: 7z a -mx0 -mhe test *.*
     //
-    stdout = exec(unpackerPath + ' e -y -p' + pwd + ' ' + file, true).stdout;
+    stdout = exec(unpackerPath + ' e -y -p' + pwd + ' ' + packedFile, true).stdout;
     if (stdout.indexOf('Everything is Ok') !== -1) {
         console.log('Password was cracked: "' + pwd + '"');
         return true;
@@ -90,15 +99,14 @@ function execUnpacker(arr, file, unpackerPath) {
 }
 
 /**
- * This function iterates by character codes from 0 to 255 and calls unpacker utility in command line. It
- * calls command line utility 256 times and exits.
+ * This function iterates by character codes from 0 to 255 and calls unpacker utility in command line. It recursive
+ * and calls itself on every symbol in the password. If arr.length === 3, then it will be called 103^3 times. 103,
+ * means amount of symbols for the password.
  * @param {Array} arr Array of symbol's codes
  * @param {Number} pos Position of the symbol in arr array
- * @param {String} file Path to the packed file
- * @param {String} unpackerPath Path to the DAT command line utility
  * @return {Boolean} true - password found, false - password was not found
  */
-function iterate(arr, pos, file, unpackerPath) {
+function iterate(arr, pos) {
     var ret = false;
     var i;
 
@@ -107,14 +115,14 @@ function iterate(arr, pos, file, unpackerPath) {
             if (CHAR_EXCLUDE[i] === undefined) {
                 arr[pos] = i;
                 arr[pos + 1] = CHAR_INDEX_START;
-                ret = iterate(arr, pos + 1, file, unpackerPath);
+                ret = iterate(arr, pos + 1);
                 if (ret) {
                     break;
                 }
             }
         } else {
             if (CHAR_EXCLUDE[arr[pos]] === undefined) {
-                ret = execUnpacker(arr, file, unpackerPath);
+                ret = execUnpacker(arr);
                 if (ret) {
                     break;
                 }
@@ -131,17 +139,15 @@ function iterate(arr, pos, file, unpackerPath) {
  * symbols in the password (len argument). It starts from 1 length password and will finish with len
  * symbols in password.
  * @param {Number} len Length of characters in the password
- * @param {String} file Path to the packed file
- * @param {String} unpackerPath Path to the DAT command line utility
  * @return {Number} code number. RETURN_OK - ok, RETURN_ERR - error code
  */
-function bruteForce(len, file, unpackerPath) {
+function bruteForce(len) {
     var pwd = [CHAR_INDEX_START];
     var ret;
     var i;
 
     for (i = 0; i < len; i++) {
-        ret = iterate(pwd, 0, file, unpackerPath);
+        ret = iterate(pwd, 0);
         if (ret) {
             return RETURN_OK;
         }
@@ -164,7 +170,9 @@ function main(argv) {
         return RETURN_ERR;
     }
     console.log('Started at', formatTime(new Date()));
-    ret = bruteForce(parseInt(argv[4], 10), argv[3], argv[2]);
+    packedFile   = argv[3];
+    unpackerPath = argv[2];
+    ret = bruteForce(parseInt(argv[4], 10));
     console.log('Finished at', formatTime(new Date()));
 
     return ret;
