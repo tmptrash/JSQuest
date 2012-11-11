@@ -1,47 +1,53 @@
 /**
- * This application try to find password for unpacker archive executing unpacker command line utility,
- * using brute force algorithm. It gets all ASCII characters from 0 to 255 and generates password
- * from 1 to len symbols. Archive will be called with all generated passwords.
+ * This application try to find password for archive executing unpacker command line utility,
+ * using brute force algorithm. It gets all ASCII characters from 0 to 255 (excepts CHAR_EXCLUDE)
+ * and generates passwords from 1 to len symbols. Archive will be called with all generated passwords.
  *
  * Call format:
- *     node BruteForce.js unpackerPath amountOfSymbols
+ *     node BruteForce.js unpackerPath passwordLength
  * Usage:
  *     C:\>node BruteForce.js 7z.exe packedFile 2
  *   will produce passwords:
- *     '\x0000', '\x0001',... '\x00FF', '\x0000\x0000', '\x0000\x0001',... '\x00FF\x00FF'
+ *     '!', '#',... 'z', '!!', '!#',... 'zz'
  *
  * @author DeadbraiN
  * @email deadbrainman@gmail.com
  */
 
+/**
+ * {Object} Object in format {stdout:String, stderr:String}. This is synchronous execution package. It runs specified
+ * application binary and returns it's stdout string. We should call this function with second argument in true to obtain
+ * stdout/stderr object.
+ */
 var exec = require('exec-sync');
 
 
 /**
  * @const
- * {Number} OK error code
+ * {Number} OK error code of our application. This code will be returned to OS after execution if all ok.
  */
 var RETURN_OK        = 0;
 /**
  * @const
- * {Number} OK error code
+ * {Number} OK error code. This code will be returned to OS after execution in case of error.
  */
 var RETURN_ERR       = -1;
 /**
  * @const
- * {Number} Index of first ASCII character for the password
+ * {Number} Index of first ASCII character for the password. First character is '!'
  */
 var CHAR_INDEX_START = 33;
 /**
  * @const
- * {Number} Index of last ASCII character for the password
+ * {Number} Index of last ASCII character for the password. Last character is 'z'
  */
-var CHAR_INDEX_END   = 125;
+var CHAR_INDEX_END   = 122;
 /**
  * @const
- * {Object} Character which we should exclude from password string
+ * {Object} Character which we should exclude from password string. The values meaning nothing.
+ * Symbols by code:     "      &      `      |       <      >
  */
-var CHAR_EXCLUDE     = {34: 1, 38: 1, 39: 1, 58: 1, 96: 1, 124: 1, 60: 1, 62: 1};
+var CHAR_EXCLUDE     = {34: 1, 38: 1, 96: 1, 124: 1, 60: 1, 62: 1};
 
 
 /**
@@ -50,9 +56,11 @@ var CHAR_EXCLUDE     = {34: 1, 38: 1, 39: 1, 58: 1, 96: 1, 124: 1, 60: 1, 62: 1}
  * @return {String} formatted date  and time
  */
 function formatTime(dt) {
-    return (dt.toISOString().
-      replace(/T/, ' ').        // replace T with a space
-      replace(/\..+/, ''));     // delete the dot and everything after
+    return (
+        dt.toISOString().
+        replace(/T/, ' ').        // replace T with a space
+        replace(/\..+/, '')       // delete the dot and everything after
+    );
 }
 
 /**
@@ -92,8 +100,9 @@ function execUnpacker(arr, file, unpackerPath) {
  */
 function iterate(arr, pos, file, unpackerPath) {
     var ret = false;
+    var i;
 
-    for (var i = CHAR_INDEX_START; i <= CHAR_INDEX_END; i++) {
+    for (i = CHAR_INDEX_START; i <= CHAR_INDEX_END; i++) {
         if (pos < arr.length - 1) {
             if (CHAR_EXCLUDE[i] === undefined) {
                 arr[pos] = i;
@@ -129,8 +138,9 @@ function iterate(arr, pos, file, unpackerPath) {
 function bruteForce(len, file, unpackerPath) {
     var pwd = [CHAR_INDEX_START];
     var ret;
+    var i;
 
-    for (var i = 0; i < len; i++) {
+    for (i = 0; i < len; i++) {
         ret = iterate(pwd, 0, file, unpackerPath);
         if (ret) {
             return RETURN_OK;
@@ -146,15 +156,15 @@ function bruteForce(len, file, unpackerPath) {
  * @param {Array} argv Array of parameters in format: ['../node.exe', arg1, arg2,...]
  * @return {Number} code number. RETURN_OK - ok, RETURN_ERR - error code
  */
-function main (argv) {
+function main(argv) {
     var ret;
 
     if (argv.length < 5) {
-        console.log('Incorrect amount of arguments. Usage: C:\>node.exe BruteForce.js 7z.exe packedFile 6');
+        console.log('Incorrect amount of arguments. Usage: C:\\>node.exe BruteForce.js 7z.exe packedFile 6');
         return RETURN_ERR;
     }
     console.log('Started at', formatTime(new Date()));
-    ret = bruteForce(parseInt(argv[4]), argv[3], argv[2]);
+    ret = bruteForce(parseInt(argv[4], 10), argv[3], argv[2]);
     console.log('Finished at', formatTime(new Date()));
 
     return ret;
