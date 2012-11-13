@@ -1,0 +1,4 @@
+- make free email account on google for cyberbob
+- NASA connector should load images and music from dropbox
+- use spaces and tabs for encryption
+- password for first level N83
