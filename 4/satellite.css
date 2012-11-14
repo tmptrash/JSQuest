@@ -1,4 +1,11 @@
 /* TODO: reformat and refactor this */
+/**
+ * Remove scrollbar at all
+ */
+::-webkit-scrollbar {
+    color           : #000;
+}
+
 body {
 	background:#000;
     color: #eee;
@@ -12,21 +19,22 @@ body {
 	text-align:center;
 }
 
-#info {
-	position: absolute;
-	top: 0px; width: 100%;
-	padding: 5px;
-	z-index:100;
-}
-#inp {
-    position: absolute;
-    background: #000;
-	color: #fff;
-	z-index: 100;
-	left: 200px;
-	top: 150px;
-	width: 300px;
-	height: 300px;
+#terminal {
+    position        : absolute;
+    width           : 550px;
+    height          : 400px;
+    font            : 14px monospace;
+    right           : 5px;
+    top             : 50%;
+    margin-top      : -200px;
+    font-weight     : bold;
+    background-color: #000;
+    color           : #AAA;
+    outline         : none;
+    resize          : none;
+    border-color    : #222222;
+    border-radius   : 7px;
+    padding         : 7px;
 }
 
 a {color: #0080ff;}

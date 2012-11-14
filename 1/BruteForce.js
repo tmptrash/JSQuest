@@ -1,5 +1,5 @@
 /**
- * This application try to find password for archive executing unpacker command line utility,
+ * This application try to find password for archive, executing unpacker command line utility,
  * using brute force algorithm. It gets all ASCII characters from 0 to 255 (excepts CHAR_EXCLUDE)
  * and generates passwords from 1 to len symbols. Archive will be called with all generated passwords.
  *
