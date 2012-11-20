@@ -2,3 +2,5 @@
 - NASA connector should load images and music from dropbox
 - use spaces and tabs for encryption
 - password for first level N83
+- add coordinates for status
+- add chrome detection

@@ -511,7 +511,7 @@ App.SatelliteFs = speculoos.Class({
                 throw new Error('Looks like permission file has broken. Use reboot command to reset the session and reboot terminal.');
             }
 
-            return this._permCache[file][this._activeUser][perm] === '1'
+            return this._permCache[file][this._activeUser][perm] === '1';
         }
 
         return false;
