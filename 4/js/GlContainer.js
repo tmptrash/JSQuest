@@ -22,10 +22,16 @@ App.GlContainer = speculoos.Class({
             return this;
         }
 
+        /**
+         *
+         * @type {Object}
+         * @private
+         */
+        this.cfg = cfg || {};
+
         this.initPrivates(cfg);
         this.initPublics(cfg);
         this.init();
-        this.onAnimate();
 
         return this;
     },
@@ -38,7 +44,6 @@ App.GlContainer = speculoos.Class({
         var me       = this;
         var isNumber = Helper.isNumber;
 
-
        /**
         * @prop
         * {THREE.Clock} Timer for common usage
@@ -49,6 +54,7 @@ App.GlContainer = speculoos.Class({
         // Here we create all private fields using special configuration object. Private fields
         // will be created in format '_' + fieldName. e.g.: _parent
         //
+        debugger;
         me.createPrivateFields({
             /**
              * {HTMLElement} Reference to parent DOM element for our container. Container will be inserted there.
@@ -127,12 +133,19 @@ App.GlContainer = speculoos.Class({
     },
 
     /**
+     * Runs application. Starts 3d animation
+     */
+    run: function () {
+        this.onAnimate();
+    },
+
+    /**
      * Creates property within current instance and point it to the one from configuration
      * @param {Object} fields Fields configuration of this class in format {fieldName: [convertFn, defValue], ...}
      * @private
      */
     createPrivateFields: function (fields) {
-        var cfg = this._cfg;
+        var cfg = this.cfg;
         var f;
         var prop;
 
