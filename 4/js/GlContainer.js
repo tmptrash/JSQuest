@@ -1,6 +1,6 @@
 /**
- * This is Web GL container class. It contains canvas tag inside and all public properties (camera, container,...)
- * for simple 3d animation.
+ * This is Web GL container class. It contains (and crete it) canvas tag inside and all public 3D properties, like
+ * scene, camera and so on.
  *
  * @author DeadbraiN
  * @email deadbrainman@gmail.com
@@ -38,16 +38,18 @@ App.GlContainer = speculoos.Class({
         var me       = this;
         var isNumber = Helper.isNumber;
 
-        /**
-         * @prop
-         * {Object} Configuration passed to the constructor
-         * @private
-         */
-        me._cfg = cfg;
+
+       /**
+        * @prop
+        * {THREE.Clock} Timer for common usage
+        */
+        me._clock = new THREE.Clock();
+
         //
-        // Here we create all private fields
+        // Here we create all private fields using special configuration object. Private fields
+        // will be created in format '_' + fieldName. e.g.: _parent
         //
-        me._setPrivateFields({
+        me.createPrivateFields({
             /**
              * {HTMLElement} Reference to parent DOM element for our container. Container will be inserted there.
              */
@@ -76,7 +78,7 @@ App.GlContainer = speculoos.Class({
     },
 
     /**
-     * Creates and Initializes public fields
+     * Creates and Initializes public fields. These fields can be used in child classes.
      * @param {Object} cfg Configuration passed to the constructor
      */
     initPublics: function (cfg) {
@@ -103,11 +105,6 @@ App.GlContainer = speculoos.Class({
          */
         me.light     = new THREE.DirectionalLight(0xffffff);
         /**
-         * @prop
-         * {THREE.Clock} Timer for common usage
-         */
-        me.clock     = new THREE.Clock();
-        /**
          * Delta between animation frames. If it bigger, then objects on screen will be moved faster, if smaller - slower
          * @type {Number}
          */
@@ -115,7 +112,7 @@ App.GlContainer = speculoos.Class({
     },
 
     /**
-     * Calls after initPrivates() and initPublics() methods. Uses for initialization of the instance.
+     * Calls after initPrivates() and initPublics() methods. Uses for logic initialization of the instance.
      */
     init: function () {
         var me = this;
@@ -126,15 +123,34 @@ App.GlContainer = speculoos.Class({
         me.renderer.sortObjects = false;
         me.renderer.autoClear   = false;
         me._parent.appendChild(me.renderer.domElement);
-        window.addEventListener('resize', function () {me.onWindowResize.apply(me, arguments); }, false);
+        window.addEventListener('resize', function () {me.onResize.apply(me, arguments); }, false);
     },
 
     /**
-     * Calls every time, then current frame of 3d animation is drawing
+     * Creates property within current instance and point it to the one from configuration
+     * @param {Object} fields Fields configuration of this class in format {fieldName: [convertFn, defValue], ...}
+     * @private
+     */
+    createPrivateFields: function (fields) {
+        var cfg = this._cfg;
+        var f;
+        var prop;
+
+        for (f in fields) {
+            if (fields.hasOwnProperty(f)) {
+                prop = fields[f];
+                this['_' + f] = prop[0](cfg[f]) ? cfg[f] : prop[1];
+            }
+        }
+    },
+
+    /**
+     * Calls every time, then current frame of 3d animation is drawing. This is main method for update
+     * 3d objects in the scene.
      */
     onAnimate: function () {
         requestAnimationFrame(this.onAnimate);
-        this.delta = this.clock.getDelta();
+        this.delta = this._clock.getDelta();
         this.onAfterAnimate();
     },
 
@@ -146,31 +162,13 @@ App.GlContainer = speculoos.Class({
     },
 
     /**
-     * resize event handler for browser's window
+     * resize event handler for browser's window. We should update 3d objects after that.
      */
-    onWindowResize: function () {
+    onResize: function () {
         var me = this;
 
         me.renderer.setSize(me._parent.width, me._parent.height);
         me.camera.aspect = me._parent.width / me._parent.height;
         me.camera.updateProjectionMatrix();
-    },
-
-    /**
-     * Creates property within current instance and point it to the one from configuration
-     * @param {Object} fields Fields configuration of this class in format {fieldName: [convertFn, defValue], ...}
-     * @private
-     */
-    _setPrivateFields: function (fields) {
-        var cfg = this._cfg;
-        var f;
-        var prop;
-
-        for (f in fields) {
-            if (fields.hasOwnProperty(f)) {
-                prop = fields[f];
-                this['_' + f] = prop[0](cfg[f]) ? cfg[f] : prop[1];
-            }
-        }
     }
 });

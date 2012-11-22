@@ -44,7 +44,7 @@
             //
             // WebGL support detector
             //
-			if (!Detector.webgl) {
+			if (!Detector.webgl) { // gl
                 Detector.addGetWebGLMessage(); // gl
             }
 
@@ -55,15 +55,15 @@
 			var cloudsScale   = 1.009;
 			var moonScale     = 0.23;
 
-			var SCREEN_HEIGHT = window.innerHeight;
-			var SCREEN_WIDTH  = window.innerWidth;
+			var SCREEN_HEIGHT = window.innerHeight; // gl
+			var SCREEN_WIDTH  = window.innerWidth; // gl
 
-			var container;
-			var camera, scene, sceneCube, renderer;
+			var camera; // gl
+            var scene; // gl
+            var renderer; // gl
+            var sceneCube;
 			var geometry, meshPlanet, meshClouds, meshMoon;
 			var dirLight, pointLight, ambientLight;
-
-			var d, dPlanet, dMoon, dMoonVec = new THREE.Vector3();
 
 			var clock = new THREE.Clock(); // gl
 
@@ -71,10 +71,6 @@
 			animate();
 
 			function init() {
-
-				container = document.createElement('div');
-				document.body.appendChild(container);
-
 				camera = new THREE.PerspectiveCamera(25, SCREEN_WIDTH / SCREEN_HEIGHT, 50, 1e7); // gl
 				camera.position.z = radius * 6.0;
 
@@ -212,12 +208,12 @@
 				}
 
 				renderer = new THREE.WebGLRenderer( { clearColor: 0x000000, clearAlpha: 1 } ); // gl
-				renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
+				renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT ); // gl
 				renderer.sortObjects = false; // gl
 
 				renderer.autoClear = false; // gl
 
-				container.appendChild( renderer.domElement ); // gl
+                document.body.appendChild( renderer.domElement ); // gl
 
 				window.addEventListener( 'resize', onWindowResize, false ); // gl
 
@@ -257,23 +253,6 @@
 
 				meshPlanet.rotation.y += rotationSpeed * delta;
 				meshClouds.rotation.y += 1.25 * rotationSpeed * delta;
-
-				// slow down as we approach the surface
-
-				dPlanet = camera.position.length();
-
-				dMoonVec.sub( camera.position, meshMoon.position );
-				dMoon = dMoonVec.length();
-
-				if ( dMoon < dPlanet ) {
-
-					d = ( dMoon - radius * moonScale * 1.01 );
-
-				} else {
-
-					d = ( dPlanet - radius * 1.01 );
-
-				}
 
 				renderer.clear(); // gl
 				composer.render( delta );
