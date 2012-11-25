@@ -79,7 +79,7 @@ App.Satellite = speculoos.Class({
     init: function () {
         App.Satellite.super.init.apply(this, arguments);
 
-        this.camera.position.z = this._radius * 6.0;   // Camera
+        this.camera.position.z = this._radius * 3.0;   // Camera
         this.light.position.set(-1, 0, 1).normalize(); // Light
         this._createSpheresGeometry();                 // Spheres geometry
         this._createPlanetMesh();                      // Earth
@@ -99,15 +99,10 @@ App.Satellite = speculoos.Class({
 
         this.meshPlanet.rotation.y += this._rotationSpeed * this.delta;
         this.meshClouds.rotation.y += 1.25 * this._rotationSpeed * this.delta;
-    },
 
-    /**
-     * Calls after onAnimate() method. Uses for
-     */
-    onAfterAnimate: function () {
-        // TODO:
-        App.Satellite.super.onAfterAnimate.call(this);
+        this.renderer.clear();
         this.composer.render(this.delta);
+        //this.renderer.render(this.scene, this.camera);
     },
 
     /**
@@ -250,7 +245,7 @@ App.Satellite = speculoos.Class({
         var effectFilm  = new THREE.FilmPass(0.35, 0.75, 2048, false);
 
         effectFilm.renderToScreen = true;
-        this.composer = new THREE.EffectComposer(renderer);
+        this.composer = new THREE.EffectComposer(this.renderer);
 
         this.composer.addPass(renderModel);
         this.composer.addPass(effectFilm);
