@@ -2,6 +2,13 @@
  * Satellite class. It shows universe with the stars, the earth and a console for telescope control. It also
  * contains all internal logic of last level.
  *
+ * {Object} Configuration object of class:
+ *          {Number} radius         Earth radius
+ *          {Number} tilt           Earth tilt
+ *          {Number} rotationRadius Rotation radius of earth
+ *          {Number} cloudsScale    Clouds scale
+ *          {Number} moonScale      Moon scale
+ *
  * @author DeadbraiN
  * @email deadbrainman@gmail.com
  */
@@ -9,16 +16,9 @@ App.Satellite = speculoos.Class({
     extends: App.GlContainer,
 
     /**
-     * ctor.
-     * {Object} cfg Configuration object of class. Arguments:
-     *          {Number} radius         Earth radius
-     *          {Number} tilt           Earth tilt
-     *          {Number} rotationRadius Rotation radius of earth
-     *          {Number} cloudsScale    Clouds scale
-     *          {Number} moonScale      Moon scale
+     * ctor. We use it only for calling constructor from super class.
      */
     constructor: function (cfg) {
-        // TODO: do we need for this ctor?
         App.Satellite.super.constructor.call(this, cfg);
     },
 
@@ -31,11 +31,25 @@ App.Satellite = speculoos.Class({
         var isNumber = Helper.isNumber;
 
         this.createPrivateFields({
-            // TODO: add comments
+            /**
+             * {Number} Earth radius
+             */
             radius       : [isNumber, 6371 ],
+            /**
+             * {Number} Start angle of the earth
+             */
             tilt         : [isNumber, 0.41 ],
+            /**
+             * {Number} Speed of rotation
+             */
             rotationSpeed: [isNumber, 0.007],
+            /**
+             * {Number} Scale for clouds
+             */
             cloudsScale  : [isNumber, 1.009],
+            /**
+             * {Number} Scale for the moon
+             */
             moonScale    : [isNumber, 0.23 ]
         });
     },
@@ -71,6 +85,8 @@ App.Satellite = speculoos.Class({
          * {THREE.EffectComposer}
          */
         this.composer       = null;
+        // TODO:
+        this.angle          = 0;
     },
 
     /**
@@ -97,12 +113,18 @@ App.Satellite = speculoos.Class({
         // TODO:
         App.Satellite.super.onAnimate.call(this);
 
+        var camera = this.camera;
+
         this.meshPlanet.rotation.y += this._rotationSpeed * this.delta;
-        this.meshClouds.rotation.y += 1.25 * this._rotationSpeed * this.delta;
+        this.meshClouds.rotation.y += this._rotationSpeed * this.delta;
+
+        this.angle += Math.PI / 360 * this.delta;
+        camera.position.x = this._radius * 3 * Math.cos(this.angle);
+        camera.position.z = this._radius * 3 * Math.sin(this.angle);
+        camera.lookAt(this.meshPlanet.position);
 
         this.renderer.clear();
         this.composer.render(this.delta);
-        //this.renderer.render(this.scene, this.camera);
     },
 
     /**
@@ -120,7 +142,7 @@ App.Satellite = speculoos.Class({
      */
     _createPlanetMesh: function () {
         // TODO: set textures size
-        var planetTexture   = THREE.ImageUtils.loadTexture("textures/planets/earth_atmos_4096.jpg");
+        var planetTexture   = THREE.ImageUtils.loadTexture("textures/planets/earth_atmos_2048.jpg");
         var normalTexture   = THREE.ImageUtils.loadTexture("textures/planets/earth_normal_2048.jpg");
         var specularTexture = THREE.ImageUtils.loadTexture("textures/planets/earth_specular_2048.jpg");
         var shader          = THREE.ShaderUtils.lib.normal;
@@ -215,12 +237,12 @@ App.Satellite = speculoos.Class({
         }
 
         starsMaterials = [
-            new THREE.ParticleBasicMaterial({color: 0x555555, size: 2, sizeAttenuation: false}),
+            new THREE.ParticleBasicMaterial({color: 0xBBBBBB, size: 1, sizeAttenuation: false}),
+            new THREE.ParticleBasicMaterial({color: 0xAAAAAA, size: 1, sizeAttenuation: false}),
+            new THREE.ParticleBasicMaterial({color: 0x999999, size: 1, sizeAttenuation: false}),
+            new THREE.ParticleBasicMaterial({color: 0x777777, size: 1, sizeAttenuation: false}),
             new THREE.ParticleBasicMaterial({color: 0x555555, size: 1, sizeAttenuation: false}),
-            new THREE.ParticleBasicMaterial({color: 0x333333, size: 2, sizeAttenuation: false}),
-            new THREE.ParticleBasicMaterial({color: 0x3a3a3a, size: 1, sizeAttenuation: false}),
-            new THREE.ParticleBasicMaterial({color: 0x1a1a1a, size: 2, sizeAttenuation: false}),
-            new THREE.ParticleBasicMaterial({color: 0x1a1a1a, size: 1, sizeAttenuation: false})
+            new THREE.ParticleBasicMaterial({color: 0x111111, size: 1, sizeAttenuation: false})
         ];
 
         for (i = 10; i < 30; i++) {
@@ -228,7 +250,7 @@ App.Satellite = speculoos.Class({
             stars.rotation.x = Math.random() * 6;
             stars.rotation.y = Math.random() * 6;
             stars.rotation.z = Math.random() * 6;
-            s = i * 10;
+            s = i * 50;
             stars.scale.set(s, s, s);
             stars.matrixAutoUpdate = false;
             stars.updateMatrix();

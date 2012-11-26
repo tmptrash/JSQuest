@@ -1,6 +1,6 @@
 /**
- * This is Web GL container class. It contains (and crete it) canvas tag inside and all public 3D properties, like
- * scene, camera and so on.
+ * This is Web GL container class. It contains (and create if it didn't) canvas tag inside and all public 3D properties, like
+ * scene, camera and so on. Configuration properties see before the constructor.
  *
  * @author DeadbraiN
  * @email deadbrainman@gmail.com
@@ -23,14 +23,14 @@ App.GlContainer = speculoos.Class({
         }
 
         /**
-         *
-         * @type {Object}
-         * @private
+         * @prop
+         * @readonly
+         * {Object} Reference to the configuration
          */
         this.cfg = cfg || {};
 
-        this.initPrivates(cfg);
-        this.initPublics(cfg);
+        this.initPrivates();
+        this.initPublics();
         this.init();
 
         return this;
@@ -38,9 +38,8 @@ App.GlContainer = speculoos.Class({
 
     /**
      * Creates and Initializes public fields
-     * @param {Object} cfg Configuration passed to the constructor
      */
-    initPrivates: function (cfg) {
+    initPrivates: function () {
         var me       = this;
         var isNumber = Helper.isNumber;
 
@@ -84,9 +83,8 @@ App.GlContainer = speculoos.Class({
 
     /**
      * Creates and Initializes public fields. These fields can be used in child classes.
-     * @param {Object} cfg Configuration passed to the constructor
      */
-    initPublics: function (cfg) {
+    initPublics: function () {
         var me = this;
 
         /**
@@ -150,7 +148,7 @@ App.GlContainer = speculoos.Class({
     },
 
     /**
-     * resize event handler for browser's window. We should update 3d objects after that.
+     * resize event handler for browser's window. We should update 3d scene after that.
      */
     onResize: function () {
         var me = this;
