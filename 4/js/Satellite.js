@@ -20,7 +20,7 @@ App.Satellite = speculoos.Class({
      * We use it only for calling constructor from super class.
      */
     constructor: function (cfg) {
-        App.Satellite.super.constructor.call(this, cfg);
+        App.Satellite.base.constructor.call(this, cfg);
     },
 
     /**
@@ -28,7 +28,7 @@ App.Satellite = speculoos.Class({
      * null or with special initial values. They must be declared here first.
      */
     initPrivates: function () {
-        App.Satellite.super.initPrivates.apply(this, arguments);
+        App.Satellite.base.initPrivates.apply(this, arguments);
 
         var isNumber = Helper.isNumber;
 
@@ -61,7 +61,7 @@ App.Satellite = speculoos.Class({
      * null or with special initial values. They must be declared here first.
      */
     initPublics: function () {
-        App.Satellite.super.initPublics.apply(this, arguments);
+        App.Satellite.base.initPublics.apply(this, arguments);
 
         /**
          * @prop
@@ -100,7 +100,7 @@ App.Satellite = speculoos.Class({
      * It also positions camera, 3d objects and light on the scene before it will be shown.
      */
     init: function () {
-        App.Satellite.super.init.apply(this, arguments);
+        App.Satellite.base.init.apply(this, arguments);
 
         this.camera.position.z = this._radius * 3.0;   // Camera
         this.light.position.set(-1, 0, 1).normalize(); // Light
@@ -117,7 +117,7 @@ App.Satellite = speculoos.Class({
      * 3d objects in the scene.
      */
     onAnimate: function () {
-        App.Satellite.super.onAnimate.call(this);
+        App.Satellite.base.onAnimate.call(this);
 
         var camera = this.camera;
 
@@ -156,6 +156,7 @@ App.Satellite = speculoos.Class({
      * @private
      */
     _createPlanetMesh: function () {
+        // TODO: move textures to the dropbox
         // TODO: set textures size
         var planetTexture   = THREE.ImageUtils.loadTexture("textures/planets/earth_atmos_2048.jpg");
         var normalTexture   = THREE.ImageUtils.loadTexture("textures/planets/earth_normal_2048.jpg");
@@ -197,6 +198,7 @@ App.Satellite = speculoos.Class({
      * @private
      */
     _createCloudsMesh: function () {
+        // TODO: move textures to the dropbox
         var cloudsTexture  = THREE.ImageUtils.loadTexture("textures/planets/earth_clouds_1024.png");
         var materialClouds = new THREE.MeshLambertMaterial({color: 0xffffff, map: cloudsTexture, transparent: true});
 

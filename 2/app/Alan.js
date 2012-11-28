@@ -66,7 +66,7 @@ var Alan = Class({
      * of Alan commands and file extension into the Simple interpreter class.
      */
     constructor: function () {
-        Alan.super.constructor.call(this, {
+        Alan.base.constructor.call(this, {
             /**
              * @conf
              * {String} Script files extension

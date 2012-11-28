@@ -9,5 +9,5 @@
     right      x move camera to the right to x points
     top        x move camera to the top to x points
     down       x move camera to the down to x points
-    zoom       x zoom telescope (0 < x < 50) This is just moves camera by z axe
+    zoom       x zoom telescope (0 < x < 50) This is just moves camera by z axes
     disconnect   disconnects satellites from main connector

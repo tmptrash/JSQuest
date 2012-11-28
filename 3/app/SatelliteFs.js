@@ -131,7 +131,7 @@ App.SatelliteFs = speculoos.Class({
      * Constructs File System class
      */
     constructor: function () {
-        App.SatelliteFs.super.constructor.call(this, {
+        App.SatelliteFs.base.constructor.call(this, {
             bin  : {
                 //
                 // Here is an emulation of system binaries - commands we can use in terminal
@@ -308,7 +308,7 @@ App.SatelliteFs = speculoos.Class({
             throw new Error('Invalid user name');
         }
 
-        var usersContent = this._prepareFileContent(App.SatelliteFs.super.readFile.call(this, this.getFolder(this._USERS_FILE_PATH), this._USERS_FILENAME));
+        var usersContent = this._prepareFileContent(App.SatelliteFs.base.readFile.call(this, this.getFolder(this._USERS_FILE_PATH), this._USERS_FILENAME));
         var re           = this._usersRecRe;
         var trim         = Helper.trim;
         var data;
@@ -398,7 +398,7 @@ App.SatelliteFs = speculoos.Class({
      * @throw {Error} In case of critical exceptions
      */
     exists: function (file) {
-        return App.SatelliteFs.super.fileExists.call(this, this._activeFolder, file);
+        return App.SatelliteFs.base.fileExists.call(this, this._activeFolder, file);
     },
 
     /**
@@ -407,7 +407,7 @@ App.SatelliteFs = speculoos.Class({
      * @throw {Error} In case of critical exceptions
      */
     create: function (file) {
-        App.SatelliteFs.super.createFile.call(this, this._activeFolder, file);
+        App.SatelliteFs.base.createFile.call(this, this._activeFolder, file);
 
         this._addPermissionRecord(file);
     },
@@ -423,7 +423,7 @@ App.SatelliteFs = speculoos.Class({
             throw new Error('You don\'t have permission to read this file');
         }
 
-        return App.SatelliteFs.super.readFile.call(this, this._activeFolder, file);
+        return App.SatelliteFs.base.readFile.call(this, this._activeFolder, file);
     },
 
     /**
@@ -436,7 +436,7 @@ App.SatelliteFs = speculoos.Class({
             throw new Error('You don\'t have permission to delete this file');
         }
 
-        App.SatelliteFs.super.deleteFile.call(this, this._activeFolder, file);
+        App.SatelliteFs.base.deleteFile.call(this, this._activeFolder, file);
         this._deletePermissionRecord(file);
     },
 
@@ -452,7 +452,7 @@ App.SatelliteFs = speculoos.Class({
             throw new Error('You don\'t have permission to update this file');
         }
 
-        App.SatelliteFs.super.updateFile.call(this, this._activeFolder, file, index, data);
+        App.SatelliteFs.base.updateFile.call(this, this._activeFolder, file, index, data);
 
         if (file === this._PERM_FILENAME) {
             this._parsePermissionFile();
@@ -465,7 +465,7 @@ App.SatelliteFs = speculoos.Class({
      * @throw {Error} In case of critical exceptions
      */
     getList: function () {
-        return App.SatelliteFs.super.getFilesAndFolders.call(this, this._activeFolder);
+        return App.SatelliteFs.base.getFilesAndFolders.call(this, this._activeFolder);
     },
 
     /**
