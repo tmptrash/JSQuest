@@ -16,21 +16,23 @@ App.Satellite = speculoos.Class({
     extends: App.GlContainer,
 
     /**
-     * ctor. We use it only for calling constructor from super class.
+     * ctor
+     * We use it only for calling constructor from super class.
      */
     constructor: function (cfg) {
         App.Satellite.super.constructor.call(this, cfg);
     },
 
     /**
-     * Private fields creator and initializer
+     * Private fields creator and initializer. It's not important will these variables be
+     * null or with special initial values. They must be declared here first.
      */
     initPrivates: function () {
         App.Satellite.super.initPrivates.apply(this, arguments);
 
         var isNumber = Helper.isNumber;
 
-        this.createPrivateFields({
+        this.createPrivatesFromConfig({
             /**
              * {Number} Earth radius
              */
@@ -55,7 +57,8 @@ App.Satellite = speculoos.Class({
     },
 
     /**
-     * Public fields creator and initializer
+     * Public fields creator and initializer. It's not important will these variables be
+     * null or with special initial values. They must be declared here first.
      */
     initPublics: function () {
         App.Satellite.super.initPublics.apply(this, arguments);
@@ -85,8 +88,11 @@ App.Satellite = speculoos.Class({
          * {THREE.EffectComposer}
          */
         this.composer       = null;
-        // TODO:
-        this.angle          = 0;
+        /**
+         * @prop
+         * {Number} Rotation angle of the main camera
+         */
+        this.cameraAngle    = 0;
     },
 
     /**
@@ -110,19 +116,27 @@ App.Satellite = speculoos.Class({
      * 3d objects in the scene.
      */
     onAnimate: function () {
-        // TODO:
         App.Satellite.super.onAnimate.call(this);
 
         var camera = this.camera;
 
+        //
+        // Rotates the earth and clouds
+        //
         this.meshPlanet.rotation.y += this._rotationSpeed * this.delta;
         this.meshClouds.rotation.y += this._rotationSpeed * this.delta;
 
-        this.angle += Math.PI / 360 * this.delta;
-        camera.position.x = this._radius * 3 * Math.cos(this.angle);
-        camera.position.z = this._radius * 3 * Math.sin(this.angle);
+        //
+        // Rotates the camera
+        //
+        this.cameraAngle += Math.PI / 360 * this.delta;
+        camera.position.x = this._radius * 3 * Math.cos(this.cameraAngle);
+        camera.position.z = this._radius * 3 * Math.sin(this.cameraAngle);
         camera.lookAt(this.meshPlanet.position);
 
+        //
+        // Updates current frame
+        //
         this.renderer.clear();
         this.composer.render(this.delta);
     },

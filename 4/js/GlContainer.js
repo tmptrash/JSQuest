@@ -1,6 +1,21 @@
 /**
- * This is Web GL container class. It contains (and create if it didn't) canvas tag inside and all public 3D properties, like
- * scene, camera and so on. Configuration properties see before the constructor.
+ * This is a WebGL container class. It contains (and create if it doesn't contain) canvas tag
+ * inside and all public 3D properties.
+ *
+ * 3D properties are:
+ *     {THREE.WebGLRenderer}     renderer   Renderer object of the 3D scene.
+ *     {THREE.Scene}             scene      Main scene of our world.
+ *     {THREE.PerspectiveCamera} camera     Viewpoint. First view camera.
+ *     {THREE.DirectionalLight}  light      Main light on the scene
+ *     {Number}                  delta      Read only property. It depends on animation speed or amount of frames per second.
+ *                                          It should be used in onAnimate() method as a coefficient for movement or rotation speed.
+ * Configuration of the class. Available properties:
+ *     {DOMElement}              parent     Parent HTML  tag for the WebGL container
+ *     {Number}                  fov        Camera frustum vertical field of view
+ *     {Number}                  nearView   Camera frustum near plane
+ *     {Number}                  farView    Camera frustum far plane
+ *     {Number}                  fogColor   Fog color in hexadecimal. Example: 0x000000 will render far away objects black
+ *     {Number}                  fogDensity Defines how fast the fog will grow dense. Default is 0.00025
  *
  * @author DeadbraiN
  * @email deadbrainman@gmail.com
@@ -8,13 +23,7 @@
 App.GlContainer = speculoos.Class({
     /**
      * ctor
-     * @param {Object} cfg Configuration of the class. Available properties:
-     *                 {DOMElement} parent     Parent tag for the WebGL container
-     *                 {Number}     fov        Camera frustum vertical field of view
-     *                 {Number}     nearView   Camera frustum near plane
-     *                 {Number}     farView    Camera frustum far plane
-     *                 {Number}     fogColor   Fog color in hexadecimal. Example: 0x000000 will render far away objects black
-     *                 {Number}     fogDensity Defines how fast the fog will grow dense. Default is 0.00025
+     * @param {Object} cfg Configuration object of the class
      */
     constructor: function (cfg) {
         if (!Detector.webgl) {
@@ -25,10 +34,14 @@ App.GlContainer = speculoos.Class({
         /**
          * @prop
          * @readonly
-         * {Object} Reference to the configuration
+         * {Object} Reference to the configuration passed to the class as first argument
          */
         this.cfg = cfg || {};
 
+        //
+        // This is how we create private and public fields of the class. Don't create
+        // fields outside these methods. It make a chaos in the code.
+        //
         this.initPrivates();
         this.initPublics();
         this.init();
@@ -37,7 +50,8 @@ App.GlContainer = speculoos.Class({
     },
 
     /**
-     * Creates and Initializes public fields
+     * Creates and Initializes private fields. It's not important will these variables be
+     * null or with special initial values. They must be declared here first.
      */
     initPrivates: function () {
         var me       = this;
@@ -45,7 +59,7 @@ App.GlContainer = speculoos.Class({
 
        /**
         * @prop
-        * {THREE.Clock} Timer for common usage
+        * {THREE.Clock} Timer object for delta coefficient.
         */
         me._clock = new THREE.Clock();
 
@@ -53,7 +67,7 @@ App.GlContainer = speculoos.Class({
         // Here we create all private fields using special configuration object. Private fields
         // will be created in format '_' + fieldName. e.g.: _parent
         //
-        me.createPrivateFields({
+        me.createPrivatesFromConfig({
             /**
              * {HTMLElement} Reference to parent DOM element for our container. Container will be inserted there.
              */
@@ -82,7 +96,8 @@ App.GlContainer = speculoos.Class({
     },
 
     /**
-     * Creates and Initializes public fields. These fields can be used in child classes.
+     * Creates and Initializes public fields. These fields can be used in child classes. It's not important
+     * will these variables be null or with special initial values. They must be declared here first.
      */
     initPublics: function () {
         var me = this;
@@ -108,14 +123,15 @@ App.GlContainer = speculoos.Class({
          */
         me.light     = new THREE.DirectionalLight(0xffffff);
         /**
-         * Delta between animation frames. If it bigger, then objects on screen will be moved faster, if smaller - slower
-         * @type {Number}
+         * @prop
+         * {Number} Delta between animation frames in seconds. If it bigger, then objects on screen will move faster, if smaller - slower
          */
         me.delta     = 1;
     },
 
     /**
-     * Calls after initPrivates() and initPublics() methods. Uses for logic initialization of the instance.
+     * Calls after initPrivates() and initPublics() methods. Uses for class initialization. It creates fog
+     * and light and adds it to the scene. It also bind an resize event to browser's window.
      */
     init: function () {
         var me = this;
@@ -126,11 +142,12 @@ App.GlContainer = speculoos.Class({
         me.renderer.sortObjects = false;
         me.renderer.autoClear   = false;
         me._parent.appendChild(me.renderer.domElement);
+
         window.addEventListener('resize', function () {me.onResize.apply(me, arguments); }, false);
     },
 
     /**
-     * Runs application. Starts 3d animation
+     * Runs application. Starts 3d animation loop.
      */
     run: function () {
         this.onAnimate();
@@ -143,12 +160,16 @@ App.GlContainer = speculoos.Class({
     onAnimate: function () {
         var me = this;
 
+        //
+        // This is how we start next call of the onAnimate() method.
+        //
         requestAnimationFrame(function () {me.onAnimate(); });
         me.delta = me._clock.getDelta();
     },
 
     /**
-     * resize event handler for browser's window. We should update 3d scene after that.
+     * resize event handler for browser's window. We should update 3d scene after that. The scene's size
+     * will be changed also.
      */
     onResize: function () {
         var me = this;
@@ -161,9 +182,8 @@ App.GlContainer = speculoos.Class({
     /**
      * Creates property within current instance and point it to the one from configuration
      * @param {Object} fields Fields configuration of this class in format {fieldName: [convertFn, defValue], ...}
-     * @private
      */
-    createPrivateFields: function (fields) {
+    createPrivatesFromConfig: function (fields) {
         var cfg = this.cfg;
         var f;
         var prop;
