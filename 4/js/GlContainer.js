@@ -1,6 +1,6 @@
 /**
- * This is Web GL container class. It contains (and crete it) canvas tag inside and all public 3D properties, like
- * scene, camera and so on.
+ * This is Web GL container class. It contains (and create if it didn't) canvas tag inside and all public 3D properties, like
+ * scene, camera and so on. Configuration properties see before the constructor.
  *
  * @author DeadbraiN
  * @email deadbrainman@gmail.com
@@ -22,22 +22,26 @@ App.GlContainer = speculoos.Class({
             return this;
         }
 
-        this.initPrivates(cfg);
-        this.initPublics(cfg);
+        /**
+         * @prop
+         * @readonly
+         * {Object} Reference to the configuration
+         */
+        this.cfg = cfg || {};
+
+        this.initPrivates();
+        this.initPublics();
         this.init();
-        this.onAnimate();
 
         return this;
     },
 
     /**
      * Creates and Initializes public fields
-     * @param {Object} cfg Configuration passed to the constructor
      */
-    initPrivates: function (cfg) {
+    initPrivates: function () {
         var me       = this;
         var isNumber = Helper.isNumber;
-
 
        /**
         * @prop
@@ -65,7 +69,7 @@ App.GlContainer = speculoos.Class({
             /**
              * {Number} Camera frustum near plane
              */
-            farView   : [isNumber, 500],
+            farView   : [isNumber, 10000000],
             /**
              * @type {Number} Fog color in hexadecimal. Example: 0x000000 will render far away objects black
              */
@@ -79,9 +83,8 @@ App.GlContainer = speculoos.Class({
 
     /**
      * Creates and Initializes public fields. These fields can be used in child classes.
-     * @param {Object} cfg Configuration passed to the constructor
      */
-    initPublics: function (cfg) {
+    initPublics: function () {
         var me = this;
 
         /**
@@ -98,7 +101,7 @@ App.GlContainer = speculoos.Class({
          * @prop
          * {THREE.Camera} Viewpoint. First view camera.
          */
-        me.camera    = new THREE.PerspectiveCamera(me._fov, me._parent.width / me._parent.height, me._nearView, me._farView);
+        me.camera    = new THREE.PerspectiveCamera(me._fov, window.innerWidth / window.innerHeight, me._nearView, me._farView);
         /**
          * @prop
          * {THREE.DirectionalLight} Main light on scene
@@ -119,11 +122,40 @@ App.GlContainer = speculoos.Class({
 
         me.scene.fog = new THREE.FogExp2(me._fogColor, me._fogDensity);
         me.scene.add(me.light);
-        me.renderer.setSize(me._parent.width, me._parent.height);
+        me.renderer.setSize(window.innerWidth, window.innerHeight);
         me.renderer.sortObjects = false;
         me.renderer.autoClear   = false;
         me._parent.appendChild(me.renderer.domElement);
         window.addEventListener('resize', function () {me.onResize.apply(me, arguments); }, false);
+    },
+
+    /**
+     * Runs application. Starts 3d animation
+     */
+    run: function () {
+        this.onAnimate();
+    },
+
+    /**
+     * Calls every time, then current frame of 3d animation is drawing. This is main method for update
+     * 3d objects in the scene.
+     */
+    onAnimate: function () {
+        var me = this;
+
+        requestAnimationFrame(function () {me.onAnimate(); });
+        me.delta = me._clock.getDelta();
+    },
+
+    /**
+     * resize event handler for browser's window. We should update 3d scene after that.
+     */
+    onResize: function () {
+        var me = this;
+
+        me.renderer.setSize(window.innerWidth, window.innerHeight);
+        me.camera.aspect = window.innerWidth / window.innerHeight;
+        me.camera.updateProjectionMatrix();
     },
 
     /**
@@ -132,7 +164,7 @@ App.GlContainer = speculoos.Class({
      * @private
      */
     createPrivateFields: function (fields) {
-        var cfg = this._cfg;
+        var cfg = this.cfg;
         var f;
         var prop;
 
@@ -142,33 +174,5 @@ App.GlContainer = speculoos.Class({
                 this['_' + f] = prop[0](cfg[f]) ? cfg[f] : prop[1];
             }
         }
-    },
-
-    /**
-     * Calls every time, then current frame of 3d animation is drawing. This is main method for update
-     * 3d objects in the scene.
-     */
-    onAnimate: function () {
-        requestAnimationFrame(this.onAnimate);
-        this.delta = this._clock.getDelta();
-        this.onAfterAnimate();
-    },
-
-    /**
-     * Calls after onAnimate() method. Uses for
-     */
-    onAfterAnimate: function () {
-        this.renderer.clear();
-    },
-
-    /**
-     * resize event handler for browser's window. We should update 3d objects after that.
-     */
-    onResize: function () {
-        var me = this;
-
-        me.renderer.setSize(me._parent.width, me._parent.height);
-        me.camera.aspect = me._parent.width / me._parent.height;
-        me.camera.updateProjectionMatrix();
     }
 });
