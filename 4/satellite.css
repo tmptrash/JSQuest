@@ -1,6 +1,6 @@
 /* TODO: reformat and refactor this */
 /**
- * Remove scrollbar at all
+ * Remove scroll bar at all
  */
 ::-webkit-scrollbar {
     color           : #000;

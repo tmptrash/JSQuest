@@ -20,7 +20,7 @@
  * @author DeadbraiN
  * @email deadbrainman@gmail.com
  */
-App.GlContainer = speculoos.Class({
+App.WebGlContainer = speculoos.Class({
     /**
      * ctor
      * @param {Object} cfg Configuration object of the class
@@ -147,7 +147,7 @@ App.GlContainer = speculoos.Class({
     },
 
     /**
-     * Runs application. Starts 3d animation loop.
+     * Runs application. Starts 3d animation loop using requestAnimationFrame() method
      */
     run: function () {
         this.onAnimate();
@@ -164,12 +164,16 @@ App.GlContainer = speculoos.Class({
         // This is how we start next call of the onAnimate() method.
         //
         requestAnimationFrame(function () {me.onAnimate(); });
+        //
+        // This delta property can be used for speed correction. If current video card is fast, then
+        // this
+        //
         me.delta = me._clock.getDelta();
     },
 
     /**
-     * resize event handler for browser's window. We should update 3d scene after that. The scene's size
-     * will be changed also.
+     * 'resize' event handler for browser's window. We should update 3d scene after that. The scene's size
+     * and camera aspect ratio will be changed also.
      */
     onResize: function () {
         var me = this;

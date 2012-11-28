@@ -13,7 +13,7 @@
  * @email deadbrainman@gmail.com
  */
 App.Satellite = speculoos.Class({
-    extends: App.GlContainer,
+    extends: App.WebGlContainer,
 
     /**
      * ctor
@@ -97,6 +97,7 @@ App.Satellite = speculoos.Class({
 
     /**
      * Calls after initPrivates() and initPublics() methods. Uses for logic initialization of the instance.
+     * It also positions camera, 3d objects and light on the scene before it will be shown.
      */
     init: function () {
         App.Satellite.super.init.apply(this, arguments);

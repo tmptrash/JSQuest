@@ -1,6 +1,13 @@
-- make free email account on google for cyberbob
+- make free email account on google for cyberdoc
 - NASA connector should load images and music from dropbox
 - use spaces and tabs for encryption
 - password for first level N83
 - add coordinates for status
 - add chrome detection
+- commands for the console:
+    left       x move camera to the left to x points
+    right      x move camera to the right to x points
+    top        x move camera to the top to x points
+    down       x move camera to the down to x points
+    zoom       x zoom telescope (0 < x < 50) This is just moves camera by z axe
+    disconnect   disconnects satellites from main connector
