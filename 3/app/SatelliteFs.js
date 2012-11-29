@@ -304,19 +304,19 @@ App.SatelliteFs = speculoos.Class({
      * @throw {Error} In case of critical exceptions
      */
     getHashByUser: function (user) {
-        if (!Helper.isString(user) || user === '') {
+        if (!Lib.Helper.isString(user) || user === '') {
             throw new Error('Invalid user name');
         }
 
         var usersContent = this._prepareFileContent(App.SatelliteFs.base.readFile.call(this, this.getFolder(this._USERS_FILE_PATH), this._USERS_FILENAME));
         var re           = this._usersRecRe;
-        var trim         = Helper.trim;
+        var trim         = Lib.Helper.trim;
         var data;
 
         re.lastIndex = 0;
         data         = re.exec(usersContent);
         while (data) {
-            if (!Helper.isArray(data) || data.length !== this._USERS_REC_LEN) {
+            if (!Lib.Helper.isArray(data) || data.length !== this._USERS_REC_LEN) {
                 throw new Error('Invalid format of users file');
             }
             data.shift();
@@ -336,7 +336,7 @@ App.SatelliteFs = speculoos.Class({
      * @param {String} user Name of user
      */
     setActiveUser: function (user) {
-        if (!Helper.isString(user) || user === '') {
+        if (!Lib.Helper.isString(user) || user === '') {
             throw new Error('Invalid user');
         }
 
@@ -365,7 +365,7 @@ App.SatelliteFs = speculoos.Class({
             this._activeFolder     = this.getParent(activeFolder);
             this._parsePermissionFile();
         }
-        else if (activeFolder && Helper.isObject(activeFolder[folder])) {
+        else if (activeFolder && Lib.Helper.isObject(activeFolder[folder])) {
             this._activeFolder     = this.getChild(activeFolder, folder);
             this._activeFolderName = folder;
             this._parsePermissionFile();
@@ -524,7 +524,7 @@ App.SatelliteFs = speculoos.Class({
      * @private
      */
     _parsePermissionFile: function () {
-        var trim         = Helper.trim;
+        var trim         = Lib.Helper.trim;
         var re           = this._permRecRe;
         var activeFolder = this._activeFolder;
         var fileContent;
@@ -540,7 +540,7 @@ App.SatelliteFs = speculoos.Class({
 
             data = re.exec(fileContent);
             while (data) {
-                if (!Helper.isArray(data) || data.length !== this._PERM_REC_PER_LINE) {
+                if (!Lib.Helper.isArray(data) || data.length !== this._PERM_REC_PER_LINE) {
                     throw new Error('Invalid format of permission file');
                 }
                 data.shift();
@@ -579,7 +579,7 @@ App.SatelliteFs = speculoos.Class({
      */
     _deletePermissionRecord: function (file) {
         var activeFolder = this._activeFolder;
-        var trim         = Helper.trim;
+        var trim         = Lib.Helper.trim;
         var fileContent;
         var recIndex;
 
@@ -605,7 +605,7 @@ App.SatelliteFs = speculoos.Class({
     _addPermissionRecord: function (file) {
         var me           = this;
         var activeFolder = me._activeFolder;
-        var pad          = Helper.pad;
+        var pad          = Lib.Helper.pad;
 
         if (this.appendToFile(activeFolder, this._PERM_FILENAME,
             '\n' +

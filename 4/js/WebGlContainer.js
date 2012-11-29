@@ -55,7 +55,7 @@ App.WebGlContainer = speculoos.Class({
      */
     initPrivates: function () {
         var me       = this;
-        var isNumber = Helper.isNumber;
+        var isNumber = Lib.Helper.isNumber;
 
        /**
         * @prop
@@ -71,7 +71,7 @@ App.WebGlContainer = speculoos.Class({
             /**
              * {HTMLElement} Reference to parent DOM element for our container. Container will be inserted there.
              */
-            parent    : [Helper.isElement, document.body],
+            parent    : [Lib.Helper.isElement, document.body],
             /**
              * {Number} Camera frustum vertical field of view
              */

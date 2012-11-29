@@ -14,7 +14,7 @@ App.Terminal = speculoos.Class({
         //
         // Check parameters
         //
-        if (!Helper.isString(id) || !Helper.isString(user) || !Helper.isString(host)) {
+        if (!Lib.Helper.isString(id) || !Lib.Helper.isString(user) || !Lib.Helper.isString(host)) {
             throw new Error('Invalid configuration in App.Terminal() constructor.');
         }
 
@@ -149,7 +149,7 @@ App.Terminal = speculoos.Class({
 
         var user = args[1];
 
-        if (this._fs.getHashByUser(user) === Helper.md5(this._prepareString(args[2]))) {
+        if (this._fs.getHashByUser(user) === Lib.Helper.md5(this._prepareString(args[2]))) {
             this._fs.setActiveUser(user);
             //
             // Initialize Console library for new user
@@ -250,13 +250,14 @@ App.Terminal = speculoos.Class({
     _createCommand: function (cmd, help) {
         return [
             cmd,
-            this._createMethod('_on' + Helper.capitalize(cmd) + 'Cmd'),
+            this._createMethod('_on' + Lib.Helper.capitalize(cmd) + 'Cmd'),
             help
         ];
     },
 
     /**
-     * Checks arguments of a parent caller and throw error in case of invalid one
+     * Checks arguments of a parent caller and throw error in case of invalid amount.
+     * You should call this method from your command handlers.
      * @param {Number} args Amount of required arguments
      * @param {String} cmd Name of command
      * @private

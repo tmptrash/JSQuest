@@ -30,7 +30,7 @@ App.Satellite = speculoos.Class({
     initPrivates: function () {
         App.Satellite.base.initPrivates.apply(this, arguments);
 
-        var isNumber = Helper.isNumber;
+        var isNumber = Lib.Helper.isNumber;
 
         this.createPrivatesFromConfig({
             /**

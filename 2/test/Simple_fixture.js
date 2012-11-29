@@ -43,7 +43,7 @@ exports.testRun = function (test) {
         });
 
         NUnitHelper.callWithAllTypes('Check rin() method', function (arg) {
-            if (Helper.isString(arg)) {
+            if (Lib.Helper.isString(arg)) {
                 throw new Error('String');
             }
             s.run(arg);
@@ -142,7 +142,7 @@ exports.testPreprocess = function (test) {
         });
 
         NUnitHelper.callWithAllTypes('Check preprocess() method', function (arg) {
-            if (Helper.isString(arg)) {
+            if (Lib.Helper.isString(arg)) {
                 throw new Error('String');
             }
 

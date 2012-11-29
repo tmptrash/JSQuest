@@ -384,9 +384,9 @@ TestCase('App.Fs', {
     testGetRootFolder: function () {
         var fs = new App.Fs({f1: {f2: {}}});
 
-        assertTrue('Get root folder', Helper.isObject(fs.getRootFolder()));
-        assertTrue('Get root folder', fs.getRootFolder().f1 !== udef && Helper.isObject(fs.getRootFolder().f1));
-        assertTrue('Get root folder', fs.getRootFolder().f1.f2 !== udef && Helper.isObject(fs.getRootFolder().f1.f2));
+        assertTrue('Get root folder', Lib.Helper.isObject(fs.getRootFolder()));
+        assertTrue('Get root folder', fs.getRootFolder().f1 !== udef && Lib.Helper.isObject(fs.getRootFolder().f1));
+        assertTrue('Get root folder', fs.getRootFolder().f1.f2 !== udef && Lib.Helper.isObject(fs.getRootFolder().f1.f2));
     },
 
     testGetFolder: function () {

@@ -21,7 +21,7 @@ var fs     = require('fs');
 //
     var scriptFile = process.argv.length > 2 ? process.argv[2] : '';
 
-if (!Helper.isString(scriptFile)) {
+if (!Lib.Helper.isString(scriptFile)) {
     console.log('Invalid script file: ' + scriptFile);
     return 1;
 }

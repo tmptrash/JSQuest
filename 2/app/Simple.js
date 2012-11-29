@@ -48,7 +48,7 @@
  * This is where requires section begins. We include the libraries, we want to use.
  */
 var fs     = require('fs');
-var Class  = require('./../../lib/speculoos.js').Class;
+var Class  = require('./../../lib/external/speculoos.js').Class;
 var Helper = require('./../../lib/Helper.js').Helper;
 
 /**
@@ -103,25 +103,25 @@ var Simple = Class({
      * @param {Object} config Class configuration in format {commands: {cmd1: argAmount, cmd2: argAmount,...}}
      */
     constructor: function (config) {
-        if (!Helper.isObject(config)) {
+        if (!Lib.Helper.isObject(config)) {
             throw new Error('Invalid configuration object passed to the Simple class constructor');
         }
-        if (config.fileExtension !== undefined && (!Helper.isString(config.fileExtension) || config.fileExtension.length < 1)) {
+        if (config.fileExtension !== undefined && (!Lib.Helper.isString(config.fileExtension) || config.fileExtension.length < 1)) {
             throw new Error('Invalid script file extension configuration');
         }
-        if (config.charSet !== undefined && (!Helper.isString(config.charSet) || config.charSet.length < 1)) {
+        if (config.charSet !== undefined && (!Lib.Helper.isString(config.charSet) || config.charSet.length < 1)) {
             throw new Error('Invalid script charset configuration');
         }
-        if (config.separator !== undefined && (!Helper.isString(config.separator) || config.separator.length < 1)) {
+        if (config.separator !== undefined && (!Lib.Helper.isString(config.separator) || config.separator.length < 1)) {
             throw new Error('Invalid script separator configuration');
         }
-        if (config.commentRe !== undefined && !Helper.isRegexp(config.commentRe)) {
+        if (config.commentRe !== undefined && !Lib.Helper.isRegexp(config.commentRe)) {
             throw new Error('Invalid comment configuration');
         }
-        if (config.labelRe !== undefined && !Helper.isRegexp(config.labelRe)) {
+        if (config.labelRe !== undefined && !Lib.Helper.isRegexp(config.labelRe)) {
             throw new Error('Invalid label configuration');
         }
-        if (!Helper.isObject(config.commands)) {
+        if (!Lib.Helper.isObject(config.commands)) {
             throw new Error('Invalid script commands configuration');
         }
 
@@ -197,7 +197,7 @@ var Simple = Class({
         /**
          * Only string scripts are supported
          */
-        if (!Helper.isString(script)) {
+        if (!Lib.Helper.isString(script)) {
             throw new Error('Invalid script parameter in run method. Should be a string.');
         }
 
@@ -227,7 +227,7 @@ var Simple = Class({
 
         this.reset();
 
-        if (!Helper.isString(lines)) {
+        if (!Lib.Helper.isString(lines)) {
             throw new Error('Invalid script parameter in preprocess() method.');
         }
 
@@ -359,11 +359,11 @@ var Simple = Class({
     runCommand: function (line, scriptLine) {
         var cmd    = this.getCommand(scriptLine);
         var count  = this._commands[cmd];
-        var regexp = Helper.isObject(count) ? this._commands[cmd].regexp : undefined;
-        var args   = this.getArguments(scriptLine, Helper.isNumber(count) ? count : count.args, regexp);
+        var regexp = Lib.Helper.isObject(count) ? this._commands[cmd].regexp : undefined;
+        var args   = this.getArguments(scriptLine, Lib.Helper.isNumber(count) ? count : count.args, regexp);
         var cmdFn  = this['on' + cmd.charAt(0).toUpperCase() + cmd.slice(1)];
 
-        if (Helper.isFunction(cmdFn)) {
+        if (Lib.Helper.isFunction(cmdFn)) {
             return cmdFn.apply(this, [line, scriptLine].concat(args));
         }
 
@@ -376,7 +376,7 @@ var Simple = Class({
      * @param {String} line Raw one script line
      */
     isEmpty: function (line) {
-        return Helper.trim(line) === '';
+        return Lib.Helper.trim(line) === '';
     },
 
     /**
@@ -478,7 +478,7 @@ var Simple = Class({
         var params = [];
         var i;
 
-        if (regexp && Helper.isRegexp(regexp)) {
+        if (regexp && Lib.Helper.isRegexp(regexp)) {
             params = regexp.exec(line);
             if (!params) {
                 throw new Error('Invalid command format at line "' + line + '"');

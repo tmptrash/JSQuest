@@ -62,7 +62,7 @@ App.Fs = speculoos.Class({
          * object contains one file\folder in file system.
          * @private
          */
-        this._fs = Helper.clone(fs);
+        this._fs = Lib.Helper.clone(fs);
 
         //
         // Adds references to the parent folders for all folders
@@ -94,7 +94,7 @@ App.Fs = speculoos.Class({
         if (this.fileExists(parent, file)) {
             throw new Error('File already exists');
         }
-        if (Helper.isObject(parent[file])) {
+        if (Lib.Helper.isObject(parent[file])) {
             throw new Error('Folder with the same name is already exists');
         }
 
@@ -157,10 +157,10 @@ App.Fs = speculoos.Class({
         // Logical errors check
         //
         this._checkFile(parent, file);
-        if (!Helper.isNumber(index) || index < 0 || index > parent[file].length) {
+        if (!Lib.Helper.isNumber(index) || index < 0 || index > parent[file].length) {
             throw new Error('Invalid index');
         }
-        if (!Helper.isString(data)) {
+        if (!Lib.Helper.isString(data)) {
             throw new Error('Invalid file body specified');
         }
 
@@ -189,7 +189,7 @@ App.Fs = speculoos.Class({
                 //
                 // This is folder
                 //
-                if (Helper.isObject(parent[fileOrFolder])) {
+                if (Lib.Helper.isObject(parent[fileOrFolder])) {
                     folders.push('[' + fileOrFolder + ']');
                 //
                 // This is file
@@ -215,7 +215,7 @@ App.Fs = speculoos.Class({
         // Wrong parameters check
         //
         this._checkParameters(parent, file);
-        return Helper.isString(parent[file]);
+        return Lib.Helper.isString(parent[file]);
     },
 
     /**
@@ -247,7 +247,7 @@ App.Fs = speculoos.Class({
         //
         // Check child folder
         //
-        if (!Helper.isString(child) || child === '' || !Helper.isObject(folder[child])) {
+        if (!Lib.Helper.isString(child) || child === '' || !Lib.Helper.isObject(folder[child])) {
             throw new Error('Invalid child folder');
         }
 
@@ -286,7 +286,7 @@ App.Fs = speculoos.Class({
         //
         // Parameters check
         //
-        if (!Helper.isString(xpath) || xpath === '') {
+        if (!Lib.Helper.isString(xpath) || xpath === '') {
             throw new Error('Invalid XPATH for the folder');
         }
 
@@ -321,7 +321,7 @@ App.Fs = speculoos.Class({
         if (!this.fileExists(parent, file)) {
             throw new Error('File not found');
         }
-        if (!Helper.isString(data)) {
+        if (!Lib.Helper.isString(data)) {
             throw new Error('Invalid data. String required');
         }
 
@@ -337,10 +337,10 @@ App.Fs = speculoos.Class({
      * @private
      */
     _checkParameters: function (parent, file) {
-        if (!Helper.isObject(parent) || !this._validFolderObject(this._fs, parent)) {
+        if (!Lib.Helper.isObject(parent) || !this._validFolderObject(this._fs, parent)) {
             throw new Error('Invalid parent object');
         }
-        if (arguments.length > 1 && (!Helper.isString(file) || file === '' || this._FILENAME_RE.test(file))) {
+        if (arguments.length > 1 && (!Lib.Helper.isString(file) || file === '' || this._FILENAME_RE.test(file))) {
             throw new Error('Invalid file name. Use letters, digits and symbols: _-');
         }
     },
@@ -364,7 +364,7 @@ App.Fs = speculoos.Class({
         for (folder in root) {
             if (root.hasOwnProperty(folder) && folder !== me._PARENT_REF_PROP) {
                 child = root[folder];
-                if (Helper.isObject(child)) {
+                if (Lib.Helper.isObject(child)) {
                     if (checkFolder === child) {
                         return true;
                     }
@@ -408,7 +408,7 @@ App.Fs = speculoos.Class({
         for (folder in root) {
             if (root.hasOwnProperty(folder) && folder !== parentProp) {
                 child = root[folder];
-                if (Helper.isObject(child)) {
+                if (Lib.Helper.isObject(child)) {
                     child[parentProp]     = root;
                     child[parentNameProp] = name;
                     me._decorateWithParents(child, folder);
@@ -428,7 +428,7 @@ App.Fs = speculoos.Class({
         //
         // Check type
         //
-        if (!Helper.isObject(fs)) {
+        if (!Lib.Helper.isObject(fs)) {
             throw new Error('Invalid file system tree configuration');
         }
 
@@ -452,12 +452,12 @@ App.Fs = speculoos.Class({
                 //
                 // If it is a folder, goes deeper
                 //
-                if (Helper.isObject(child)) {
+                if (Lib.Helper.isObject(child)) {
                     me._checkFSRecursive(child);
                 //
                 // This is a file
                 //
-                } else if (!Helper.isString(child)) {
+                } else if (!Lib.Helper.isString(child)) {
                     throw new Error('File structure id incorrect. One item doesn\'t look like a file. Name: ' + folder + ', Body: ' + child);
                 }
             }
