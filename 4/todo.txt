@@ -5,9 +5,19 @@
 - add coordinates for status
 - add chrome detection
 - commands for the console:
-    left       x move camera to the left to x points
-    right      x move camera to the right to x points
-    top        x move camera to the top to x points
-    down       x move camera to the down to x points
-    zoom       x zoom telescope (0 < x < 50) This is just moves camera by z axes
-    disconnect   disconnects satellites from main connector
+    left       x                 Move camera to the left to x points
+    right      x                 Move camera to the right to x points
+    top        x                 Move camera to the top to x points
+    down       x                 Move camera to the down to x points
+    zoom       x                 Zoom telescope (0 < x < 50) This is just moves camera by z axes
+    connect    s1...sx           Connects to specified list of satellites
+    disconnect s1...sx           Disconnects from the list of satellites
+    remove     db1...dbx         Remove specified list of databases
+    sync       db1...dbx sx      Synchronize databases with specified satellite
+    pack       db1...dbx         Packs databases into db1p...dbxp, where "p" means packed
+    unpack     db1p...dbxp       Unpacks databases into db1...dbx
+    send       db1...dbx sx      Send databases to the satellite
+    list                         Lists all available databases
+    msg        sx message        Send a message to specified satellite
+    encrypt    dbx key           Encrypts database by key
+    decrypt    dbxe key          Decrypts database by key
