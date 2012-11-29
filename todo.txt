@@ -1,2 +1,4 @@
 - Fix all warnings
 - http://www.freedomscripts.org/js-invis.html
+- Move Terminal as separate base class in global lib folder. It should contains keyup handler, public properties. Also
+  i should remove checker at the beginning. There should be default values.
