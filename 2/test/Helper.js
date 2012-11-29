@@ -5,7 +5,7 @@
  */
 var assert = require('assert');
 var fs     = require('fs');
-var Alan   = require('./../app/Alan').Alan;
+var Alan   = require('././Alan').Alan;
 
 
 var NUnitHelper = {

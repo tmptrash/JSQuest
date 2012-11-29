@@ -4,9 +4,9 @@
  * @email deadbrainman@gmail.com
  */
 var assert      = require("assert");
-var Simple      = require("../app/Simple").Simple;
+var Simple      = require("./Simple").Simple;
 var NUnitHelper = require("./Helper").NUnitHelper;
-var Helper      = require("./../../lib/Helper.js").Helper;
+var Helper      = require("./../../lib/js/Helper.js").Helper;
 
 
 exports.testConstructor = function (test) {

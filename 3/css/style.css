@@ -4,6 +4,7 @@ body {
 
 /*
     Remove scrollbar at all
+    TODO: this style should be merged with Terminal.css file from global lib folder
 */
 ::-webkit-scrollbar {
     color           : #000;

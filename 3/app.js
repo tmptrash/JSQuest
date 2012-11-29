@@ -3,7 +3,7 @@
  * @author DeadbraiN
  * @email deadbrainman@gmail.com
  */
-function main () {
+function main() {
     //
     // Create singleton instance of application class
     //

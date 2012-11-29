@@ -37,8 +37,8 @@
  * Include all required classes.
  */
 var fs        = require('fs');
-var Class     = require('./../../lib/external/speculoos.js').Class;
-var Helper    = require('./../../lib/Helper.js').Helper;
+var Class     = require('./.././speculoos.js').Class;
+var Helper    = require('./../../lib/js/Helper.js').Helper;
 var Simple    = require('./Simple.js').Simple;
 
 

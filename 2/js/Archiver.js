@@ -8,13 +8,15 @@
  *
  * @author DeadbraiN
  * @email deadbrainman@gmail.com
+ *
+ * TODO: this file should be on one level with js, scripts and test folders
  */
 
 
 /**
  * Require section
  */
-var Helper = require('./../../lib/Helper.js').Helper;
+var Helper = require('./../../lib/js/Helper.js').Helper;
 var fs     = require('fs');
 
 /**
