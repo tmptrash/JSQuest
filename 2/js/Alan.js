@@ -37,7 +37,7 @@
  * Include all required classes.
  */
 var fs        = require('fs');
-var Class     = require('./.././speculoos.js').Class;
+var Class     = require('./../../lib/js/external/speculoos.js').Class;
 var Helper    = require('./../../lib/js/Helper.js').Helper;
 var Simple    = require('./Simple.js').Simple;
 
@@ -308,6 +308,7 @@ var Alan = Class({
          if (this.getVar(left) > this.getVar(right)) {
              return this.getLineByLabel(label);
          }
+
          return ++line;
     },
 
@@ -395,6 +396,7 @@ var Alan = Class({
 
         return ++line;
     },
+
     /**
       * Decrements numeric value of variable
       * @param {Number} line Current line number

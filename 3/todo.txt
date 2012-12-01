@@ -1,2 +1,1 @@
 - add NASA logo onthe screen and maybe something more.
-- add chrome detection

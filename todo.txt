@@ -5,3 +5,4 @@
 - Add description for all levels
 - Try to find fullscreen mode for browser
 - Music should be loaded from drop box like a playlist
+- add chrome detection
