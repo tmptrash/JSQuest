@@ -2,6 +2,7 @@
  * Application class of Terminal app
  * @author DeadbraiN
  * @email deadbrainman@gmail.com
+ * TODO: move commands to lower case in comments
  */
 App.Terminal = speculoos.Class({
     extend: Lib.Terminal,
