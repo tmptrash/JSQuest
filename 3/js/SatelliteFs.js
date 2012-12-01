@@ -26,7 +26,7 @@
  * @email deadbrainman@gmail.com
  */
 App.SatelliteFs = speculoos.Class({
-    extends           : App.Fs,
+    extend           : App.Fs,
 
     /**
      * @const

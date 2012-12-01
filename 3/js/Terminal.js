@@ -4,7 +4,7 @@
  * @email deadbrainman@gmail.com
  */
 App.Terminal = speculoos.Class({
-    extends: Lib.Terminal,
+    extend: Lib.Terminal,
 
     /**
      * Application constructor
@@ -34,7 +34,7 @@ App.Terminal = speculoos.Class({
             this._createCommand('info',    'Info : Shows information about terminal.\nUsage: info')
         ];
 
-        Lib.Terminal.base.constructor.call(this, cfg);
+        App.Terminal.base.constructor.call(this, cfg);
     },
 
     /**
@@ -42,7 +42,7 @@ App.Terminal = speculoos.Class({
      * No matter if they will be initialized by null or special value.
      */
     initPrivates: function () {
-        Lib.Terminal.base.initPrivates.call(this);
+        App.Terminal.base.initPrivates.call(this);
 
         /**
          * @prop

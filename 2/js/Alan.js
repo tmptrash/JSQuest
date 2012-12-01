@@ -47,7 +47,7 @@ var Simple    = require('./Simple.js').Simple;
  * {Alan} Interpreter class implementation
  */
 var Alan = Class({
-    extends      : Simple,
+    extend      : Simple,
 
     /**
      * @const

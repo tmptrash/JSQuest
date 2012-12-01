@@ -40,5 +40,5 @@
  * @email deadbrainman@gmail.com
  */
 App.Terminal = speculoos.Class({
-     extends: Lib.Terminal
+    extend: Lib.Terminal
 });

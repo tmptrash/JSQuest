@@ -13,7 +13,7 @@
  * @email deadbrainman@gmail.com
  */
 App.Satellite = speculoos.Class({
-    extends: App.WebGlContainer,
+    extend: App.WebGlContainer,
 
     /**
      * ctor

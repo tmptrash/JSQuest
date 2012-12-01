@@ -7,5 +7,9 @@ function main() {
     //
     // Create singleton instance of application class
     //
-    App.app = new App.Terminal('terminal', 'guest', 'terminal');
+    App.app = new App.Terminal({
+        id  : 'terminal',
+        user: 'guest',
+        host: 'terminal'
+    });
 }
