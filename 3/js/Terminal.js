@@ -4,43 +4,22 @@
  * @email deadbrainman@gmail.com
  */
 App.Terminal = speculoos.Class({
+    extends: Lib.Terminal,
+
     /**
      * Application constructor
-     * @param {String} id Id of textarea html tag
-     * @param {String} user Name of user
-     * @param {String} host name of current HOST
+     * @param {Object} cfg Configuration of the class. Available parameters:
+     *        {String} id       Required. Id of text area html tag
+     *        {String} user     Optional. Name of user. 'user' by default.
+     *        {String} host     Optional. name of current HOST. 'localhost' by default.
+     *        {Array}  commands Optional. Array of commands for the terminal in format: [[cmd-name:String, cmd-description:String],...]
      */
-    constructor: function (id, user, host) {
-        //
-        // Check parameters
-        //
-        if (!Lib.Helper.isString(id) || !Lib.Helper.isString(user) || !Lib.Helper.isString(host)) {
-            throw new Error('Invalid configuration in App.Terminal() constructor.');
-        }
-
-        var terminal = document.getElementById(id);
-
-        /**
-         * {String} Html tag id of the texarea for console
-         * @private
-         */
-        this._consoleId = id;
-        /**
-         * {String} Current host name
-         * @private
-         */
-        this._host      = host;
-        /**
-         * @prop
-         * {App.Fs} Reference to File System class instance
-         * @private
-         */
-        this._fs = new App.SatelliteFs();
+    constructor: function (cfg) {
         /**
          * @const
-         * {Array} Supported command
+         * {Array} Supported commands
          */
-        this._commands = [
+        cfg.commands = [
             this._createCommand('list',    'Info : Lists all files\\folders within active folder\nUsage: list'),
             this._createCommand('saf',     'Info : Sets Active Folder to specified one. Only one folder per command is supported.\nUsage: saf folder'),
             this._createCommand('gaf',     'Info : Gets active folder.\nUsage: gaf'),
@@ -55,18 +34,22 @@ App.Terminal = speculoos.Class({
             this._createCommand('info',    'Info : Shows information about terminal.\nUsage: info')
         ];
 
-        //
-        // Turn on terminal's autoscroll all the time
-        //
-        terminal.addEventListener('keyup', this._onTerminalKeyUp);
-        //
-        // Initialize Console library
-        //
-        Console.init(id, user, host, this._commands);
+        Lib.Terminal.base.constructor.call(this, cfg);
+    },
 
-        // TODO: This is fullscreen mode implementation
-        // TODO: See css file also
-        //document.getElementById('container').webkitRequestFullScreen();
+    /**
+     * Initializes private fields of the class. All private fields must be created here.
+     * No matter if they will be initialized by null or special value.
+     */
+    initPrivates: function () {
+        Lib.Terminal.base.initPrivates.call(this);
+
+        /**
+         * @prop
+         * {App.Fs} Reference to File System class instance
+         * @private
+         */
+        this._fs = new App.SatelliteFs();
     },
 
     /**
@@ -95,7 +78,7 @@ App.Terminal = speculoos.Class({
      * @private
      */
     _onGafCmd: function () {
-        Console.WriteLine(this._fs.getActiveFolder());
+        this.console.WriteLine(this._fs.getActiveFolder());
     },
 
     /**
@@ -116,7 +99,7 @@ App.Terminal = speculoos.Class({
      */
     _onReadCmd: function (args) {
         this._checkArguments(1, 'read');
-        Console.WriteLine(this._fs.read(args[1]));
+        this.console.WriteLine(this._fs.read(args[1]));
     },
 
     /**
@@ -126,7 +109,7 @@ App.Terminal = speculoos.Class({
      */
     _onRfCmd: function (args) {
         this._checkArguments(1, 'rf');
-        Console.WriteLine(this._fs.remove(args[1]));
+        this.console.WriteLine(this._fs.remove(args[1]));
     },
 
     /**
@@ -154,9 +137,9 @@ App.Terminal = speculoos.Class({
             //
             // Initialize Console library for new user
             //
-            Console.init(this._consoleId, user, this._host, this._commands, true);
+            this.console.init(this.textAreaId, user, this.host, this.commands, true);
         } else {
-            Console.WriteLine('Invalid login or password');
+            this.console.WriteLine('Invalid login or password');
         }
     },
 
@@ -177,7 +160,7 @@ App.Terminal = speculoos.Class({
      */
     _onGfpCmd: function (args) {
         this._checkArguments(1, 'gfp');
-        Console.WriteLine('READ-DELETE-UPDATE : ' + this._fs.getFilePermissions(args[1]).join(''));
+        this.console.WriteLine('READ-DELETE-UPDATE : ' + this._fs.getFilePermissions(args[1]).join(''));
     },
 
     /**
@@ -193,9 +176,9 @@ App.Terminal = speculoos.Class({
             if (tick > 0) {
                 setTimeout(interval, timeout);
                 if (tick === seconds) {
-                    Console.Write('Rebooting');
+                    this.console.Write('Rebooting');
                 } else {
-                    Console.Write('.');
+                    this.console.Write('.');
                 }
                 tick--;
             } else {
@@ -211,7 +194,7 @@ App.Terminal = speculoos.Class({
      * @private
      */
     _onInfoCmd: function () {
-        Console.WriteLine(
+        this.console.WriteLine(
             '[ Description ]\n' +
             'Welcome to the remote terminal application. This software works in similar way as FTP protocol. ' +
             'It connects to the remote orbital satellite using special remote procedure call API. Every terminal works within ' +
@@ -284,7 +267,7 @@ App.Terminal = speculoos.Class({
             try {
                 me[method].call(me, args);
             } catch (e) {
-                Console.WriteLine(e.message);
+                this.console.WriteLine(e.message);
             }
         };
     },

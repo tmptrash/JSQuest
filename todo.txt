@@ -3,3 +3,6 @@
 - Move Terminal as separate base class in global lib folder. It should contains keyup handler, public properties. Also
   i should remove checker at the beginning. There should be default values.
 - Add description for all levels
+- Try to find fullscreen mode for browser
+- Music should be loaded from dropbox like a playlist
+- replace extends to extend
