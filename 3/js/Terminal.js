@@ -1,8 +1,8 @@
 /**
- * Application class of Terminal app
+ * Application class of Terminal app. It supports many command (see command
+ *
  * @author DeadbraiN
  * @email deadbrainman@gmail.com
- * TODO: move commands to lower case in comments
  */
 App.Terminal = speculoos.Class({
     extend: Lib.Terminal,
@@ -54,7 +54,7 @@ App.Terminal = speculoos.Class({
     },
 
     /**
-     * LIST command handler. It has no arguments. Shows all supported commands in separate lines.
+     * list command handler. It has no arguments. Shows all supported commands in separate lines.
      * @private
      */
     _onListCmd: function () {
@@ -65,7 +65,7 @@ App.Terminal = speculoos.Class({
     },
 
     /**
-     * SAF command handler. Sets active folder in file system. Can show error message id needed.
+     * saf command handler. Sets active folder in file system. Can show error message id needed.
      * @param {Array} args Array of command arguments.
      * @private
      */
@@ -75,7 +75,7 @@ App.Terminal = speculoos.Class({
     },
 
     /**
-     * GAF command handler. Gets active folder.
+     * gaf command handler. Gets active folder.
      * @private
      */
     _onGafCmd: function () {
@@ -83,7 +83,7 @@ App.Terminal = speculoos.Class({
     },
 
     /**
-     * CONNECT command handler. Connects to the remote orbital satellite.
+     * connect command handler. Connects to the remote orbital satellite.
      * @param {Array} args Array of command arguments.
      * @private
      */
@@ -94,7 +94,7 @@ App.Terminal = speculoos.Class({
     },
 
     /**
-     * READ command handler. Dump file content to console.
+     * read command handler. Dump file content to console.
      * @param {Array} args Array of command arguments.
      * @private
      */
@@ -104,7 +104,7 @@ App.Terminal = speculoos.Class({
     },
 
     /**
-     * RF command handler. Removes specified file in active folder.
+     * rf command handler. Removes specified file in active folder.
      * @param {Array} args Array of command arguments.
      * @private
      */
@@ -114,7 +114,7 @@ App.Terminal = speculoos.Class({
     },
 
     /**
-     * UF command handler. Updates specified file in active folder with data blockstarting from index.
+     * uf command handler. Updates specified file in active folder with data blockstarting from index.
      * @param {Array} args Array of command arguments.
      * @private
      */
@@ -124,7 +124,7 @@ App.Terminal = speculoos.Class({
     },
 
     /**
-     * LOGIN command handler. Changes active user within terminal.
+     * login command handler. Changes active user within terminal.
      * @param {Array} args Array of command arguments.
      * @private
      */
@@ -145,7 +145,7 @@ App.Terminal = speculoos.Class({
     },
 
     /**
-     * CEF command handler. Creates empty file within active folder.
+     * cef command handler. Creates empty file within active folder.
      * @param {Array} args Array of command arguments.
      * @private
      */
@@ -155,7 +155,7 @@ App.Terminal = speculoos.Class({
     },
 
     /**
-     * GFP command handler. Gets permissons of the file within active folder.
+     * gfp command handler. Gets permissons of the file within active folder.
      * @param {Array} args Array of command arguments.
      * @private
      */
@@ -165,7 +165,7 @@ App.Terminal = speculoos.Class({
     },
 
     /**
-     * REBOOT command handler. Reboots the terminal and clear all local data.
+     * reboot command handler. Reboots the terminal and clear all local data.
      * @private
      */
     _onRebootCmd: function () {
@@ -191,7 +191,7 @@ App.Terminal = speculoos.Class({
     },
 
     /**
-     * INFO command handler. Shows terminal's information.
+     * info command handler. Shows terminal's information.
      * @private
      */
     _onInfoCmd: function () {
