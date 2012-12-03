@@ -4,21 +4,21 @@
  * @email deadbrainman@gmail.com
  */
 function main() {
-    // TODO: this code should be in separate class
-    /**
-     * keyup DOM event handler. Scroll terminal textarea at the bottom.
-     * @private
-     */
-    function _onTerminalKeyUp() {
-        this.scrollTop = this.scrollHeight;
-    }
-    // Initialize Console library
-    // TODO: add commands here
-    Console.init('terminal', 'root', 'kepler', []);
-    //
-    // Turn on terminal's autoscroll all the time
-    //
-    document.getElementById('terminal').addEventListener('keyup', _onTerminalKeyUp);
+//    // TODO: this code should be in separate class
+//    /**
+//     * keyup DOM event handler. Scroll terminal textarea at the bottom.
+//     * @private
+//     */
+//    function _onTerminalKeyUp() {
+//        this.scrollTop = this.scrollHeight;
+//    }
+//    // Initialize Console library
+//    // TODO: add commands here
+//    Console.init('terminal', 'root', 'kepler', []);
+//    //
+//    // Turn on terminal's autoscroll all the time
+//    //
+//    document.getElementById('terminal').addEventListener('keyup', _onTerminalKeyUp);
 
 
 

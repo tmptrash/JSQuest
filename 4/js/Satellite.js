@@ -32,6 +32,16 @@ App.Satellite = speculoos.Class({
 
         var isNumber = Lib.Helper.isNumber;
 
+        /**
+         * @prop
+         * {HTMLElement} HTML element of the terminal <div> tag
+         * @private
+         */
+        this._terminal = null;
+
+        //
+        // Parameters, created from configuration
+        //
         this.createPrivatesFromConfig({
             /**
              * {Number} Earth radius
@@ -110,6 +120,7 @@ App.Satellite = speculoos.Class({
         this._createMoonMesh();                        // Moon
         this._createStars();                           // Stars
         this._postprocess();                           // Analog camera effect
+        this._createTerminal();                        // Satellite's terminal console
     },
 
     /**
@@ -288,5 +299,17 @@ App.Satellite = speculoos.Class({
 
         this.composer.addPass(renderModel);
         this.composer.addPass(effectFilm);
+    },
+
+    /**
+     * Creates terminal console container with 5 satellites and one console text area.
+     * Set this container to this._terminal
+     * @private
+     */
+    _createTerminal: function () {
+        this._terminal = new App.Terminal({
+            user: 'root',
+            host: 'kepler'
+        });
     }
 });

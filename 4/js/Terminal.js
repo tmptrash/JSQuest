@@ -36,9 +36,85 @@
  *     encrypt    dbx key           Encrypts database by key (dbx - database name, key - string key for encryption)
  *     decrypt    dbxe key          Decrypts database by key (dbxe - encrypted database name, key - string key for encryption)
  *
+ * Supported configuration:
+ *     {Element} parent Reference to the HTML node of element, where we will add terminal container.
+ *
  * @author DeadbraiN
  * @email deadbrainman@gmail.com
  */
 App.Terminal = speculoos.Class({
-    extend: Lib.Terminal
+    extend: Lib.Terminal,
+
+    /**
+     * @constructor
+     * We use this override only for calling constructor from superclass. This is
+     * how we fix a bug from speculoos library.
+     * @param {Object} cfg Configuration of the class
+     */
+    constructor: function (cfg) {
+        /**
+         * TODO:
+         * @conf
+         * {Array} Only this class knows about it's commands
+         */
+        cfg.commands = [];
+        /**
+         * @conf
+         * {String} Id of a text area with console
+         */
+        cfg.id       = Lib.Helper.md5((new Date()).toString());
+
+
+        App.Terminal.base.constructor.apply(this, arguments);
+    },
+
+    /**
+     * Initializes private fields of the class. All private fields must be created here.
+     * No matter if they will be initialized by null or special value.
+     */
+    initPrivates: function () {
+        App.Terminal.base.initPrivates.apply(this, arguments);
+
+        /**
+         * @prop
+         * {HTMLElement} Reference to the HTML node of element, where we will add terminal container
+         * @private
+         */
+        this._parent     = Lib.Helper.isElement(this.cfg.parent) ? this.cfg.parent : document.body;
+    },
+
+    /**
+     * Main initializer of the class. You should use it for every kind of initializations
+     * within class. For example logic initialization or creation of HTML nodes.
+     */
+    init: function () {
+        var container = document.createElement('div');
+
+        //
+        // Creates html nodes like this:
+        // <div class="satellite-ct">
+        //     <div class="satellite"></div>
+        //     <div class="satellite"></div>
+        //     <div class="satellite"></div>
+        //     <div class="satellite"></div>
+        //     <div class="satellite"></div>
+        //     <textarea id="terminal" class="terminal" rows="6" cols="10"></textarea>
+        // </div>
+        //
+        container.className = 'satellite-ct';
+        container.innerHTML =
+            '<div class="satellite"></div>' +
+                '<div class="satellite"></div>' +
+                '<div class="satellite"></div>' +
+                '<div class="satellite"></div>' +
+                '<div class="satellite"></div>' +
+                '<textarea id="' + this.cfg.id + '" class="terminal" rows="6" cols="10"></textarea>';
+
+        this._parent.appendChild(container);
+
+        //
+        // We should call parent method here, because we use there the div, created before
+        //
+        App.Terminal.base.init.apply(this, arguments);
+    }
 });

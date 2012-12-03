@@ -2,9 +2,6 @@
  * Remove scroll bar from terminal text area and set all css properties
  */
 .terminal ::-webkit-scrollbar {
-    position        : absolute;
-    width           : 500px;
-    height          : 400px;
     font            : 14px monospace;
     right           : 5px;
     top             : 50%;
