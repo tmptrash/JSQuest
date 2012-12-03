@@ -311,5 +311,16 @@ App.Satellite = speculoos.Class({
             user: 'root',
             host: 'kepler'
         });
+        this._terminal.on('left', this._onLeftCmd, this);
+        //this._terminal.un('left', this._onLeftCmd, this);
+    },
+
+    /**
+     * Handler of left command
+     * @param {Number} x - distance in points we should move the telescope
+     * @private
+     */
+    _onLeftCmd: function (x) {
+        console.log('Telescope was moved on ' + x + ' points');
     }
 });
