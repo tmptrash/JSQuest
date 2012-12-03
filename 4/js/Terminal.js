@@ -52,20 +52,23 @@ App.Terminal = speculoos.Class({
      * @param {Object} cfg Configuration of the class
      */
     constructor: function (cfg) {
+        cfg = cfg || {};
+
         /**
-         * TODO:
          * @conf
          * {Array} Only this class knows about it's commands
          */
-        cfg.commands = [];
+        cfg.commands = [
+            ['left',    'Info : Moves satellite to the left on X points.\nUsage: left 152']
+        ];
         /**
          * @conf
-         * {String} Id of a text area with console
+         * {String} Id of a text area with console. We should pass it to a Console library.
          */
         cfg.id       = Lib.Helper.md5((new Date()).toString());
 
 
-        App.Terminal.base.constructor.apply(this, arguments);
+        App.Terminal.base.constructor.call(this, cfg);
     },
 
     /**
@@ -80,7 +83,7 @@ App.Terminal = speculoos.Class({
          * {HTMLElement} Reference to the HTML node of element, where we will add terminal container
          * @private
          */
-        this._parent     = Lib.Helper.isElement(this.cfg.parent) ? this.cfg.parent : document.body;
+        this._parent = Lib.Helper.isElement(this.cfg.parent) ? this.cfg.parent : document.body;
     },
 
     /**
@@ -113,8 +116,20 @@ App.Terminal = speculoos.Class({
         this._parent.appendChild(container);
 
         //
-        // We should call parent method here, because we use there the div, created before
+        // We should call parent method here, because we use there div, we created before
         //
         App.Terminal.base.init.apply(this, arguments);
+    },
+
+    /**
+     * left command handler.
+     * @private
+     */
+    _onLeftCmd: function (args) {
+        this.checkArguments(1, 'left');
+        //
+        // TODO: remove this
+        //
+        console.log('left ' + args[1]);
     }
 });

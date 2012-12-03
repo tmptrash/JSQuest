@@ -21,18 +21,18 @@ App.Terminal = speculoos.Class({
          * {Array} Supported commands
          */
         cfg.commands = [
-            this.createCmdHandler('list',    'Info : Lists all files\\folders within active folder\nUsage: list'),
-            this.createCmdHandler('saf',     'Info : Sets Active Folder to specified one. Only one folder per command is supported.\nUsage: saf folder'),
-            this.createCmdHandler('gaf',     'Info : Gets active folder.\nUsage: gaf'),
-            this.createCmdHandler('connect', 'Info : Connects to the orbital satellite and starts video streaming from it\'s camera. Only an administrator has a permissions for that.\nUsage: connect user password'),
-            this.createCmdHandler('read',    'Info : Reads specified file in active folder.\nUsage: read file'),
-            this.createCmdHandler('rf',      'Info : Removes specified file in active folder.\nUsage: rf file'),
-            this.createCmdHandler('uf',      'Info : Updates specified file in active folder with data block.\nUsage: uf file index data'),
-            this.createCmdHandler('login',   'Info : Changes active user of terminal.\nUsage: login user password'),
-            this.createCmdHandler('cef',     'Info : Creates empty file within active folder. Use uf command to create file\'s body.\nUsage: cef file'),
-            this.createCmdHandler('gfp',     'Info : Shows file permissions.\nUsage: gfp file'),
-            this.createCmdHandler('reboot',  'Info : Reboots the terminal and reconnects it with a satellite. This command will close the session and all history and local data will be lost.\nUsage: reboot'),
-            this.createCmdHandler('info',    'Info : Shows information about terminal.\nUsage: info')
+            ['list',    'Info : Lists all files\\folders within active folder\nUsage: list'],
+            ['saf',     'Info : Sets Active Folder to specified one. Only one folder per command is supported.\nUsage: saf folder'],
+            ['gaf',     'Info : Gets active folder.\nUsage: gaf'],
+            ['connect', 'Info : Connects to the orbital satellite and starts video streaming from it\'s camera. Only an administrator has a permissions for that.\nUsage: connect user password'],
+            ['read',    'Info : Reads specified file in active folder.\nUsage: read file'],
+            ['rf',      'Info : Removes specified file in active folder.\nUsage: rf file'],
+            ['uf',      'Info : Updates specified file in active folder with data block.\nUsage: uf file index data'],
+            ['login',   'Info : Changes active user of terminal.\nUsage: login user password'],
+            ['cef',     'Info : Creates empty file within active folder. Use uf command to create file\'s body.\nUsage: cef file'],
+            ['gfp',     'Info : Shows file permissions.\nUsage: gfp file'],
+            ['reboot',  'Info : Reboots the terminal and reconnects it with a satellite. This command will close the session and all history and local data will be lost.\nUsage: reboot'],
+            ['info',    'Info : Shows information about terminal.\nUsage: info']
         ];
 
         App.Terminal.base.constructor.call(this, cfg);
