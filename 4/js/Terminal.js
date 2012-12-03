@@ -127,9 +127,7 @@ App.Terminal = speculoos.Class({
      */
     _onLeftCmd: function (args) {
         this.checkArguments(1, 'left');
-        //
-        // TODO: remove this
-        //
-        console.log('left ' + args[1]);
+
+
     }
 });
