@@ -4,6 +4,7 @@
  * @email deadbrainman@gmail.com
  */
 function main() {
+    // TODO: this code should be in separate class
     /**
      * keyup DOM event handler. Scroll terminal textarea at the bottom.
      * @private
@@ -11,7 +12,6 @@ function main() {
     function _onTerminalKeyUp() {
         this.scrollTop = this.scrollHeight;
     }
-    // TODO: this code should be in separate class
     // Initialize Console library
     // TODO: add commands here
     Console.init('terminal', 'root', 'kepler', []);
@@ -19,6 +19,8 @@ function main() {
     // Turn on terminal's autoscroll all the time
     //
     document.getElementById('terminal').addEventListener('keyup', _onTerminalKeyUp);
+
+
 
     //
     // Create singleton instance of application class
