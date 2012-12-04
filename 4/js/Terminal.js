@@ -21,7 +21,7 @@
  * Supported commands:
  *     left       x                 Move telescope to the left to x points
  *     right      x                 Move telescope to the right to x points
- *     top        x                 Move telescope to the top to x points
+ *     up         x                 Move telescope to the top to x points
  *     down       x                 Move telescope to the down to x points
  *     zoom       x                 Zoom telescope (0 < x < 50) This is just moves camera by z axes
  *     connect    s1...sx           Connects to specified list of satellites (s1...sx - satellites)
@@ -59,7 +59,11 @@ App.Terminal = speculoos.Class({
          * {Array} Only this class knows about it's commands
          */
         cfg.commands = [
-            ['left',    'Info : Moves satellite to the left on X points.\nUsage: left 152']
+            ['left',    'Info : Moves telescope to the left on X points.\nUsage: left 152'],
+            ['right',   'Info : Moves telescope to the right on X points.\nUsage: right 130'],
+            ['up',      'Info : Moves telescope to the top on X points.\nUsage: up 42'],
+            ['down',    'Info : Moves telescope to the down on X points.\nUsage: down 72'],
+            ['zoom',    'Info : Zoom telescope in range 1 to 50.\nUsage: zoom 37']
         ];
         /**
          * @conf
@@ -93,10 +97,14 @@ App.Terminal = speculoos.Class({
     init: function () {
         this._createHtml();
         //
-        // Here we create all simple command handlers
+        // Here we create all simple command handlers. See this._createSimpleHandlers() for details.
         //
         this._createSimpleHandlers([
-            ['left', 1]
+            ['left',  1],
+            ['right', 1],
+            ['up',    1],
+            ['down',  1],
+            ['zoom',  1]
         ]);
 
         //
@@ -136,13 +144,12 @@ App.Terminal = speculoos.Class({
     },
 
     /**
-     * Creates simple handler for specified commands. This handler checks amount of arguments
-     * and throws an exception in case of wrong amount. Also, it fires an event.
-     * @param {String} commands Name of the commands in console
+     * Creates simple handlers for specified commands. Handler checks amount of arguments
+     * of the command and throws an exception in case of wrong amount. Also, it fires an event.
+     * @param {Array} commands Array of commands in format [[cmd:String, amount:Number],...]
      * @private
      */
     _createSimpleHandlers: function (commands) {
-        debugger;
         var i;
         var len = commands.length;
 
@@ -160,7 +167,7 @@ App.Terminal = speculoos.Class({
      */
     _createSimpleHandler: function (command, args) {
         this[Lib.Helper.createCmdHandlerName(command)] = function (cmdArgs) {
-            this.checkArguments(cmdArgs, command);
+            this.checkArguments(args, command);
             this.fire(command, cmdArgs.slice(1));
         };
     }

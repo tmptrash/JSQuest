@@ -312,15 +312,26 @@ App.Satellite = speculoos.Class({
             host: 'kepler'
         });
         this._terminal.on('left', this._onLeftCmd, this);
-        //this._terminal.un('left', this._onLeftCmd, this);
+        this._terminal.on('right', this._onRightCmd, this);
     },
 
     /**
-     * Handler of left command
-     * @param {Number} x - distance in points we should move the telescope
+     * Handler of left command. It moves telescope smoothly from current position
+     * to the left on x points.
+     * @param {Number} x - distance in points, we should move the telescope
      * @private
      */
     _onLeftCmd: function (x) {
-        console.log('Telescope was moved on ' + x + ' points');
+        console.log('Telescope was moved left on ' + x + ' points');
+    },
+
+    /**
+     * Handler of right command. It moves telescope smoothly from current position
+     * to the right on x points.
+     * @param {Number} x - distance in points, we should move the telescope
+     * @private
+     */
+    _onRightCmd: function (x) {
+        console.log('Telescope was moved right on ' + x + ' points');
     }
 });
