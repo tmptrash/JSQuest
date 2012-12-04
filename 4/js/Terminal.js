@@ -19,10 +19,10 @@
  *  ------------------------
  *
  * Supported commands:
- *     left       x                 Move camera to the left to x points
- *     right      x                 Move camera to the right to x points
- *     top        x                 Move camera to the top to x points
- *     down       x                 Move camera to the down to x points
+ *     left       x                 Move telescope to the left to x points
+ *     right      x                 Move telescope to the right to x points
+ *     top        x                 Move telescope to the top to x points
+ *     down       x                 Move telescope to the down to x points
  *     zoom       x                 Zoom telescope (0 < x < 50) This is just moves camera by z axes
  *     connect    s1...sx           Connects to specified list of satellites (s1...sx - satellites)
  *     disconnect s1...sx           Disconnects from the list of satellites (s1...sx - satellites)
@@ -91,6 +91,25 @@ App.Terminal = speculoos.Class({
      * within class. For example logic initialization or creation of HTML nodes.
      */
     init: function () {
+        this._createHtml();
+        //
+        // Here we create all simple command handlers
+        //
+        this._createSimpleHandlers([
+            ['left', 1]
+        ]);
+
+        //
+        // We should call parent method here, because we use there div, we created before
+        //
+        App.Terminal.base.init.apply(this, arguments);
+    },
+
+    /**
+     * Creates all html containers for the Terminal and adds it to the this._parent node.
+     * @private
+     */
+    _createHtml: function () {
         var container = document.createElement('div');
 
         //
@@ -114,19 +133,35 @@ App.Terminal = speculoos.Class({
                 '<textarea id="' + this.cfg.id + '" class="terminal" rows="6" cols="10"></textarea>';
 
         this._parent.appendChild(container);
-
-        //
-        // We should call parent method here, because we use there div, we created before
-        //
-        App.Terminal.base.init.apply(this, arguments);
     },
 
     /**
-     * left command handler.
+     * Creates simple handler for specified commands. This handler checks amount of arguments
+     * and throws an exception in case of wrong amount. Also, it fires an event.
+     * @param {String} commands Name of the commands in console
      * @private
      */
-    _onLeftCmd: function (args) {
-        this.checkArguments(1, 'left');
-        this.fire('left', args[1]);
+    _createSimpleHandlers: function (commands) {
+        debugger;
+        var i;
+        var len = commands.length;
+
+        for (i = 0; i < len; i++) {
+            this._createSimpleHandler(commands[i][0], commands[i][1]);
+        }
+    },
+
+    /**
+     * Creates simple handler for specified command. This handler checks amount of arguments
+     * and throws an exception in case of wrong amount. Also, it fires an event.
+     * @param {String} command Name of the command in console
+     * @param {Number} args    Amount of arguments for command
+     * @private
+     */
+    _createSimpleHandler: function (command, args) {
+        this[Lib.Helper.createCmdHandlerName(command)] = function (cmdArgs) {
+            this.checkArguments(cmdArgs, command);
+            this.fire(command, cmdArgs.slice(1));
+        };
     }
 });
