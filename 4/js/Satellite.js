@@ -44,6 +44,13 @@ App.Satellite = speculoos.Class({
          * @private
          */
         this._zoom     = 50;
+        /**
+         * @prop
+         * {Object} Map of custom effect objects in format: {effect: {fn:Function, obj:Object},...}.
+         * Effect examples: smooth camera moving of zooming. Functions should be from this class.
+         * @private
+         */
+        this._effects  = {};
 
         //
         // Parameters, created from configuration
@@ -136,13 +143,35 @@ App.Satellite = speculoos.Class({
     onAnimate: function () {
         App.Satellite.base.onAnimate.call(this);
 
-        var camera = this.camera;
+        this._moveObjects();
+        this._moveCamera();
+        this._runEffects();
 
+        //
+        // Updates current frame
+        //
+        this.renderer.clear();
+        this.composer.render(this.delta);
+    },
+
+    /**
+     * Rotates main objects on the scene
+     * @private
+     */
+    _moveObjects: function () {
         //
         // Rotates the earth and clouds
         //
         this.meshPlanet.rotation.y += this._rotationSpeed * this.delta;
         this.meshClouds.rotation.y += this._rotationSpeed * this.delta;
+    },
+
+    /**
+     * Rotates main camera
+     * @private
+     */
+    _moveCamera: function () {
+        var camera = this.camera;
 
         //
         // Rotates the camera
@@ -150,13 +179,24 @@ App.Satellite = speculoos.Class({
         this.cameraAngle += Math.PI / 360 * this.delta;
         camera.position.x = this._radius * this._zoom * Math.cos(this.cameraAngle);
         camera.position.z = this._radius * this._zoom * Math.sin(this.cameraAngle);
-        camera.lookAt(this.meshPlanet.position);
+        // TODO:
+        //camera.lookAt(this.meshPlanet.position);
+    },
 
-        //
-        // Updates current frame
-        //
-        this.renderer.clear();
-        this.composer.render(this.delta);
+    /**
+     * Runs custom effects for current frame. E.g. smooth camera moving or zooming.
+     * It run all effects from this._effects array. Effects format: {effect: {fn:Function, obj:Object},...}
+     * @private
+     */
+    _runEffects: function () {
+        var effects = this._effects;
+        var i;
+
+        for (i in effects) {
+            if (effects.hasOwnProperty(i)) {
+                effects[i].fn.call(this, effects[i].heap, i);
+            }
+        }
     },
 
     /**
@@ -319,25 +359,94 @@ App.Satellite = speculoos.Class({
         });
         this._terminal.on('left', this._onLeftCmd, this);
         this._terminal.on('right', this._onRightCmd, this);
+        this._terminal.on('zoom', this._onZoomCmd, this);
     },
 
     /**
      * Handler of left command. It moves telescope smoothly from current position
-     * to the left on x points.
-     * @param {Number} x - distance in points, we should move the telescope
+     * to the left on distance points.
+     * @param {Number} distance Distance in points, we should move the telescope
      * @private
      */
-    _onLeftCmd: function (x) {
-        console.log('Telescope was moved left on ' + x + ' points');
+    _onLeftCmd: function (distance) {
+        //
+        // This effect will be run in this._runEffects() method.
+        //
+        this._effects.move = {fn: this._moveCameraLeft, heap: {distance: distance[0]}};
     },
 
     /**
      * Handler of right command. It moves telescope smoothly from current position
      * to the right on x points.
-     * @param {Number} x - distance in points, we should move the telescope
+     * @param {Number} distance Distance in points, we should move the telescope
      * @private
      */
-    _onRightCmd: function (x) {
-        console.log('Telescope was moved right on ' + x + ' points');
+    _onRightCmd: function (distance) {
+        //
+        // This effect will be run in this._runEffects() method.
+        //
+        this._effects.move = {fn: this._moveCameraRight, heap: {distance: distance[0]}};
+    },
+
+    /**
+     * Handler of zoom command. It zooms telescope smoothly.
+     * @param {Number} distance Distance in points, we should zoom the telescope
+     * @private
+     */
+    _onZoomCmd: function (distance) {
+        //
+        // This effect will be run in this._runEffects() method.
+        //
+        this._effects.zoom = {fn: this._zoomCamera, heap: {distance: distance[0]}};
+    },
+
+    /**
+     * Moves camera to the left and decrease the distance on 1. It works with the local heap's
+     * property - distance.
+     * @param {Object} heap Local heap for this method
+     * @param {String} effect Name of current effect
+     * @private
+     * TODO: this method and _moveCameraRight is too similar
+     */
+    _moveCameraLeft: function (heap, effect) {
+        if (heap.distance < 0) {
+            delete this._effects[effect];
+            return;
+        }
+        heap.distance--;
+        this.camera.rotation.y -= this.delta / 15; // TODO: why 15
+    },
+
+    /**
+     * Moves camera to the right and decrease the distance on 1. It works with the local heap's
+     * property - distance.
+     * @param {Object} heap Local heap for this method
+     * @param {String} effect Name of current effect
+     * @private
+     */
+    _moveCameraRight: function (heap, effect) {
+        if (heap.distance < 0) {
+            delete this._effects[effect];
+            return;
+        }
+        heap.distance--;
+        this.camera.rotation.y += this.delta / 15; // TODO: why 15
+    },
+
+
+    /**
+     * Zooms camera and decreases the distance on 1. It works with the local heap's
+     * property - distance.
+     * @param {Object} heap Local heap for this method
+     * @param {String} effect Name of current effect
+     * @private
+     */
+    _zoomCamera: function (heap, effect) {
+        if (heap.distance < 0) {
+            delete this._effects[effect];
+            return;
+        }
+        heap.distance--;
+        this._zoom--;
     }
 });

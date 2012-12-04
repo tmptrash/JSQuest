@@ -3,7 +3,7 @@
  * satellite images and the terminal.
  */
 .satellite-ct {
-    width           : 470px;
+    width           : 490px;
     height          : 410px;
     position        : absolute;
     font            : 14px monospace;
@@ -29,7 +29,7 @@
  */
 .terminal {
     position        : relative;
-    width           : 454px;
+    width           : 474px;
     height          : 300px;
 
     font            : 14px monospace;
