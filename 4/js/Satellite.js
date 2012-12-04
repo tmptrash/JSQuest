@@ -38,6 +38,12 @@ App.Satellite = speculoos.Class({
          * @private
          */
         this._terminal = null;
+        /**
+         * @prop
+         * {Number} Telescope zoom. Distance from the telescope to the earth. In range 2..50
+         * @private
+         */
+        this._zoom     = 50;
 
         //
         // Parameters, created from configuration
@@ -112,15 +118,15 @@ App.Satellite = speculoos.Class({
     init: function () {
         App.Satellite.base.init.apply(this, arguments);
 
-        this.camera.position.z = this._radius * 3.0;   // Camera
-        this.light.position.set(-1, 0, 1).normalize(); // Light
-        this._createSpheresGeometry();                 // Spheres geometry
-        this._createPlanetMesh();                      // Earth
-        this._createCloudsMesh();                      // Clouds
-        this._createMoonMesh();                        // Moon
-        this._createStars();                           // Stars
-        this._postprocess();                           // Analog camera effect
-        this._createTerminal();                        // Satellite's terminal console
+        this.camera.position.z = this._radius * this._zoom; // Camera
+        this.light.position.set(-1, 0, 1).normalize();      // Light
+        this._createSpheresGeometry();                      // Spheres geometry
+        this._createPlanetMesh();                           // Earth
+        this._createCloudsMesh();                           // Clouds
+        this._createMoonMesh();                             // Moon
+        this._createStars();                                // Stars
+        this._postprocess();                                // Analog camera effect
+        this._createTerminal();                             // Satellite's terminal console
     },
 
     /**
@@ -142,8 +148,8 @@ App.Satellite = speculoos.Class({
         // Rotates the camera
         //
         this.cameraAngle += Math.PI / 360 * this.delta;
-        camera.position.x = this._radius * 3 * Math.cos(this.cameraAngle);
-        camera.position.z = this._radius * 3 * Math.sin(this.cameraAngle);
+        camera.position.x = this._radius * this._zoom * Math.cos(this.cameraAngle);
+        camera.position.z = this._radius * this._zoom * Math.sin(this.cameraAngle);
         camera.lookAt(this.meshPlanet.position);
 
         //
