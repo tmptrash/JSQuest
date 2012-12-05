@@ -409,12 +409,9 @@ App.Satellite = speculoos.Class({
      * TODO: this method and _moveCameraRight is too similar
      */
     _moveCameraLeft: function (heap, effect) {
-        if (heap.distance < 0) {
-            delete this._effects[effect];
-            return;
+        if (this._decreaseDistance(heap, effect)) {
+            this.camera.rotation.y += this.delta / 15; // TODO: why 15
         }
-        heap.distance--;
-        this.camera.rotation.y -= this.delta / 15; // TODO: why 15
     },
 
     /**
@@ -425,14 +422,10 @@ App.Satellite = speculoos.Class({
      * @private
      */
     _moveCameraRight: function (heap, effect) {
-        if (heap.distance < 0) {
-            delete this._effects[effect];
-            return;
+        if (this._decreaseDistance(heap, effect)) {
+            this.camera.rotation.y -= this.delta / 15; // TODO: why 15
         }
-        heap.distance--;
-        this.camera.rotation.y += this.delta / 15; // TODO: why 15
     },
-
 
     /**
      * Zooms camera and decreases the distance on 1. It works with the local heap's
@@ -442,11 +435,26 @@ App.Satellite = speculoos.Class({
      * @private
      */
     _zoomCamera: function (heap, effect) {
+        if (this._decreaseDistance(heap, effect)) {
+            this.camera.fov -= this.delta * 5; // TODO: Why 5
+            this.camera.updateProjectionMatrix();
+        }
+    },
+
+    /**
+     * Decreases distance in a heap object and return true if distance is greater then 0, false otherwise
+     * @param {Object} heap Reference to the heap object with distance property
+     * @param {String} effect Name of current effect
+     * @return {Boolean}
+     * @private
+     */
+    _decreaseDistance: function (heap, effect) {
         if (heap.distance < 0) {
             delete this._effects[effect];
-            return;
+        } else {
+            heap.distance--;
         }
-        heap.distance--;
-        this._zoom--;
+
+        return heap.distance > 0;
     }
 });
