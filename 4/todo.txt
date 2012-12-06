@@ -4,6 +4,7 @@
 - password for first level N83
 - add coordinates for status
 - add chrome detection
+- fix bug with clouds blinking after zoom
 - commands for the console:
     left       x                 Move camera to the left to x points
     right      x                 Move camera to the right to x points

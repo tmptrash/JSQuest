@@ -40,11 +40,11 @@ App.Satellite = speculoos.Class({
         this._terminal  = null;
         /**
          * @prop
-         * {Number} Telescope zoom. Distance from the telescope to the earth. In range 2..50
+         * {Number} Camera radius. Distance from the telescope to the earth. In range 2..50
          * TODO: remove this. We use camera.fov for zooming.
          * @private
          */
-        this._zoom      = 200;
+        this._cameraRadius = 200;
         /**
          * @const
          * {Array} Minimum and maximum in zooming
@@ -136,7 +136,7 @@ App.Satellite = speculoos.Class({
     init: function () {
         App.Satellite.base.init.apply(this, arguments);
 
-        this.camera.position.z = this._radius * this._zoom; // Camera
+        this.camera.position.z = this._radius * this._cameraRadius; // Camera
         this.light.position.set(-1, 0, 1).normalize();      // Light
         this._createSpheresGeometry();                      // Spheres geometry
         this._createPlanetMesh();                           // Earth
@@ -188,8 +188,8 @@ App.Satellite = speculoos.Class({
         // Rotates the camera
         //
         this.cameraAngle += Math.PI / 360 * this.delta;
-        camera.position.x = this._radius * this._zoom * Math.cos(this.cameraAngle);
-        camera.position.z = this._radius * this._zoom * Math.sin(this.cameraAngle);
+        camera.position.x = this._radius * this._cameraRadius * Math.cos(this.cameraAngle);
+        camera.position.z = this._radius * this._cameraRadius * Math.sin(this.cameraAngle);
         // TODO:
         camera.lookAt(this.meshPlanet.position);
     },
