@@ -30,27 +30,34 @@ App.Satellite = speculoos.Class({
     initPrivates: function () {
         App.Satellite.base.initPrivates.apply(this, arguments);
 
-        var isNumber = Lib.Helper.isNumber;
+        var isNumber  = Lib.Helper.isNumber;
 
         /**
          * @prop
          * {HTMLElement} HTML element of the terminal <div> tag
          * @private
          */
-        this._terminal = null;
+        this._terminal  = null;
         /**
          * @prop
          * {Number} Telescope zoom. Distance from the telescope to the earth. In range 2..50
+         * TODO: remove this. We use camera.fov for zooming.
          * @private
          */
-        this._zoom     = 50;
+        this._zoom      = 200;
+        /**
+         * @const
+         * {Array} Minimum and maximum in zooming
+         * @private
+         */
+        this._zoomRange = [5, 60];
         /**
          * @prop
          * {Object} Map of custom effect objects in format: {effect: {fn:Function, obj:Object},...}.
          * Effect examples: smooth camera moving of zooming. Functions should be from this class.
          * @private
          */
-        this._effects  = {};
+        this._effects   = {};
 
         //
         // Parameters, created from configuration
@@ -75,7 +82,11 @@ App.Satellite = speculoos.Class({
             /**
              * {Number} Scale for the moon
              */
-            moonScale    : [isNumber, 0.23 ]
+            moonScale    : [isNumber, 0.23 ],
+            /**
+             * {Number} Speed of zooming
+             */
+            zoomSpeed    : [isNumber, 5    ]
         });
     },
 
@@ -180,7 +191,7 @@ App.Satellite = speculoos.Class({
         camera.position.x = this._radius * this._zoom * Math.cos(this.cameraAngle);
         camera.position.z = this._radius * this._zoom * Math.sin(this.cameraAngle);
         // TODO:
-        //camera.lookAt(this.meshPlanet.position);
+        camera.lookAt(this.meshPlanet.position);
     },
 
     /**
@@ -365,39 +376,55 @@ App.Satellite = speculoos.Class({
     /**
      * Handler of left command. It moves telescope smoothly from current position
      * to the left on distance points.
-     * @param {Number} distance Distance in points, we should move the telescope
+     * @param {Array} args Arguments passed to zoom command
      * @private
      */
-    _onLeftCmd: function (distance) {
+    _onLeftCmd: function (args) {
         //
         // This effect will be run in this._runEffects() method.
         //
-        this._effects.move = {fn: this._moveCameraLeft, heap: {distance: distance[0]}};
+        this._effects.moveLeft = {fn: this._moveCameraLeftEffect, heap: {distance: args[0]}};
     },
 
     /**
      * Handler of right command. It moves telescope smoothly from current position
      * to the right on x points.
-     * @param {Number} distance Distance in points, we should move the telescope
+     * @param {Array} args Arguments passed to zoom command
      * @private
      */
-    _onRightCmd: function (distance) {
+    _onRightCmd: function (args) {
         //
         // This effect will be run in this._runEffects() method.
         //
-        this._effects.move = {fn: this._moveCameraRight, heap: {distance: distance[0]}};
+        this._effects.moveRight = {fn: this._moveCameraRightEffect, heap: {distance: args[0]}};
     },
 
     /**
      * Handler of zoom command. It zooms telescope smoothly.
-     * @param {Number} distance Distance in points, we should zoom the telescope
+     * @param {Array} args Arguments passed to zoom command
      * @private
      */
-    _onZoomCmd: function (distance) {
+    _onZoomCmd: function (args) {
+        var zoom   = args[0];
+        var fov    = this.camera.fov;
+        var endFov = this._zoomRange[1] - zoom;
+        var inc;
+
+        //
+        // zoom value must be in our range
+        //
+        zoom = Math.min(zoom, this._zoomRange[1]);
+        zoom = Math.max(zoom, this._zoomRange[0]);
+
+        if (fov < endFov) {
+            inc = 5;
+        } else {
+            inc = -5;
+        }
         //
         // This effect will be run in this._runEffects() method.
         //
-        this._effects.zoom = {fn: this._zoomCamera, heap: {distance: distance[0]}};
+        this._effects.zoom = {fn: this._zoomCameraEffect, heap: {fov: endFov.toFixed(), inc: inc}};
     },
 
     /**
@@ -406,9 +433,8 @@ App.Satellite = speculoos.Class({
      * @param {Object} heap Local heap for this method
      * @param {String} effect Name of current effect
      * @private
-     * TODO: this method and _moveCameraRight is too similar
      */
-    _moveCameraLeft: function (heap, effect) {
+    _moveCameraLeftEffect: function (heap, effect) {
         if (this._decreaseDistance(heap, effect)) {
             this.camera.rotation.y += this.delta / 15; // TODO: why 15
         }
@@ -421,7 +447,7 @@ App.Satellite = speculoos.Class({
      * @param {String} effect Name of current effect
      * @private
      */
-    _moveCameraRight: function (heap, effect) {
+    _moveCameraRightEffect: function (heap, effect) {
         if (this._decreaseDistance(heap, effect)) {
             this.camera.rotation.y -= this.delta / 15; // TODO: why 15
         }
@@ -434,15 +460,20 @@ App.Satellite = speculoos.Class({
      * @param {String} effect Name of current effect
      * @private
      */
-    _zoomCamera: function (heap, effect) {
-        if (this._decreaseDistance(heap, effect)) {
-            this.camera.fov -= this.delta * 5; // TODO: Why 5
-            this.camera.updateProjectionMatrix();
+    _zoomCameraEffect: function (heap, effect) {
+        if (this.camera.fov.toFixed() === heap.fov) {
+            delete this._effects[effect];
+            return;
         }
+
+        this.camera.fov += this.delta * heap.inc;
+        this.camera.updateProjectionMatrix();
+        console.log(this.camera.fov);
     },
 
     /**
-     * Decreases distance in a heap object and return true if distance is greater then 0, false otherwise
+     * Decreases distance in a heap object and return true if distance is greater then 0, false otherwise. Main purpose
+     * of this method in removing specified effect at the end of the distance. It calls every time then onAnimate() calls.
      * @param {Object} heap Reference to the heap object with distance property
      * @param {String} effect Name of current effect
      * @return {Boolean}
