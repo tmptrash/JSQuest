@@ -275,7 +275,7 @@ App.Satellite = speculoos.Class({
         this.meshClouds.rotation.z = this._tilt;
         this.scene.add(this.meshClouds);
     },
-
+  
     /**
      * Creates moon mesh and adds it to the scene.
      * @private
