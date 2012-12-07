@@ -62,8 +62,7 @@ App.Terminal = speculoos.Class({
             ['left',    'Info : Moves telescope to the left on X points.\nUsage: left 152'],
             ['right',   'Info : Moves telescope to the right on X points.\nUsage: right 130'],
             ['up',      'Info : Moves telescope to the top on X points.\nUsage: up 42'],
-            ['down',    'Info : Moves telescope to the down on X points.\nUsage: down 72'],
-            ['zoom',    'Info : Zoom telescope in range 1 to 50.\nUsage: zoom 37']
+            ['down',    'Info : Moves telescope to the down on X points.\nUsage: down 72']
         ];
         /**
          * @conf
@@ -103,8 +102,7 @@ App.Terminal = speculoos.Class({
             ['left',  1],
             ['right', 1],
             ['up',    1],
-            ['down',  1],
-            ['zoom',  1]
+            ['down',  1]
         ]);
 
         //
