@@ -31,7 +31,7 @@ App.Satellite = speculoos.Class({
     initPrivates: function () {
         App.Satellite.base.initPrivates.apply(this, arguments);
 
-        var isNumber  = Lib.Helper.isNumber;
+        var isNumber    = Lib.Helper.isNumber;
 
         /**
          * @prop
@@ -367,6 +367,7 @@ App.Satellite = speculoos.Class({
         this._terminal.on('right', this._onRightCmd, this);
         this._terminal.on('up',    this._onUpCmd,    this);
         this._terminal.on('down',  this._onDownCmd,  this);
+        // TODO:
     },
 
     /**

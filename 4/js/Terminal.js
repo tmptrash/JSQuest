@@ -43,6 +43,18 @@
  */
 App.Terminal = speculoos.Class({
     extend: Lib.Terminal,
+    /**
+     * @const
+     * {String} Selector for CSS class of one satellite icon
+     * @private
+     */
+    _satelliteSelector: '.satellite',
+    /**
+     * @const
+     * {String} Path to images
+     * @private
+     */
+    _satelliteImg     : './img/',
 
     /**
      * @constructor
@@ -61,7 +73,8 @@ App.Terminal = speculoos.Class({
             ['left',    'Info : Moves telescope to the left on X points.\nUsage: left 152'],
             ['right',   'Info : Moves telescope to the right on X points.\nUsage: right 130'],
             ['up',      'Info : Moves telescope to the top on X points.\nUsage: up 42'],
-            ['down',    'Info : Moves telescope to the down on X points.\nUsage: down 72']
+            ['down',    'Info : Moves telescope to the down on X points.\nUsage: down 72'],
+            ['connect', 'Info : Connects to specified list of satellites.\nUsage: connect s1 s3']
         ];
         /**
          * @conf
@@ -79,6 +92,11 @@ App.Terminal = speculoos.Class({
          * {HTMLElement} Node of the loader text container
          */
         this.loaderLabelEl = null;
+        /**
+         * @prop
+         * {Array} Array of satellite HTML elements
+         */
+        this.satelliteEls  = [];
 
 
         App.Terminal.base.constructor.call(this, cfg);
@@ -109,6 +127,36 @@ App.Terminal = speculoos.Class({
          * @private
          */
         this._loaderLabelId = Lib.Helper.getId();
+        /**
+         * @prop
+         * {Object} Map of satellites in format: {name: Boolean}, where name - name of satellite, value - connection state
+         * @private
+         */
+        this._satellites    = {s1: false, s2: false, s3: false, s4: false, s5: false};
+    },
+
+    /**
+     * Initializes public fields. You should keep all variables of your class here. Also in case if you
+     * don't initialize it.
+     */
+    initPublics: function () {
+        App.Terminal.base.initPublics.apply(this, arguments);
+
+        /**
+         * @prop
+         * {HTMLElement} HTML element of a loader icon (with earth)
+         */
+        this.loaderEl      = null;
+        /**
+         * @prop
+         * {HTMLElement} HTML element of the loader string container
+         */
+        this.loaderLabelEl = null;
+        /**
+         * @prop
+         * {Array} Array of all satellite HTML containers
+         */
+        this.satelliteEls  = null;
     },
 
     /**
@@ -123,6 +171,7 @@ App.Terminal = speculoos.Class({
         //
         this.loaderEl      = document.getElementById(this._loaderId);
         this.loaderLabelEl = document.getElementById(this._loaderLabelId);
+        this.satelliteEls  = Array.apply(this, document.querySelectorAll(this._satelliteSelector));
         //
         // Here we create all simple command handlers. See this._createSimpleHandlers() for details.
         //
@@ -132,6 +181,8 @@ App.Terminal = speculoos.Class({
             ['up',    1],
             ['down',  1]
         ]);
+
+        this._updateSatelliteIcons();
 
         //
         // We should call parent method here, because we use there div, we created before
@@ -154,6 +205,43 @@ App.Terminal = speculoos.Class({
 
         if (isBusy) {
             this.loaderLabelEl.innerHTML = msg;
+        }
+    },
+
+    /**
+     * Connects this satellite and satellites from the list
+     * @param {Boolean} connect true - we should connect, false otherwise
+     * @param {Array} sats Array of satellite names. e.g.: ['s1', 's3']
+     */
+    connect: function (connect, sats) {
+        var i;
+        var len = sats.length;
+
+        for (i = 0; i < len; i++) {
+            if (this._satellites[sats[i]]) {
+                this._satellites[sats[i]] = connect;
+            }
+        }
+
+        this._updateSatelliteIcons();
+    },
+
+    /**
+     * Updates satellite icons. If satellite is connected, then it should be green. If not - grey.
+     * @private
+     */
+    _updateSatelliteIcons: function () {
+        var sat;
+        var satellites = this._satellites;
+        var satIndex;
+
+        for (sat in satellites) {
+            if (satellites.hasOwnProperty(sat)) {
+                satIndex = parseInt(sat[1], 10);
+                if (Lib.Helper.isNumber(satIndex)) {
+                    this.satelliteEls[satIndex - 1].style['background-image'] = satellites[sat] ? 'url(' + this._satelliteImg + 'satellite.png)' : 'url(' + this._satelliteImg + 'satellite-disabled.png)';
+                }
+            }
         }
     },
 
@@ -216,5 +304,13 @@ App.Terminal = speculoos.Class({
             this.checkArguments(args, command);
             this.fire(command, cmdArgs.slice(1));
         };
+    },
+
+    /**
+     * Connects to the specified list of satellites
+     * @param {Array} args Array of command parameters
+     * @private
+     */
+    _onConnectCmd: function (args) {
     }
 });
