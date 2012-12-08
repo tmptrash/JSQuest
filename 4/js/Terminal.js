@@ -141,16 +141,19 @@ App.Terminal = speculoos.Class({
 
     /**
      * Set terminal to busy state. In this state user can not input the commands
-     * @param {Boolean} busy true to disable terminal, false to enable
+     * @param {String|Boolean} busy true to disable terminal, false to enable. String to set the busy message.
      */
     setBusy: function (busy) {
-        App.Terminal.base.setBusy.apply(this, arguments);
+        var msg    = Lib.Helper.isString(busy) ? busy : 'Working...';
+        var isBusy = Lib.Helper.isString(busy) || busy;
 
-        this.loaderEl.style.visibility      = busy ? 'visible' : 'hidden';
-        this.loaderLabelEl.style.visibility = busy ? 'visible' : 'hidden';
+        App.Terminal.base.setBusy.apply(this, [isBusy]);
 
-        if (busy) {
-            this.loaderLabelEl.innerHTML = 'Loading...';
+        this.loaderEl.style.visibility      = isBusy ? 'visible' : 'hidden';
+        this.loaderLabelEl.style.visibility = isBusy ? 'visible' : 'hidden';
+
+        if (isBusy) {
+            this.loaderLabelEl.innerHTML = msg;
         }
     },
 

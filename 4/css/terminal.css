@@ -4,7 +4,7 @@
  */
 .satellite-ct {
     width           : 490px;
-    height          : 446px;
+    height          : 466px;
     position        : absolute;
     font            : 14px monospace;
     right           : 5px;
@@ -29,8 +29,8 @@
  */
 .loader {
     position        : relative;
-    top             : 224px;
-    left            : -4px;
+    top             : 244px;
+    left            : 16px;
     width           : 32px;
     height          : 32px;
     float           : left;
@@ -42,8 +42,8 @@
  */
 .loader-label {
     position        : relative;
-    top             : 224px;
-    left            : 10px;
+    top             : 244px;
+    left            : 36px;
     width           : 400px;
     height          : 32px;
     float           : left;
