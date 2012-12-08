@@ -176,10 +176,11 @@ App.Terminal = speculoos.Class({
         // Here we create all simple command handlers. See this._createSimpleHandlers() for details.
         //
         this._createSimpleHandlers([
-            ['left',  1],
-            ['right', 1],
-            ['up',    1],
-            ['down',  1]
+            ['left',    1],
+            ['right',   1],
+            ['up',      1],
+            ['down',    1],
+            ['connect', null]
         ]);
 
         this._updateSatelliteIcons();
@@ -215,8 +216,13 @@ App.Terminal = speculoos.Class({
      */
     connect: function (connect, sats) {
         var i;
-        var len = sats.length;
+        var len;
 
+        //
+        // If satellites are not set, we take all of them
+        //
+        sats = Lib.Helper.isArray(sats) ? sats : ['s1', 's2', 's3', 's4', 's5'];
+        len  = sats.length;
         for (i = 0; i < len; i++) {
             if (this._satellites[sats[i]]) {
                 this._satellites[sats[i]] = connect;
@@ -296,21 +302,15 @@ App.Terminal = speculoos.Class({
      * Creates simple handler for specified command. This handler checks amount of arguments
      * and throws an exception in case of wrong amount. Also, it fires an event.
      * @param {String} command Name of the command in console
-     * @param {Number} args    Amount of arguments for command
+     * @param {Number|null} args Amount of arguments for command or null if no need to check arguments
      * @private
      */
     _createSimpleHandler: function (command, args) {
         this[Lib.Helper.createCmdHandlerName(command)] = function (cmdArgs) {
-            this.checkArguments(args, command);
+            if (args !== null) {
+                this.checkArguments(args, command);
+            }
             this.fire(command, cmdArgs.slice(1));
         };
     },
-
-    /**
-     * Connects to the specified list of satellites
-     * @param {Array} args Array of command parameters
-     * @private
-     */
-    _onConnectCmd: function (args) {
-    }
 });

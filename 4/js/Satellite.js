@@ -210,7 +210,7 @@ App.Satellite = speculoos.Class({
      * @private
      */
     _createSpheresGeometry: function () {
-        this.sphereGeometry = new THREE.SphereGeometry(this._radius, 100, 50);
+        this.sphereGeometry = new THREE.SphereGeometry(this._radius, 100, 100);
         this.sphereGeometry.computeTangents();
     },
 
@@ -363,10 +363,11 @@ App.Satellite = speculoos.Class({
             user: 'root',
             host: 'kepler'
         });
-        this._terminal.on('left',  this._onLeftCmd,  this);
-        this._terminal.on('right', this._onRightCmd, this);
-        this._terminal.on('up',    this._onUpCmd,    this);
-        this._terminal.on('down',  this._onDownCmd,  this);
+        this._terminal.on('left',    this._onLeftCmd,    this);
+        this._terminal.on('right',   this._onRightCmd,   this);
+        this._terminal.on('up',      this._onUpCmd,      this);
+        this._terminal.on('down',    this._onDownCmd,    this);
+        this._terminal.on('connect', this._onConnectCmd, this);
         // TODO:
     },
 
@@ -427,6 +428,19 @@ App.Satellite = speculoos.Class({
     },
 
     /**
+     * Handler of connect command. It checks if the earth in a view region, then it calls
+     * connect() method from terminal instance. Satellite names should be in format 's' + X, where 1 <= X <= 5
+     * @param {Array} args Arguments passed to the command
+     * @private
+     */
+    _onConnectCmd: function (args) {
+        if (this._earthVisible()) {
+            this._terminal.connect(true, args);
+            this._effects.connection = {fn: this._connectionEffect, heap: {}};
+        }
+    },
+
+    /**
      * Moves camera to the left and decrease the distance on 1. It works with the local heap's
      * property - distance.
      * @param {Object} heap Local heap for this method
@@ -477,6 +491,26 @@ App.Satellite = speculoos.Class({
             this.camera.rotation.x -= this.delta * this._moveSpeed;
         }
     },
+
+    /**
+     * Checks if the earth is visible from our satellite. If it invisible, effect will be removed (stopped)
+     * @param {Object} heap Local heap for this method
+     * @param {String} effect Name of current effect
+     * @private
+     */
+    _connectionEffect: function (heap, effect) {
+        if (!this._earthVisible()) {
+            delete this._effects[effect];
+            this._terminal.connect(false);
+        }
+    },
+
+    /**
+     * Return true if the earth is visible. It means that the earth are before the camera.
+     * @return {Boolean}
+     * @private
+     */
+    _earthVisible: function () {},
 
     /**
      * Decreases distance in a heap object and return true if distance is greater then 0, false otherwise. Main purpose
