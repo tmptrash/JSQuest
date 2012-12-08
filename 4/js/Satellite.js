@@ -380,6 +380,7 @@ App.Satellite = speculoos.Class({
         // This effect will be run in this._runEffects() method.
         //
         this._effects.moveLeft = {fn: this._moveCameraLeftEffect, heap: {distance: args[0]}};
+        this._terminal.setBusy(true);
     },
 
     /**
@@ -393,6 +394,7 @@ App.Satellite = speculoos.Class({
         // This effect will be run in this._runEffects() method.
         //
         this._effects.moveRight = {fn: this._moveCameraRightEffect, heap: {distance: args[0]}};
+        this._terminal.setBusy(true);
     },
 
     /**
@@ -406,6 +408,7 @@ App.Satellite = speculoos.Class({
         // This effect will be run in this._runEffects() method.
         //
         this._effects.moveUp = {fn: this._moveCameraUpEffect, heap: {distance: args[0]}};
+        this._terminal.setBusy(true);
     },
 
     /**
@@ -419,6 +422,7 @@ App.Satellite = speculoos.Class({
         // This effect will be run in this._runEffects() method.
         //
         this._effects.moveDown = {fn: this._moveCameraDownEffect, heap: {distance: args[0]}};
+        this._terminal.setBusy(true);
     },
 
     /**
@@ -484,6 +488,7 @@ App.Satellite = speculoos.Class({
     _decreaseDistance: function (heap, effect) {
         if (heap.distance < 0) {
             delete this._effects[effect];
+            this._terminal.setBusy(false);
         } else {
             heap.distance--;
         }

@@ -148,6 +148,10 @@ App.Terminal = speculoos.Class({
 
         this.loaderEl.style.visibility      = busy ? 'visible' : 'hidden';
         this.loaderLabelEl.style.visibility = busy ? 'visible' : 'hidden';
+
+        if (busy) {
+            this.loaderLabelEl.innerHTML = 'Loading...';
+        }
     },
 
     /**
