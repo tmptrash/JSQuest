@@ -23,7 +23,6 @@
  *     right      x                 Move telescope to the right to x points
  *     up         x                 Move telescope to the top to x points
  *     down       x                 Move telescope to the down to x points
- *     zoom       x                 Zoom telescope (0 < x < 50) This is just moves camera by z axes
  *     connect    s1...sx           Connects to specified list of satellites (s1...sx - satellites)
  *     disconnect s1...sx           Disconnects from the list of satellites (s1...sx - satellites)
  *     remove     db1...dbx         Remove specified list of databases (db1...dbx - database names)
@@ -58,7 +57,7 @@ App.Terminal = speculoos.Class({
          * @conf
          * {Array} Only this class knows about it's commands
          */
-        cfg.commands = [
+        cfg.commands       = [
             ['left',    'Info : Moves telescope to the left on X points.\nUsage: left 152'],
             ['right',   'Info : Moves telescope to the right on X points.\nUsage: right 130'],
             ['up',      'Info : Moves telescope to the top on X points.\nUsage: up 42'],
@@ -68,7 +67,18 @@ App.Terminal = speculoos.Class({
          * @conf
          * {String} Id of a text area with console. We should pass it to a Console library.
          */
-        cfg.id       = Lib.Helper.md5((new Date()).toString());
+        cfg.id             = Lib.Helper.getId();
+
+        /**
+         * @prop
+         * {HTMLElement} Node of the loader container
+         */
+        this.loaderEl      = null;
+        /**
+         * @prop
+         * {HTMLElement} Node of the loader text container
+         */
+        this.loaderLabelEl = null;
 
 
         App.Terminal.base.constructor.call(this, cfg);
@@ -86,7 +96,19 @@ App.Terminal = speculoos.Class({
          * {HTMLElement} Reference to the HTML node of element, where we will add terminal container
          * @private
          */
-        this._parent = Lib.Helper.isElement(this.cfg.parent) ? this.cfg.parent : document.body;
+        this._parent        = Lib.Helper.isElement(this.cfg.parent) ? this.cfg.parent : document.body;
+        /**
+         * @prop
+         * {String} HTML id of the loader node
+         * @private
+         */
+        this._loaderId      = Lib.Helper.getId();
+        /**
+         * @prop
+         * {String} HTML id of the loader text node
+         * @private
+         */
+        this._loaderLabelId = Lib.Helper.getId();
     },
 
     /**
@@ -95,6 +117,12 @@ App.Terminal = speculoos.Class({
      */
     init: function () {
         this._createHtml();
+
+        //
+        // HTML nodes init
+        //
+        this.loaderEl      = document.getElementById(this._loaderId);
+        this.loaderLabelEl = document.getElementById(this._loaderLabelId);
         //
         // Here we create all simple command handlers. See this._createSimpleHandlers() for details.
         //
@@ -109,6 +137,17 @@ App.Terminal = speculoos.Class({
         // We should call parent method here, because we use there div, we created before
         //
         App.Terminal.base.init.apply(this, arguments);
+    },
+
+    /**
+     * Set terminal to busy state. In this state user can not input the commands
+     * @param {Boolean} busy true to disable terminal, false to enable
+     */
+    setBusy: function (busy) {
+        App.Terminal.base.setBusy.apply(this, arguments);
+
+        this.loaderEl.style.visibility      = busy ? 'visible' : 'hidden';
+        this.loaderLabelEl.style.visibility = busy ? 'visible' : 'hidden';
     },
 
     /**
@@ -132,11 +171,13 @@ App.Terminal = speculoos.Class({
         container.className = 'satellite-ct';
         container.innerHTML =
             '<div class="satellite"></div>' +
-                '<div class="satellite"></div>' +
-                '<div class="satellite"></div>' +
-                '<div class="satellite"></div>' +
-                '<div class="satellite"></div>' +
-                '<textarea id="' + this.cfg.id + '" class="terminal" rows="6" cols="10"></textarea>';
+            '<div class="satellite"></div>' +
+            '<div class="satellite"></div>' +
+            '<div class="satellite"></div>' +
+            '<div class="satellite"></div>' +
+            '<textarea id="' + this.cfg.id + '" class="terminal" rows="6" cols="10"></textarea>' +
+            '<div id="' + this._loaderId + '" class="loader"></div>'    +
+            '<div id="' + this._loaderLabelId + '"class="loader-label"></div>';
 
         this._parent.appendChild(container);
     },
