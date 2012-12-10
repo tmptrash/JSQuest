@@ -4,12 +4,12 @@
  */
 .satellite-ct {
     width           : 490px;
-    height          : 410px;
+    height          : 466px;
     position        : absolute;
     font            : 14px monospace;
     right           : 5px;
     top             : 50%;
-    margin-top      : -200px;
+    margin-top      : -223px;
 }
 
 /**
@@ -25,6 +25,35 @@
 }
 
 /**
+ * Style for loader container
+ */
+.loader {
+    position        : relative;
+    top             : 244px;
+    left            : 16px;
+    width           : 32px;
+    height          : 32px;
+    float           : left;
+    visibility      : hidden;
+    background-image: url(./../img/loader.gif);
+}
+/**
+ * Style for loader label
+ */
+.loader-label {
+    position        : relative;
+    top             : 244px;
+    left            : 36px;
+    width           : 400px;
+    height          : 32px;
+    float           : left;
+    padding-top     : 6px;
+    text-align      : left;
+    color           : #777777;
+    visibility      : hidden;
+}
+
+/**
  * Style for Terminal console
  */
 .terminal {
@@ -35,7 +64,7 @@
     font            : 14px monospace;
     right           : 5px;
     top             : 50%;
-    margin-top      : -200px;
+    margin-top      : -223px;
     font-weight     : bold;
     background-color: #000;
     color           : #AAA;

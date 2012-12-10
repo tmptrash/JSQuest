@@ -8,6 +8,7 @@
  *          {Number} rotationRadius Rotation radius of earth
  *          {Number} cloudsScale    Clouds scale
  *          {Number} moonScale      Moon scale
+ *          {Number} moveSpeed      Camera speed coefficient
  *
  * @author DeadbraiN
  * @email deadbrainman@gmail.com
@@ -30,7 +31,7 @@ App.Satellite = speculoos.Class({
     initPrivates: function () {
         App.Satellite.base.initPrivates.apply(this, arguments);
 
-        var isNumber  = Lib.Helper.isNumber;
+        var isNumber    = Lib.Helper.isNumber;
 
         /**
          * @prop
@@ -44,13 +45,7 @@ App.Satellite = speculoos.Class({
          * TODO: remove this. We use camera.fov for zooming.
          * @private
          */
-        this._cameraRadius = 200;
-        /**
-         * @const
-         * {Array} Minimum and maximum in zooming
-         * @private
-         */
-        this._zoomRange = [5, 60];
+        this._zoom      = 3;
         /**
          * @prop
          * {Object} Map of custom effect objects in format: {effect: {fn:Function, obj:Object},...}.
@@ -84,9 +79,9 @@ App.Satellite = speculoos.Class({
              */
             moonScale    : [isNumber, 0.23 ],
             /**
-             * {Number} Speed of zooming
+             * {Number} Speed of the camera
              */
-            zoomSpeed    : [isNumber, 5    ]
+            moveSpeed    : [isNumber, 0.066]
         });
     },
 
@@ -136,7 +131,7 @@ App.Satellite = speculoos.Class({
     init: function () {
         App.Satellite.base.init.apply(this, arguments);
 
-        this.camera.position.z = this._radius * this._cameraRadius; // Camera
+        this.camera.position.z = this._radius * this._zoom; // Camera
         this.light.position.set(-1, 0, 1).normalize();      // Light
         this._createSpheresGeometry();                      // Spheres geometry
         this._createPlanetMesh();                           // Earth
@@ -188,10 +183,10 @@ App.Satellite = speculoos.Class({
         // Rotates the camera
         //
         this.cameraAngle += Math.PI / 360 * this.delta;
-        camera.position.x = this._radius * this._cameraRadius * Math.cos(this.cameraAngle);
-        camera.position.z = this._radius * this._cameraRadius * Math.sin(this.cameraAngle);
+        camera.position.x = this._radius * this._zoom * Math.cos(this.cameraAngle);
+        camera.position.z = this._radius * this._zoom * Math.sin(this.cameraAngle);
         // TODO:
-        camera.lookAt(this.meshPlanet.position);
+        //camera.lookAt(this.meshPlanet.position);
     },
 
     /**
@@ -215,7 +210,7 @@ App.Satellite = speculoos.Class({
      * @private
      */
     _createSpheresGeometry: function () {
-        this.sphereGeometry = new THREE.SphereGeometry(this._radius, 100, 50);
+        this.sphereGeometry = new THREE.SphereGeometry(this._radius, 100, 100);
         this.sphereGeometry.computeTangents();
     },
 
@@ -368,15 +363,18 @@ App.Satellite = speculoos.Class({
             user: 'root',
             host: 'kepler'
         });
-        this._terminal.on('left', this._onLeftCmd, this);
-        this._terminal.on('right', this._onRightCmd, this);
-        this._terminal.on('zoom', this._onZoomCmd, this);
+        this._terminal.on('left',    this._onLeftCmd,    this);
+        this._terminal.on('right',   this._onRightCmd,   this);
+        this._terminal.on('up',      this._onUpCmd,      this);
+        this._terminal.on('down',    this._onDownCmd,    this);
+        this._terminal.on('connect', this._onConnectCmd, this);
+        // TODO:
     },
 
     /**
      * Handler of left command. It moves telescope smoothly from current position
      * to the left on distance points.
-     * @param {Array} args Arguments passed to zoom command
+     * @param {Array} args Arguments passed to left command
      * @private
      */
     _onLeftCmd: function (args) {
@@ -384,12 +382,13 @@ App.Satellite = speculoos.Class({
         // This effect will be run in this._runEffects() method.
         //
         this._effects.moveLeft = {fn: this._moveCameraLeftEffect, heap: {distance: args[0]}};
+        this._terminal.setBusy(true);
     },
 
     /**
      * Handler of right command. It moves telescope smoothly from current position
      * to the right on x points.
-     * @param {Array} args Arguments passed to zoom command
+     * @param {Array} args Arguments passed to right command
      * @private
      */
     _onRightCmd: function (args) {
@@ -397,34 +396,48 @@ App.Satellite = speculoos.Class({
         // This effect will be run in this._runEffects() method.
         //
         this._effects.moveRight = {fn: this._moveCameraRightEffect, heap: {distance: args[0]}};
+        this._terminal.setBusy(true);
     },
 
     /**
-     * Handler of zoom command. It zooms telescope smoothly.
-     * @param {Array} args Arguments passed to zoom command
+     * Handler of up command. It moves telescope smoothly from current position
+     * upper on x points.
+     * @param {Array} args Arguments passed to up command
      * @private
      */
-    _onZoomCmd: function (args) {
-        var zoom   = args[0];
-        var fov    = this.camera.fov;
-        var endFov = this._zoomRange[1] - zoom;
-        var inc;
-
-        //
-        // zoom value must be in our range
-        //
-        zoom = Math.min(zoom, this._zoomRange[1]);
-        zoom = Math.max(zoom, this._zoomRange[0]);
-
-        if (fov < endFov) {
-            inc = 5;
-        } else {
-            inc = -5;
-        }
+    _onUpCmd: function (args) {
         //
         // This effect will be run in this._runEffects() method.
         //
-        this._effects.zoom = {fn: this._zoomCameraEffect, heap: {fov: endFov.toFixed(), inc: inc}};
+        this._effects.moveUp = {fn: this._moveCameraUpEffect, heap: {distance: args[0]}};
+        this._terminal.setBusy(true);
+    },
+
+    /**
+     * Handler of down command. It moves telescope smoothly from current position
+     * to the down on x points.
+     * @param {Array} args Arguments passed to down command
+     * @private
+     */
+    _onDownCmd: function (args) {
+        //
+        // This effect will be run in this._runEffects() method.
+        //
+        this._effects.moveDown = {fn: this._moveCameraDownEffect, heap: {distance: args[0]}};
+        this._terminal.setBusy(true);
+    },
+
+    /**
+     * Handler of connect command. It checks if the earth in a view region, then it calls
+     * connect() method from terminal instance. Satellite names should be in format 's' + X, where 1 <= X <= 5
+     * @param {Array} args Arguments passed to the command
+     * @private
+     */
+    _onConnectCmd: function (args) {
+        if (this._earthVisible()) {
+            this._terminal.connect(true, args);
+            this._effects.connection = {fn: this._connectionEffect, heap: {}};
+        }
     },
 
     /**
@@ -436,7 +449,7 @@ App.Satellite = speculoos.Class({
      */
     _moveCameraLeftEffect: function (heap, effect) {
         if (this._decreaseDistance(heap, effect)) {
-            this.camera.rotation.y += this.delta / 15; // TODO: why 15
+            this.camera.rotation.y += this.delta * this._moveSpeed;
         }
     },
 
@@ -449,27 +462,55 @@ App.Satellite = speculoos.Class({
      */
     _moveCameraRightEffect: function (heap, effect) {
         if (this._decreaseDistance(heap, effect)) {
-            this.camera.rotation.y -= this.delta / 15; // TODO: why 15
+            this.camera.rotation.y -= this.delta * this._moveSpeed;
         }
     },
 
     /**
-     * Zooms camera and decreases the distance on 1. It works with the local heap's
+     * Moves camera upper and decrease the distance on 1. It works with the local heap's
      * property - distance.
      * @param {Object} heap Local heap for this method
      * @param {String} effect Name of current effect
      * @private
      */
-    _zoomCameraEffect: function (heap, effect) {
-        if (this.camera.fov.toFixed() === heap.fov) {
-            delete this._effects[effect];
-            return;
+    _moveCameraUpEffect: function (heap, effect) {
+        if (this._decreaseDistance(heap, effect)) {
+            this.camera.rotation.x += this.delta * this._moveSpeed;
         }
-
-        this.camera.fov += this.delta * heap.inc;
-        this.camera.updateProjectionMatrix();
-        console.log(this.camera.fov);
     },
+
+    /**
+     * Moves camera to the down and decrease the distance on 1. It works with the local heap's
+     * property - distance.
+     * @param {Object} heap Local heap for this method
+     * @param {String} effect Name of current effect
+     * @private
+     */
+    _moveCameraDownEffect: function (heap, effect) {
+        if (this._decreaseDistance(heap, effect)) {
+            this.camera.rotation.x -= this.delta * this._moveSpeed;
+        }
+    },
+
+    /**
+     * Checks if the earth is visible from our satellite. If it invisible, effect will be removed (stopped)
+     * @param {Object} heap Local heap for this method
+     * @param {String} effect Name of current effect
+     * @private
+     */
+    _connectionEffect: function (heap, effect) {
+        if (!this._earthVisible()) {
+            delete this._effects[effect];
+            this._terminal.connect(false);
+        }
+    },
+
+    /**
+     * Return true if the earth is visible. It means that the earth are before the camera.
+     * @return {Boolean}
+     * @private
+     */
+    _earthVisible: function () {},
 
     /**
      * Decreases distance in a heap object and return true if distance is greater then 0, false otherwise. Main purpose
@@ -482,6 +523,7 @@ App.Satellite = speculoos.Class({
     _decreaseDistance: function (heap, effect) {
         if (heap.distance < 0) {
             delete this._effects[effect];
+            this._terminal.setBusy(false);
         } else {
             heap.distance--;
         }
