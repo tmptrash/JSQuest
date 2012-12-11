@@ -511,7 +511,7 @@ App.Satellite = speculoos.Class({
      * @private
      */
     _earthVisible: function () {
-        return Lib.Helper.isObjectVisible(this.meshPlanet, this._radius, this.camera, this.renderer.domElement);
+        return Lib.Helper.isObjectVisible(this.meshPlanet.position, this._radius, this.camera, this.renderer.domElement);
     },
 
     /**
