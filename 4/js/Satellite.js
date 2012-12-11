@@ -510,7 +510,9 @@ App.Satellite = speculoos.Class({
      * @return {Boolean}
      * @private
      */
-    _earthVisible: function () {},
+    _earthVisible: function () {
+        return Lib.Helper.isObjectVisible(this.meshPlanet, this._radius, this.camera, this.renderer.domElement);
+    },
 
     /**
      * Decreases distance in a heap object and return true if distance is greater then 0, false otherwise. Main purpose
