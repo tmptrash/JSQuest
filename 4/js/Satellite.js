@@ -31,28 +31,40 @@ App.Satellite = speculoos.Class({
     initPrivates: function () {
         App.Satellite.base.initPrivates.apply(this, arguments);
 
-        var isNumber    = Lib.Helper.isNumber;
+        var isNumber     = Lib.Helper.isNumber;
 
         /**
          * @prop
          * {HTMLElement} HTML element of the terminal <div> tag
          * @private
          */
-        this._terminal  = null;
+        this._terminal   = null;
         /**
          * @prop
          * {Number} Camera radius. Distance from the telescope to the earth. In range 2..50
          * TODO: remove this. We use camera.fov for zooming.
          * @private
          */
-        this._zoom      = 3;
+        this._zoom       = 3;
         /**
          * @prop
          * {Object} Map of custom effect objects in format: {effect: {fn:Function, obj:Object},...}.
          * Effect examples: smooth camera moving of zooming. Functions should be from this class.
          * @private
          */
-        this._effects   = {};
+        this._effects    = {};
+        /**
+         * @prop
+         * {THREE.Frustum} View zone of the camera
+         * @private
+         */
+        this._frustum    = new THREE.Frustum();
+        /**
+         * @prop
+         * {THREE.Matrix4} Helper matrix for checks if object is in visible zone
+         * @private
+         */
+        this._frustumMat = new THREE.Matrix4();
 
         //
         // Parameters, created from configuration
@@ -511,7 +523,8 @@ App.Satellite = speculoos.Class({
      * @private
      */
     _earthVisible: function () {
-        return Lib.Helper.isObjectVisible(this.meshPlanet.position, this._radius, this.camera, this.renderer.domElement);
+        this._frustum.setFromMatrix(this._frustumMat.multiply(this.camera.projectionMatrix, this.camera.matrixWorldInverse));
+        return this._frustum.contains(this.meshPlanet);
     },
 
     /**
