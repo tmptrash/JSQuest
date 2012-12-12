@@ -61,7 +61,7 @@ App.Terminal = speculoos.Class({
         var filesFilders = this._fs.getList();
 
         filesFilders.unshift('..');
-        Console.WriteLine(filesFilders.join('\n'));
+        this.console.WriteLine(filesFilders.join('\n'));
     },
 
     /**

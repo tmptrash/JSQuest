@@ -212,6 +212,23 @@ App.Terminal = speculoos.Class({
     },
 
     /**
+     * Returns true if at least one connection was established
+     * @return {Boolean}
+     */
+    hasConnections: function () {
+        var sat;
+        var sats = this._satellites;
+
+        for (sat in sats) {
+            if (sats.hasOwnProperty(sat) && sats[sat]) {
+                return true;
+            }
+        }
+
+        return false;
+    },
+
+    /**
      * Connects this satellite and satellites from the list
      * @param {Boolean} connect true - we should connect, false otherwise
      * @param {Array} sats Array of satellite names. e.g.: ['s1', 's3']

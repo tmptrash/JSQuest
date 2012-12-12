@@ -31,40 +31,46 @@ App.Satellite = speculoos.Class({
     initPrivates: function () {
         App.Satellite.base.initPrivates.apply(this, arguments);
 
-        var isNumber     = Lib.Helper.isNumber;
+        var isNumber        = Lib.Helper.isNumber;
 
         /**
          * @prop
          * {HTMLElement} HTML element of the terminal <div> tag
          * @private
          */
-        this._terminal   = null;
+        this._terminal      = null;
         /**
          * @prop
          * {Number} Camera radius. Distance from the telescope to the earth. In range 2..50
          * TODO: remove this. We use camera.fov for zooming.
          * @private
          */
-        this._zoom       = 3;
+        this._zoom          = 3;
         /**
          * @prop
          * {Object} Map of custom effect objects in format: {effect: {fn:Function, obj:Object},...}.
          * Effect examples: smooth camera moving of zooming. Functions should be from this class.
          * @private
          */
-        this._effects    = {};
+        this._effects       = {};
         /**
          * @prop
          * {THREE.Frustum} View zone of the camera
          * @private
          */
-        this._frustum    = new THREE.Frustum();
+        this._frustum       = new THREE.Frustum();
         /**
          * @prop
          * {THREE.Matrix4} Helper matrix for checks if object is in visible zone
          * @private
          */
-        this._frustumMat = new THREE.Matrix4();
+        this._frustumMat    = new THREE.Matrix4();
+        /**
+         * @prop
+         * {Boolean} true if disconnection process is active at the moment
+         * @private
+         */
+        this._disconnecting = false;
 
         //
         // Parameters, created from configuration
@@ -197,8 +203,6 @@ App.Satellite = speculoos.Class({
         this.cameraAngle += Math.PI / 360 * this.delta;
         camera.position.x = this._radius * this._zoom * Math.cos(this.cameraAngle);
         camera.position.z = this._radius * this._zoom * Math.sin(this.cameraAngle);
-        // TODO:
-        //camera.lookAt(this.meshPlanet.position);
     },
 
     /**
@@ -452,8 +456,8 @@ App.Satellite = speculoos.Class({
      */
     _onConnectCmd: function (args) {
         if (this._earthVisible()) {
+            this._effects.connect = {fn: this._connectEffect, heap: {period: 3, timer: new THREE.Clock(true), sats: args}};
             this._terminal.setBusy('Connecting...');
-            this._effects.connect = {fn: this._connectEffect, heap: {distance: 3, sats: args}};
         }
     },
 
@@ -464,10 +468,19 @@ App.Satellite = speculoos.Class({
      * @private
      */
     _onDisconnectCmd: function (args) {
-        if (this._earthVisible()) {
-            this._terminal.setBusy('Disconnecting...');
-            this._effects.disconnect = {fn: this._disconnectEffect, heap: {distance: 3, sats: args}};
+        if (this._earthVisible() && !this._disconnecting) {
+            this._disconnect(args);
         }
+    },
+
+    /**
+     * Disconnects specified satellites from current
+     * @param {Array|undefined} args List of satellites to disconnect or undefined for all satellites
+     * @private
+     */
+    _disconnect: function (args) {
+        this._effects.disconnect = {fn: this._disconnectEffect, heap: {period: 3, timer: new THREE.Clock(true), sats: args}};
+        this._terminal.setBusy('Disconnecting...');
     },
 
     /**
@@ -478,7 +491,7 @@ App.Satellite = speculoos.Class({
      * @private
      */
     _moveCameraLeftEffect: function (heap, effect) {
-        if (this._decreaseDistance(heap, effect)) {
+        if (this._continueDistanceEffect(heap, effect)) {
             this.camera.rotation.y += this.delta * this._moveSpeed;
         }
     },
@@ -491,7 +504,7 @@ App.Satellite = speculoos.Class({
      * @private
      */
     _moveCameraRightEffect: function (heap, effect) {
-        if (this._decreaseDistance(heap, effect)) {
+        if (this._continueDistanceEffect(heap, effect)) {
             this.camera.rotation.y -= this.delta * this._moveSpeed;
         }
     },
@@ -504,7 +517,7 @@ App.Satellite = speculoos.Class({
      * @private
      */
     _moveCameraUpEffect: function (heap, effect) {
-        if (this._decreaseDistance(heap, effect)) {
+        if (this._continueDistanceEffect(heap, effect)) {
             this.camera.rotation.x += this.delta * this._moveSpeed;
         }
     },
@@ -517,7 +530,7 @@ App.Satellite = speculoos.Class({
      * @private
      */
     _moveCameraDownEffect: function (heap, effect) {
-        if (this._decreaseDistance(heap, effect)) {
+        if (this._continueDistanceEffect(heap, effect)) {
             this.camera.rotation.x -= this.delta * this._moveSpeed;
         }
     },
@@ -529,7 +542,7 @@ App.Satellite = speculoos.Class({
      * @private
      */
     _connectEffect: function (heap, effect) {
-        if (!this._decreaseDistance(heap, effect, true)) {
+        if (!this._continueTimerEffect(heap, effect)) {
             this._terminal.connect(true, heap.sats);
         }
     },
@@ -541,8 +554,11 @@ App.Satellite = speculoos.Class({
      * @private
      */
     _disconnectEffect: function (heap, effect) {
-        if (!this._decreaseDistance(heap, effect, true)) {
+        if (!this._continueTimerEffect(heap, effect, true)) {
             this._terminal.connect(false, heap.sats);
+            this._terminal.console.WriteLine('Satellites have disconnected');
+            this._terminal.console.showUserLine();
+            this._disconnecting = false;
         }
     },
 
@@ -553,10 +569,9 @@ App.Satellite = speculoos.Class({
      * @private
      */
     _checkConnectionEffect: function (heap, effect) {
-        if (!this._earthVisible() && this._effects.connect) {
-            this._terminal.connect(false);
-            delete this._effects.connect;
-            this._terminal.setBusy(false);
+        if (!this._earthVisible() && this._terminal.hasConnections() && !this._disconnecting) {
+            this._disconnect();
+            this._disconnecting = true;
         }
     },
 
@@ -576,20 +591,41 @@ App.Satellite = speculoos.Class({
      * of this method in removing specified effect at the end of the distance. It calls every time then onAnimate() calls.
      * @param {Object} heap Reference to the heap object with distance property
      * @param {String} effect Name of current effect
-     * @param {Number} useDelta true to use this.delta as a decrement
-     * @return {Boolean}
+     * @return {Boolean} true - means that effect should be continued, false - otherwise.
      * @private
      */
-    _decreaseDistance: function (heap, effect, useDelta) {
-        console.log(this.delta);
-        heap.distance -= (useDelta ? this.delta : 1);
+    _continueDistanceEffect: function (heap, effect) {
+        if (heap.distance === 0) {
+            this._stopEffect(effect);
+            return false;
+        }
+        heap.distance--;
 
-        if (heap.distance <= 0) {
-            delete this._effects[effect];
-            this._terminal.setBusy(false);
+        return true;
+    },
+
+    /**
+     * Checks if started, at the moment of the effect begin, timer is expired. It uses period and start
+     * properties from the heap
+     * @return {Boolean} true - means that effect should be continued, false - otherwise.
+     * @private
+     */
+    _continueTimerEffect: function (heap, effect) {
+        if (heap.timer.getElapsedTime() > heap.period) {
+            this._stopEffect(effect);
             return false;
         }
 
         return true;
+    },
+
+    /**
+     * Stops specified effect. Removes it from the list of effects and set terminal to unbusy state.
+     * @param {String} effect Name of the effect
+     * @private
+     */
+    _stopEffect: function (effect) {
+        delete this._effects[effect];
+        this._terminal.setBusy(false);
     }
 });
