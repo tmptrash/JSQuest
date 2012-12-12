@@ -375,11 +375,17 @@ App.Satellite = speculoos.Class({
             user: 'root',
             host: 'kepler'
         });
-        this._terminal.on('left',    this._onLeftCmd,    this);
-        this._terminal.on('right',   this._onRightCmd,   this);
-        this._terminal.on('up',      this._onUpCmd,      this);
-        this._terminal.on('down',    this._onDownCmd,    this);
-        this._terminal.on('connect', this._onConnectCmd, this);
+        this._terminal.on('left',       this._onLeftCmd,       this);
+        this._terminal.on('right',      this._onRightCmd,      this);
+        this._terminal.on('up',         this._onUpCmd,         this);
+        this._terminal.on('down',       this._onDownCmd,       this);
+        this._terminal.on('connect',    this._onConnectCmd,    this);
+        this._terminal.on('disconnect', this._onDisconnectCmd, this);
+
+        //
+        // Make demon effects. They work every time
+        //
+        this._effects.checkConnection = {fn: this._checkConnectionEffect, heap: {}};
     },
 
     /**
@@ -440,14 +446,27 @@ App.Satellite = speculoos.Class({
 
     /**
      * Handler of connect command. It checks if the earth in a view region, then it calls
-     * connect() method from terminal instance. Satellite names should be in format 's' + X, where 1 <= X <= 5
+     * connect(true) method from terminal instance. Satellite names should be in format 's' + X, where 1 <= X <= 5
      * @param {Array} args Arguments passed to the command
      * @private
      */
     _onConnectCmd: function (args) {
         if (this._earthVisible()) {
-            this._terminal.connect(true, args);
-            this._effects.connection = {fn: this._connectionEffect, heap: {}};
+            this._terminal.setBusy('Connecting...');
+            this._effects.connect = {fn: this._connectEffect, heap: {distance: 3, sats: args}};
+        }
+    },
+
+    /**
+     * Handler of disconnect command. It checks if the earth in a view region, then it calls
+     * connect(false) method from terminal instance. Satellite names should be in format 's' + X, where 1 <= X <= 5
+     * @param {Array} args Arguments passed to the command
+     * @private
+     */
+    _onDisconnectCmd: function (args) {
+        if (this._earthVisible()) {
+            this._terminal.setBusy('Disconnecting...');
+            this._effects.disconnect = {fn: this._disconnectEffect, heap: {distance: 3, sats: args}};
         }
     },
 
@@ -504,15 +523,40 @@ App.Satellite = speculoos.Class({
     },
 
     /**
+     * Effect of the connection to the satellites. It calls every time in onAnimate() method (on every frame).
+     * @param {Object} heap Local heap for this method. It contains period property.
+     * @param {String} effect Name of current effect
+     * @private
+     */
+    _connectEffect: function (heap, effect) {
+        if (!this._decreaseDistance(heap, effect, true)) {
+            this._terminal.connect(true, heap.sats);
+        }
+    },
+
+    /**
+     * Effect of the disconnection with satellites. It calls every time in onAnimate() method (on every frame).
+     * @param {Object} heap Local heap for this method. It contains period property.
+     * @param {String} effect Name of current effect
+     * @private
+     */
+    _disconnectEffect: function (heap, effect) {
+        if (!this._decreaseDistance(heap, effect, true)) {
+            this._terminal.connect(false, heap.sats);
+        }
+    },
+
+    /**
      * Checks if the earth is visible from our satellite. If it invisible, effect will be removed (stopped)
      * @param {Object} heap Local heap for this method
      * @param {String} effect Name of current effect
      * @private
      */
-    _connectionEffect: function (heap, effect) {
-        if (!this._earthVisible()) {
-            delete this._effects[effect];
+    _checkConnectionEffect: function (heap, effect) {
+        if (!this._earthVisible() && this._effects.connect) {
             this._terminal.connect(false);
+            delete this._effects.connect;
+            this._terminal.setBusy(false);
         }
     },
 
@@ -532,17 +576,20 @@ App.Satellite = speculoos.Class({
      * of this method in removing specified effect at the end of the distance. It calls every time then onAnimate() calls.
      * @param {Object} heap Reference to the heap object with distance property
      * @param {String} effect Name of current effect
+     * @param {Number} useDelta true to use this.delta as a decrement
      * @return {Boolean}
      * @private
      */
-    _decreaseDistance: function (heap, effect) {
-        if (heap.distance < 0) {
+    _decreaseDistance: function (heap, effect, useDelta) {
+        console.log(this.delta);
+        heap.distance -= (useDelta ? this.delta : 1);
+
+        if (heap.distance <= 0) {
             delete this._effects[effect];
             this._terminal.setBusy(false);
-        } else {
-            heap.distance--;
+            return false;
         }
 
-        return heap.distance > 0;
+        return true;
     }
 });

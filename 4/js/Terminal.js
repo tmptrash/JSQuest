@@ -70,11 +70,12 @@ App.Terminal = speculoos.Class({
          * {Array} Only this class knows about it's commands
          */
         cfg.commands       = [
-            ['left',    'Info : Moves telescope to the left on X points.\nUsage: left 152'],
-            ['right',   'Info : Moves telescope to the right on X points.\nUsage: right 130'],
-            ['up',      'Info : Moves telescope to the top on X points.\nUsage: up 42'],
-            ['down',    'Info : Moves telescope to the down on X points.\nUsage: down 72'],
-            ['connect', 'Info : Connects to specified list of satellites.\nUsage: connect s1 s3']
+            ['left',       'Info : Moves telescope to the left on X points.\nUsage: left 152'],
+            ['right',      'Info : Moves telescope to the right on X points.\nUsage: right 130'],
+            ['up',         'Info : Moves telescope to the top on X points.\nUsage: up 42'],
+            ['down',       'Info : Moves telescope to the down on X points.\nUsage: down 72'],
+            ['connect',    'Info : Connects to specified list of satellites.\nUsage: connect s1 s3'],
+            ['disconnect', 'Info : Disconnects specified list of satellites from current.\nUsage: disconnect s1 s3']
         ];
         /**
          * @conf
@@ -176,11 +177,12 @@ App.Terminal = speculoos.Class({
         // Here we create all simple command handlers. See this._createSimpleHandlers() for details.
         //
         this._createSimpleHandlers([
-            ['left',    1],
-            ['right',   1],
-            ['up',      1],
-            ['down',    1],
-            ['connect', null]
+            ['left',       1],
+            ['right',      1],
+            ['up',         1],
+            ['down',       1],
+            ['connect',    null],
+            ['disconnect', null]
         ]);
 
         this._updateSatelliteIcons();
