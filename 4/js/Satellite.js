@@ -455,10 +455,13 @@ App.Satellite = speculoos.Class({
      * @private
      */
     _onConnectCmd: function (args) {
-        if (this._earthVisible()) {
-            this._effects.connect = {fn: this._connectEffect, heap: {period: 3, timer: new THREE.Clock(true), sats: args}};
-            this._terminal.setBusy('Connecting...');
+        if (!this._earthVisible()) {
+            this._terminal.console.WriteLine('Connection is not available');
+            return;
         }
+
+        this._effects.connect = {fn: this._connectEffect, heap: {period: 3, timer: new THREE.Clock(true), sats: args}};
+        this._terminal.setBusy('Connecting...');
     },
 
     /**
@@ -556,8 +559,7 @@ App.Satellite = speculoos.Class({
     _disconnectEffect: function (heap, effect) {
         if (!this._continueTimerEffect(heap, effect, true)) {
             this._terminal.connect(false, heap.sats);
-            this._terminal.console.WriteLine('Satellites have disconnected');
-            this._terminal.console.showUserLine();
+            this._terminal.message('Satellites have disconnected');
             this._disconnecting = false;
         }
     },
@@ -569,7 +571,7 @@ App.Satellite = speculoos.Class({
      * @private
      */
     _checkConnectionEffect: function (heap, effect) {
-        if (!this._earthVisible() && this._terminal.hasConnections() && !this._disconnecting) {
+        if (!this._earthVisible() && this._terminal.hasConnections() && !this._disconnecting && !this._terminal.isBusy()) {
             this._disconnect();
             this._disconnecting = true;
         }

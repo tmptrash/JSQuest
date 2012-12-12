@@ -134,6 +134,12 @@ App.Terminal = speculoos.Class({
          * @private
          */
         this._satellites    = {s1: false, s2: false, s3: false, s4: false, s5: false};
+        /**
+         * @prop
+         * {Boolean} Busy state of terminal
+         * @private
+         */
+        this._isBusy        = false;
     },
 
     /**
@@ -203,12 +209,21 @@ App.Terminal = speculoos.Class({
 
         App.Terminal.base.setBusy.apply(this, [isBusy]);
 
+        this._isBusy                        = isBusy;
         this.loaderEl.style.visibility      = isBusy ? 'visible' : 'hidden';
         this.loaderLabelEl.style.visibility = isBusy ? 'visible' : 'hidden';
 
         if (isBusy) {
             this.loaderLabelEl.innerHTML = msg;
         }
+    },
+
+    /**
+     * Returns busy state of terminal
+     * @return {Boolean}
+     */
+    isBusy: function () {
+        return this._isBusy;
     },
 
     /**
