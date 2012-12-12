@@ -282,7 +282,7 @@ App.Satellite = speculoos.Class({
         this.meshClouds.rotation.z = this._tilt;
         this.scene.add(this.meshClouds);
     },
-  
+
     /**
      * Creates moon mesh and adds it to the scene.
      * @private
@@ -380,7 +380,6 @@ App.Satellite = speculoos.Class({
         this._terminal.on('up',      this._onUpCmd,      this);
         this._terminal.on('down',    this._onDownCmd,    this);
         this._terminal.on('connect', this._onConnectCmd, this);
-        // TODO:
     },
 
     /**
@@ -518,7 +517,8 @@ App.Satellite = speculoos.Class({
     },
 
     /**
-     * Return true if the earth is visible. It means that the earth are before the camera.
+     * Return true if the earth is visible. It means that the earth are before the camera. The solution was found
+     * at https://github.com/mrdoob/three.js/issues/1209
      * @return {Boolean}
      * @private
      */
