@@ -47,7 +47,7 @@ var Simple    = require('./Simple.js').Simple;
  * {Alan} Interpreter class implementation
  */
 var Alan = Class({
-    extend      : Simple,
+    extend        : Simple,
 
     /**
      * @const
@@ -123,7 +123,7 @@ var Alan = Class({
         //
         // set var, Number
         //
-        if (Lib.Helper.isNumeric(val)) {
+        if (Helper.isNumeric(val)) {
             this.setVar(v, parseFloat(val));
         //
         // set var, String
@@ -187,13 +187,13 @@ var Alan = Class({
         data = this.getVar(data);
         file = this.getVar(file);
 
-        if (!Lib.Helper.isString(file)) {
+        if (!Helper.isString(file)) {
             throw new Error('Invalid file name in write command at line "' + scriptLine + '"');
         }
         if (file === '') {
             throw new Error('Specified file name is empty');
         }
-        if (!Lib.Helper.isString(data)) {
+        if (!Helper.isString(data)) {
             throw new Error('Only string data supported in write command. Error at line: "' + scriptLine + '"');
         }
         fs.writeFileSync(file, data, this._FILES_CHARSET);
@@ -241,7 +241,7 @@ var Alan = Class({
 
         v = this.getVar(v);
 
-        if (!Lib.Helper.isString(v) || v.length < 1) {
+        if (!Helper.isString(v) || v.length < 1) {
             throw new Error('Invalid source variable length or type at line "' + scriptLine + '"');
         }
 
@@ -264,7 +264,7 @@ var Alan = Class({
 
         n = this.getVar(n);
 
-        if (!Lib.Helper.isNumber(n) || n < 0 || n > 255) {
+        if (!Helper.isNumber(n) || n < 0 || n > 255) {
             throw new Error('Invalid source variable value or type at line "' + scriptLine + '"');
         }
 
@@ -296,20 +296,21 @@ var Alan = Class({
      * @param {String|Number} right Value, that should be less, then left
      * @param {String} label Name of label we need to jump
      * @return {Number} Line number
+     * @throw {Error}
      */
     onGotog: function (line, scriptLine, left, right, label) {
-         this._checkVar(left, scriptLine);
-         this._checkVar(right, scriptLine);
+        this._checkVar(left, scriptLine);
+        this._checkVar(right, scriptLine);
 
-         if (!this.hasLabel(label)) {
-             throw new Error('Invalid label at line "' + scriptLine + '"');
-         }
+        if (!this.hasLabel(label)) {
+            throw new Error('Invalid label at line "' + scriptLine + '"');
+        }
 
-         if (this.getVar(left) > this.getVar(right)) {
-             return this.getLineByLabel(label);
-         }
+        if (this.getVar(left) > this.getVar(right)) {
+            return this.getLineByLabel(label);
+        }
 
-         return ++line;
+        return ++line;
     },
 
     /**
@@ -331,7 +332,7 @@ var Alan = Class({
         //
         // Only Numbers are supported
         //
-        if (!Lib.Helper.isNumber(src) || !Lib.Helper.isNumber(dst)) {
+        if (!Helper.isNumber(src) || !Helper.isNumber(dst)) {
             throw new Error('sub command supports only numbers. Error at line "' + scriptLine + '"');
         }
 
@@ -359,11 +360,11 @@ var Alan = Class({
         //
         // Only Strings and Numbers are supported
         //
-        if (!((Lib.Helper.isNumber(src) && Lib.Helper.isNumber(dst)) || (Lib.Helper.isString(src) && Lib.Helper.isString(dst)) || Lib.Helper.isArray(dst))) {
+        if (!((Helper.isNumber(src) && Helper.isNumber(dst)) || (Helper.isString(src) && Helper.isString(dst)) || Helper.isArray(dst))) {
             throw new Error('append command supports only numbers and strings. Error at line "' + scriptLine + '"');
         }
 
-        if (Lib.Helper.isArray(dst)) {
+        if (Helper.isArray(dst)) {
             dst.push(src);
         } else {
             this.setVar(dstVar, dst + src);
@@ -388,7 +389,7 @@ var Alan = Class({
         //
         // Only Numbers are supported
         //
-        if (!Lib.Helper.isNumber(v)) {
+        if (!Helper.isNumber(v)) {
             throw new Error('inc command supports only numbers. Error at line "' + scriptLine + '"');
         }
 
@@ -413,7 +414,7 @@ var Alan = Class({
         //
         // Only Numbers are supported
         //
-        if (!Lib.Helper.isNumber(v)) {
+        if (!Helper.isNumber(v)) {
             throw new Error('dec command supports only numbers. Error at line "' + scriptLine + '"');
         }
 
@@ -439,7 +440,7 @@ var Alan = Class({
         //
         // Only Strings are supported
         //
-        if (!Lib.Helper.isString(src) && !Lib.Helper.isArray(src)) {
+        if (!Helper.isString(src) && !Helper.isArray(src)) {
             throw new Error('len command supports only string and arrays. Error at line "' + scriptLine + '"');
         }
 
@@ -468,7 +469,7 @@ var Alan = Class({
         //
         // Only Numbers are supported
         //
-        if (!Lib.Helper.isNumber(left) || !Lib.Helper.isNumber(right)) {
+        if (!Helper.isNumber(left) || !Helper.isNumber(right)) {
             throw new Error('xor command supports only numbers. Error at line "' + scriptLine + '"');
         }
 
@@ -496,7 +497,7 @@ var Alan = Class({
         //
         // Only Numbers are supported
         //
-        if (!Lib.Helper.isNumber(n)) {
+        if (!Helper.isNumber(n)) {
             throw new Error('hex command supports only numbers. Error at line "' + scriptLine + '"');
         }
         if (n > 255) {
@@ -526,7 +527,7 @@ var Alan = Class({
             part = part.slice(1, part.length - 1).split(',');
 
             for (i = 0, len = part.length; i < len; i++) {
-                item = Lib.Helper.trim(part[i]);
+                item = Helper.trim(part[i]);
                 arr.push(this._prepareString(item.slice(1, item.length - 1)));
             }
         }
@@ -580,8 +581,10 @@ var Alan = Class({
         var arr = [];
         var a;
 
-        while ((a = re.exec(s))) {
+        a = re.exec(s);
+        while (a) {
             arr.push(a[a.length - 1]);
+            a = re.exec(s);
         }
 
         return arr;

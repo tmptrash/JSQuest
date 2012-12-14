@@ -51,8 +51,10 @@ var KEYWORDS      = ['break', 'case ', 'continue', 'default', 'delete ', 'do', '
  */
 function pack(file) {
     var data = fs.readFileSync(file, FILE_CHARSET);
+    var i;
+    var len;
 
-    for (var i = 0, len = KEYWORDS.length; i < len; i++) {
+    for (i = 0, len = KEYWORDS.length; i < len; i++) {
         data = data.replace(new RegExp(KEYWORDS[i], 'g'), String.fromCharCode(i + KEYWORD_LIMIT));
     }
 
@@ -67,8 +69,11 @@ function pack(file) {
 function encrypt(data) {
     var dstData     = '';
     var toCharacter = String.fromCharCode;
+    var i;
+    var len;
+    var oldKey;
 
-    for (var i = 0, len = data.length, oldKey = START_KEY; i < len; i++) {
+    for (i = 0, len = data.length, oldKey = START_KEY; i < len; i++) {
         oldKey     = data[i].charCodeAt(0) ^ oldKey;
         dstData += toCharacter(oldKey);
     }
@@ -81,7 +86,7 @@ function encrypt(data) {
  * @param {Array} argv Array of command line arguments
  * @return {Number} Success code. 0 - ok, !0 - error code
  */
-function main (argv) {
+function main(argv) {
     var srcFile = argv.length > 2 ? argv[2] : null;
     var dstFile = argv.length > 3 ? argv[3] : null;
     var dstData;

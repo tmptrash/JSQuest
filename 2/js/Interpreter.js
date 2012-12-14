@@ -16,20 +16,21 @@ var Alan   = require('./Alan.js').Alan;
 var Helper = require('./../../lib/js/Helper.js').Helper;
 var fs     = require('fs');
 
+var RETURN_OK  = 0;
+var RETURN_ERR = 1;
+
 //
 // Entry point of application
 //
 var scriptFile = process.argv.length > 2 ? process.argv[2] : '';
 
-if (!Lib.Helper.isString(scriptFile)) {
+if (!Helper.isString(scriptFile)) {
     console.log('Invalid script file: ' + scriptFile);
-    // TODO: constant should be moved upper
-    process.exit(1);
+    process.exit(RETURN_ERR);
 }
 if (!fs.existsSync(scriptFile)) {
     console.log('Script file doesn\'t exists: ' + scriptFile);
-    // TODO: constant should be moved upper
-    process.exit(1);
+    process.exit(RETURN_ERR);
 }
 
 //
@@ -37,6 +38,8 @@ if (!fs.existsSync(scriptFile)) {
 //
 try {
     (new Alan()).run(scriptFile);
+    process.exit(RETURN_OK);
 } catch (e) {
     console.log(e.message);
+    process.exit(RETURN_ERR);
 }

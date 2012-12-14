@@ -47,14 +47,17 @@
 /**
  * This is where requires section begins. We include the libraries, we want to use.
  */
-var fs     = require('fs');
-var Class  = require('./.././speculoos.js').Class;
-var Helper = require('./../../lib/js/Helper.js').Helper;
+var fs        = require('fs');
+var speculoos = require('./../../lib/js/external/speculoos.js');
+var Helper    = require('./../../lib/js/Helper.js').Helper;
+var Class     = require('./../../lib/js/Class.js').Class;
 
 /**
  * Simple interpreter class
  */
-var Simple = Class({
+var Simple = speculoos.Class({
+    extend       : Class,
+
     /**
      * @const
      * {String} Return symbols for Windows OS. It uses by preprocessor as line separator by default.
@@ -99,32 +102,45 @@ var Simple = Class({
 
 
     /**
-     * ctor. Instantiates the class. Creates all public/private properties
-     * @param {Object} config Class configuration in format {commands: {cmd1: argAmount, cmd2: argAmount,...}}
+     * @constructor
+     * Uses only for parent constructor call.
      */
-    constructor: function (config) {
-        if (!Lib.Helper.isObject(config)) {
-            throw new Error('Invalid configuration object passed to the Simple class constructor');
-        }
-        if (config.fileExtension !== undefined && (!Lib.Helper.isString(config.fileExtension) || config.fileExtension.length < 1)) {
+    constructor: function () {
+        Simple.base.constructor.apply(this, arguments);
+    },
+
+    /**
+     * @override
+     * Check configuration correctness
+     */
+    initConfig: function () {
+        Simple.base.initConfig.apply(this, arguments);
+
+        if (this.cfg.fileExtension !== undefined && (!Helper.isString(this.cfg.fileExtension) || this.cfg.fileExtension.length < 1)) {
             throw new Error('Invalid script file extension configuration');
         }
-        if (config.charSet !== undefined && (!Lib.Helper.isString(config.charSet) || config.charSet.length < 1)) {
+        if (this.cfg.charSet !== undefined && (!Helper.isString(this.cfg.charSet) || this.cfg.charSet.length < 1)) {
             throw new Error('Invalid script charset configuration');
         }
-        if (config.separator !== undefined && (!Lib.Helper.isString(config.separator) || config.separator.length < 1)) {
+        if (this.cfg.separator !== undefined && (!Helper.isString(this.cfg.separator) || this.cfg.separator.length < 1)) {
             throw new Error('Invalid script separator configuration');
         }
-        if (config.commentRe !== undefined && !Lib.Helper.isRegexp(config.commentRe)) {
+        if (this.cfg.commentRe !== undefined && !Helper.isRegexp(this.cfg.commentRe)) {
             throw new Error('Invalid comment configuration');
         }
-        if (config.labelRe !== undefined && !Lib.Helper.isRegexp(config.labelRe)) {
+        if (this.cfg.labelRe !== undefined && !Helper.isRegexp(this.cfg.labelRe)) {
             throw new Error('Invalid label configuration');
         }
-        if (!Lib.Helper.isObject(config.commands)) {
+        if (!Helper.isObject(this.cfg.commands)) {
             throw new Error('Invalid script commands configuration');
         }
+    },
 
+    /**
+     * @override
+     * Creates all private fields of a class
+     */
+    initPrivates: function () {
         /**
          * @prop
          * {Object} Global map of variables. Key - var name, value - it's value
@@ -142,40 +158,45 @@ var Simple = Class({
          * {String} Script files extension. Can be changed by fileExtension config parameter.
          * @private
          */
-        this._fileExtension = config.fileExtension || 'simple';
+        this._fileExtension = this.cfg.fileExtension || 'simple';
         /**
          * @prop
          * {String} Script file charset. Can be changed by charset config parameter.
          * @private
          */
-        this._charSet = config.charSet || 'utf-8';
+        this._charSet = this.cfg.charSet || 'utf-8';
         /**
          * @prop
          * Default keywords separator (e.g.: ';' symbol in C\C++). null means windows or unix. See _RETURN_WIN|_RETURN_UNIX constants
          * @private
          */
-        this._separator = config.separator || null;
+        this._separator = this.cfg.separator || null;
         /**
          * @prop
          * Comment regexp
          * @private
          */
-        this._commentRe = config.commentRe || this._COMMENT_RE;
+        this._commentRe = this.cfg.commentRe || this._COMMENT_RE;
         /**
          * @prop
          * Label regexp
          * @private
          */
-        this._labelRe   = config.labelRe || this._LABEL_RE;
+        this._labelRe   = this.cfg.labelRe || this._LABEL_RE;
         /**
          * @prop
          * {Object} Map of commands. Key - command name, value - object in format {arguments-count: callback}
          * or amount of arguments.
          * @private
          */
-        this._commands = config.commands;
+        this._commands = this.cfg.commands;
+    },
 
-
+    /**
+     * @override
+     * Creates/initializes all public fields in a class
+     */
+    initPublics: function () {
         /**
          * @readonly
          * @prop
@@ -197,7 +218,7 @@ var Simple = Class({
         /**
          * Only string scripts are supported
          */
-        if (!Lib.Helper.isString(script)) {
+        if (!Helper.isString(script)) {
             throw new Error('Invalid script parameter in run method. Should be a string.');
         }
 
@@ -227,7 +248,7 @@ var Simple = Class({
 
         this.reset();
 
-        if (!Lib.Helper.isString(lines)) {
+        if (!Helper.isString(lines)) {
             throw new Error('Invalid script parameter in preprocess() method.');
         }
 
@@ -359,11 +380,11 @@ var Simple = Class({
     runCommand: function (line, scriptLine) {
         var cmd    = this.getCommand(scriptLine);
         var count  = this._commands[cmd];
-        var regexp = Lib.Helper.isObject(count) ? this._commands[cmd].regexp : undefined;
-        var args   = this.getArguments(scriptLine, Lib.Helper.isNumber(count) ? count : count.args, regexp);
+        var regexp = Helper.isObject(count) ? this._commands[cmd].regexp : undefined;
+        var args   = this.getArguments(scriptLine, Helper.isNumber(count) ? count : count.args, regexp);
         var cmdFn  = this['on' + cmd.charAt(0).toUpperCase() + cmd.slice(1)];
 
-        if (Lib.Helper.isFunction(cmdFn)) {
+        if (Helper.isFunction(cmdFn)) {
             return cmdFn.apply(this, [line, scriptLine].concat(args));
         }
 
@@ -376,7 +397,7 @@ var Simple = Class({
      * @param {String} line Raw one script line
      */
     isEmpty: function (line) {
-        return Lib.Helper.trim(line) === '';
+        return Helper.trim(line) === '';
     },
 
     /**
@@ -478,7 +499,7 @@ var Simple = Class({
         var params = [];
         var i;
 
-        if (regexp && Lib.Helper.isRegexp(regexp)) {
+        if (regexp && Helper.isRegexp(regexp)) {
             params = regexp.exec(line);
             if (!params) {
                 throw new Error('Invalid command format at line "' + line + '"');
