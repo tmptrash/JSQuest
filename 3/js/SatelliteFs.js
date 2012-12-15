@@ -112,9 +112,9 @@ App.SatelliteFs = speculoos.Class({
     /**
      * @const
      * {String} Path to the users file
+     * @private
      */
     _USERS_FILE_PATH  : 'usr/bin',
-
     /**
      * @const
      * {String} The name of jack user
@@ -125,7 +125,18 @@ App.SatelliteFs = speculoos.Class({
      * {String} The name of guest user
      */
     _USER_GUEST       : 'guest',
-
+    /**
+     * @const
+     * {RegExp} Regular expression for parsing users file data
+     * @private
+     */
+    _USERS_REC_RE     : /([^]{8})([0-9abcdefABCDEF]{32})\n*/g,
+    /**
+     * @const
+     * {RegExp} Regular expression for parsing permission file data
+     * @private
+     */
+    _PERM_REC_RE      : /([^]{8})([^]{8})([^]{8})([^]{8})([^]{8})\n*/g,
 
     /**
      * Constructs File System class
@@ -252,6 +263,13 @@ App.SatelliteFs = speculoos.Class({
             },
             perm : 'Permission file. It contains permissions for all files within current folder.\nFILE    USER1   USER2   PERM1   PERM2   \nperm    jack    guest   111     000     '
         });
+    },
+
+    /**
+     * Creates/initializes all private fields of the class.
+     */
+    initPrivates: function () {
+        App.SatelliteFs.base.initPrivates.apply(this, arguments);
 
         /**
          * @prop
@@ -272,24 +290,18 @@ App.SatelliteFs = speculoos.Class({
          */
         this._activeFolderName = '.';
         /**
-         * @const
-         * {RegExp} Regular expression for parsing permission file data
-         * @private
-         */
-        this._permRecRe = /([^]{8})([^]{8})([^]{8})([^]{8})([^]{8})\n*/g;
-        /**
          * @prop
          * {Object} Permissions cache. Actual value are in the perm files. Format: {fileName: {user1: 'XXX', user2: 'XXX'},...}
          * @private
          */
         this._permCache = {};
+    },
 
-        /**
-         * @const
-         * {RegExp} Regular expression for parsing users file data
-         * @private
-         */
-        this._usersRecRe = /([^]{8})([0-9abcdefABCDEF]{32})\n*/g;
+    /**
+     * Main initializer method of the class.
+     */
+    init: function () {
+        App.SatelliteFs.base.init.apply(this, arguments);
 
         //
         // We should parse permission file in the jack folder, we started from
@@ -309,7 +321,7 @@ App.SatelliteFs = speculoos.Class({
         }
 
         var usersContent = this._prepareFileContent(App.SatelliteFs.base.readFile.call(this, this.getFolder(this._USERS_FILE_PATH), this._USERS_FILENAME));
-        var re           = this._usersRecRe;
+        var re           = this._USERS_REC_RE;
         var trim         = Lib.Helper.trim;
         var data;
 
@@ -525,7 +537,7 @@ App.SatelliteFs = speculoos.Class({
      */
     _parsePermissionFile: function () {
         var trim         = Lib.Helper.trim;
-        var re           = this._permRecRe;
+        var re           = this._PERM_REC_RE;
         var activeFolder = this._activeFolder;
         var fileContent;
         var data;

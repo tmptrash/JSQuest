@@ -16,6 +16,8 @@
  * @email deadbrainman@gmail.com
  */
 App.Fs = speculoos.Class({
+    extend: Lib.Class,
+
     /**
      * @const
      * {String} Name of property which points to the parent folder
@@ -47,14 +49,31 @@ App.Fs = speculoos.Class({
 
 
     /**
-     * Constructs File System class
-     * @param {Object} fs File System tree
+     * @constructor
+     * Constructs File System class. It must presents in this class, because of small error in speculoos library.
+     * Parent constructor doesn't call without this
      */
-    constructor: function (fs) {
+    constructor: function () {
+        App.Fs.base.constructor.apply(this, arguments);
+    },
+
+    /**
+     * Validates configuration  of the class. PAss
+     */
+    initConfig: function () {
+        App.Fs.base.initConfig.apply(this, arguments);
+
         //
         // Checks if file system config has a correct structure
         //
-        this._checkFS(fs);
+        this._checkFS(this.cfg);
+    },
+
+    /**
+     * Private fields creator/initializer
+     */
+    initPrivates: function () {
+        App.Fs.base.initPrivates.apply(this, arguments);
 
         /**
          * @prop
@@ -62,8 +81,13 @@ App.Fs = speculoos.Class({
          * object contains one file\folder in file system.
          * @private
          */
-        this._fs = Lib.Helper.clone(fs);
+        this._fs = Lib.Helper.clone(this.cfg);
+    },
 
+    /**
+     * Main initializer method of the class.
+     */
+    init: function () {
         //
         // Adds references to the parent folders for all folders
         //
