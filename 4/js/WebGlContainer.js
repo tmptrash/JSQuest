@@ -21,32 +21,18 @@
  * @email deadbrainman@gmail.com
  */
 App.WebGlContainer = speculoos.Class({
+    extend: Lib.Class,
+
     /**
-     * ctor
-     * @param {Object} cfg Configuration object of the class
+     * @constructor
      */
-    constructor: function (cfg) {
+    constructor: function () {
         if (!Detector.webgl) {
             Detector.addGetWebGLMessage();
             return this;
         }
 
-        /**
-         * @prop
-         * @readonly
-         * {Object} Reference to the configuration passed to the class as first argument
-         */
-        this.cfg = cfg || {};
-
-        //
-        // This is how we create private and public fields of the class. Don't create
-        // fields outside these methods. It make a chaos in the code.
-        //
-        this.initPrivates();
-        this.initPublics();
-        this.init();
-
-        return this;
+        return App.WebGlContainer.base.constructor.apply(this, arguments);
     },
 
     /**
@@ -56,6 +42,8 @@ App.WebGlContainer = speculoos.Class({
     initPrivates: function () {
         var me       = this;
         var isNumber = Lib.Helper.isNumber;
+
+        App.WebGlContainer.base.initPrivates.apply(this, arguments);
 
        /**
         * @prop
@@ -102,6 +90,8 @@ App.WebGlContainer = speculoos.Class({
     initPublics: function () {
         var me = this;
 
+        App.WebGlContainer.base.initPublics.apply(me, arguments);
+
         /**
          * @prop
          * {THREE.WebGLRenderer} WebGL renderer
@@ -135,6 +125,8 @@ App.WebGlContainer = speculoos.Class({
      */
     init: function () {
         var me = this;
+
+        App.WebGlContainer.base.init.apply(me, arguments);
 
         me.scene.fog = new THREE.FogExp2(me._fogColor, me._fogDensity);
         me.scene.add(me.light);

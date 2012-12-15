@@ -8,6 +8,7 @@ App.Terminal = speculoos.Class({
     extend: Lib.Terminal,
 
     /**
+     * @constructor
      * Application constructor
      * @param {Object} cfg Configuration of the class. Available parameters:
      *        {String} id       Required. Id of text area html tag
@@ -39,6 +40,7 @@ App.Terminal = speculoos.Class({
     },
 
     /**
+     * @override
      * Initializes private fields of the class. All private fields must be created here.
      * No matter if they will be initialized by null or special value.
      */

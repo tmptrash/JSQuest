@@ -48,13 +48,13 @@ App.Terminal = speculoos.Class({
      * {String} Selector for CSS class of one satellite icon
      * @private
      */
-    _satelliteSelector: '.satellite',
+    _SATELLITE_SELECTOR: '.satellite',
     /**
      * @const
      * {String} Path to images
      * @private
      */
-    _satelliteImg     : './img/',
+    _SATELLITE_IMG     : './img/',
 
     /**
      * @constructor
@@ -104,6 +104,7 @@ App.Terminal = speculoos.Class({
     },
 
     /**
+     * @override
      * Initializes private fields of the class. All private fields must be created here.
      * No matter if they will be initialized by null or special value.
      */
@@ -143,6 +144,7 @@ App.Terminal = speculoos.Class({
     },
 
     /**
+     * @override
      * Initializes public fields. You should keep all variables of your class here. Also in case if you
      * don't initialize it.
      */
@@ -167,6 +169,7 @@ App.Terminal = speculoos.Class({
     },
 
     /**
+     * @override
      * Main initializer of the class. You should use it for every kind of initializations
      * within class. For example logic initialization or creation of HTML nodes.
      */
@@ -178,7 +181,7 @@ App.Terminal = speculoos.Class({
         //
         this.loaderEl      = document.getElementById(this._loaderId);
         this.loaderLabelEl = document.getElementById(this._loaderLabelId);
-        this.satelliteEls  = Array.apply(this, document.querySelectorAll(this._satelliteSelector));
+        this.satelliteEls  = Array.apply(this, document.querySelectorAll(this._SATELLITE_SELECTOR));
         //
         // Here we create all simple command handlers. See this._createSimpleHandlers() for details.
         //
@@ -200,6 +203,7 @@ App.Terminal = speculoos.Class({
     },
 
     /**
+     * @override
      * Set terminal to busy state. In this state user can not input the commands
      * @param {String|Boolean} busy true to disable terminal, false to enable. String to set the busy message.
      */
@@ -279,7 +283,7 @@ App.Terminal = speculoos.Class({
             if (satellites.hasOwnProperty(sat)) {
                 satIndex = parseInt(sat[1], 10);
                 if (Lib.Helper.isNumber(satIndex)) {
-                    this.satelliteEls[satIndex - 1].style['background-image'] = satellites[sat] ? 'url(' + this._satelliteImg + 'satellite.png)' : 'url(' + this._satelliteImg + 'satellite-disabled.png)';
+                    this.satelliteEls[satIndex - 1].style['background-image'] = satellites[sat] ? 'url(' + this._SATELLITE_IMG + 'satellite.png)' : 'url(' + this._SATELLITE_IMG + 'satellite-disabled.png)';
                 }
             }
         }

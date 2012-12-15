@@ -37,7 +37,7 @@
  * Include all required classes.
  */
 var fs        = require('fs');
-var Class     = require('./../../lib/js/external/speculoos.js').Class;
+var speculoos = require('./../../lib/js/external/speculoos.js');
 var Helper    = require('./../../lib/js/Helper.js').Helper;
 var Simple    = require('./Simple.js').Simple;
 
@@ -46,7 +46,7 @@ var Simple    = require('./Simple.js').Simple;
  * @class
  * {Alan} Interpreter class implementation
  */
-var Alan = Class({
+var Alan = speculoos.Class({
     extend        : Simple,
 
     /**
@@ -62,7 +62,8 @@ var Alan = Class({
 
 
     /**
-     * ctor. Instantiates the object. Creates all public/private properties. It passes a configuration
+     * @constructor
+     * Instantiates the object. Creates all public/private properties. It passes a configuration
      * of Alan commands and file extension into the Simple interpreter class.
      */
     constructor: function () {

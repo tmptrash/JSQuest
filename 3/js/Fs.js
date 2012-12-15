@@ -58,6 +58,7 @@ App.Fs = speculoos.Class({
     },
 
     /**
+     * @override
      * Validates configuration  of the class. PAss
      */
     initConfig: function () {
@@ -70,6 +71,7 @@ App.Fs = speculoos.Class({
     },
 
     /**
+     * @override
      * Private fields creator/initializer
      */
     initPrivates: function () {
@@ -85,6 +87,7 @@ App.Fs = speculoos.Class({
     },
 
     /**
+     * @override
      * Main initializer method of the class.
      */
     init: function () {

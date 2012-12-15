@@ -139,6 +139,7 @@ App.SatelliteFs = speculoos.Class({
     _PERM_REC_RE      : /([^]{8})([^]{8})([^]{8})([^]{8})([^]{8})\n*/g,
 
     /**
+     * @constructor
      * Constructs File System class
      */
     constructor: function () {
@@ -266,6 +267,7 @@ App.SatelliteFs = speculoos.Class({
     },
 
     /**
+     * @override
      * Creates/initializes all private fields of the class.
      */
     initPrivates: function () {
@@ -298,6 +300,7 @@ App.SatelliteFs = speculoos.Class({
     },
 
     /**
+     * @override
      * Main initializer method of the class.
      */
     init: function () {

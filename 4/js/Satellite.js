@@ -17,7 +17,7 @@ App.Satellite = speculoos.Class({
     extend: App.WebGlContainer,
 
     /**
-     * ctor
+     * @constructor
      * We use it only for calling constructor from super class.
      */
     constructor: function (cfg) {
@@ -25,6 +25,7 @@ App.Satellite = speculoos.Class({
     },
 
     /**
+     * @override
      * Private fields creator and initializer. It's not important will these variables be
      * null or with special initial values. They must be declared here first.
      */
@@ -104,6 +105,7 @@ App.Satellite = speculoos.Class({
     },
 
     /**
+     * @override
      * Public fields creator and initializer. It's not important will these variables be
      * null or with special initial values. They must be declared here first.
      */
@@ -143,6 +145,7 @@ App.Satellite = speculoos.Class({
     },
 
     /**
+     * @override
      * Calls after initPrivates() and initPublics() methods. Uses for logic initialization of the instance.
      * It also positions camera, 3d objects and light on the scene before it will be shown.
      */
@@ -161,6 +164,7 @@ App.Satellite = speculoos.Class({
     },
 
     /**
+     * @override
      * Calls every time, then current frame of 3d animation is drawing. This is main method for update
      * 3d objects in the scene.
      */
