@@ -60,16 +60,23 @@ App.Terminal = speculoos.Class({
      * @constructor
      * We use this override only for calling constructor from superclass. This is
      * how we fix a bug from speculoos library.
-     * @param {Object} cfg Configuration of the class
      */
-    constructor: function (cfg) {
-        cfg = cfg || {};
+    constructor: function () {
+        App.Terminal.base.constructor.apply(this, arguments);
+    },
+
+    /**
+     * @override
+     * Prepares configuration. Adds commands supported by this terminal
+     */
+    initConfig: function () {
+        App.Terminal.base.initConfig.apply(this, arguments);
 
         /**
          * @conf
          * {Array} Only this class knows about it's commands
          */
-        cfg.commands       = [
+        this.cfg.commands       = [
             ['left',       'Info : Moves telescope to the left on X points.\nUsage: left 152'],
             ['right',      'Info : Moves telescope to the right on X points.\nUsage: right 130'],
             ['up',         'Info : Moves telescope to the top on X points.\nUsage: up 42'],
@@ -77,30 +84,6 @@ App.Terminal = speculoos.Class({
             ['connect',    'Info : Connects to specified list of satellites.\nUsage: connect s1 s3'],
             ['disconnect', 'Info : Disconnects specified list of satellites from current.\nUsage: disconnect s1 s3']
         ];
-        /**
-         * @conf
-         * {String} Id of a text area with console. We should pass it to a Console library.
-         */
-        cfg.id             = Lib.Helper.getId();
-
-        /**
-         * @prop
-         * {HTMLElement} Node of the loader container
-         */
-        this.loaderEl      = null;
-        /**
-         * @prop
-         * {HTMLElement} Node of the loader text container
-         */
-        this.loaderLabelEl = null;
-        /**
-         * @prop
-         * {Array} Array of satellite HTML elements
-         */
-        this.satelliteEls  = [];
-
-
-        App.Terminal.base.constructor.call(this, cfg);
     },
 
     /**
@@ -156,19 +139,19 @@ App.Terminal = speculoos.Class({
 
         /**
          * @prop
-         * {HTMLElement} HTML element of a loader icon (with earth)
+         * {HTMLElement} Node of the loader container
          */
         this.loaderEl      = null;
         /**
          * @prop
-         * {HTMLElement} HTML element of the loader string container
+         * {HTMLElement} Node of the loader text container
          */
         this.loaderLabelEl = null;
         /**
          * @prop
-         * {Array} Array of all satellite HTML containers
+         * {Array} Array of satellite HTML elements
          */
-        this.satelliteEls  = null;
+        this.satelliteEls  = [];
     },
 
     /**

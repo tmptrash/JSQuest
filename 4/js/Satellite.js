@@ -1,6 +1,6 @@
 /**
- * Satellite class. It shows universe with the stars, the earth and a console for telescope control. It also
- * contains all internal logic of last level.
+ * Satellite class. It shows universe with the stars, the earth and a console for telescope control. It doesn't
+ * contain all internal logic of last level. So this class is only a container for 3d objects and the console.
  *
  * {Object} Configuration object of class:
  *          {Number} radius         Earth radius
@@ -380,7 +380,8 @@ App.Satellite = speculoos.Class({
     _createTerminal: function () {
         this.terminal = new App.Terminal({
             user: 'root',
-            host: 'kepler'
+            host: 'kepler',
+            id  : Lib.Helper.getId()
         });
 
         //
