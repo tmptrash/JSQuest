@@ -36,12 +36,6 @@ App.Satellite = speculoos.Class({
 
         /**
          * @prop
-         * {HTMLElement} HTML element of the terminal <div> tag
-         * @private
-         */
-        this._terminal      = null;
-        /**
-         * @prop
          * {Number} Camera radius. Distance from the telescope to the earth. In range 2..50
          * TODO: remove this. We use camera.fov for zooming.
          * @private
@@ -142,6 +136,11 @@ App.Satellite = speculoos.Class({
          * {Number} Rotation angle of the main camera
          */
         this.cameraAngle    = 0;
+        /**
+         * @prop
+         * {App.Terminal} Terminal class instance
+         */
+        this.terminal       = null;
     },
 
     /**
@@ -379,19 +378,23 @@ App.Satellite = speculoos.Class({
      * @private
      */
     _createTerminal: function () {
-        this._terminal = new App.Terminal({
+        this.terminal = new App.Terminal({
             user: 'root',
             host: 'kepler'
         });
-        this._terminal.on('left',       this._onLeftCmd,       this);
-        this._terminal.on('right',      this._onRightCmd,      this);
-        this._terminal.on('up',         this._onUpCmd,         this);
-        this._terminal.on('down',       this._onDownCmd,       this);
-        this._terminal.on('connect',    this._onConnectCmd,    this);
-        this._terminal.on('disconnect', this._onDisconnectCmd, this);
 
         //
-        // Make demon effects. They work every time
+        // TODO: All this part should be in App.Scenario class
+        //
+        this.terminal.on('left',       this._onLeftCmd,       this);
+        this.terminal.on('right',      this._onRightCmd,      this);
+        this.terminal.on('up',         this._onUpCmd,         this);
+        this.terminal.on('down',       this._onDownCmd,       this);
+        this.terminal.on('connect',    this._onConnectCmd,    this);
+        this.terminal.on('disconnect', this._onDisconnectCmd, this);
+
+        //
+        // Make demon effect. It works every time
         //
         this._effects.checkConnection = {fn: this._checkConnectionEffect, heap: {}};
     },
@@ -407,7 +410,7 @@ App.Satellite = speculoos.Class({
         // This effect will be run in this._runEffects() method.
         //
         this._effects.moveLeft = {fn: this._moveCameraLeftEffect, heap: {distance: args[0]}};
-        this._terminal.setBusy(true);
+        this.terminal.setBusy(true);
     },
 
     /**
@@ -421,7 +424,7 @@ App.Satellite = speculoos.Class({
         // This effect will be run in this._runEffects() method.
         //
         this._effects.moveRight = {fn: this._moveCameraRightEffect, heap: {distance: args[0]}};
-        this._terminal.setBusy(true);
+        this.terminal.setBusy(true);
     },
 
     /**
@@ -435,7 +438,7 @@ App.Satellite = speculoos.Class({
         // This effect will be run in this._runEffects() method.
         //
         this._effects.moveUp = {fn: this._moveCameraUpEffect, heap: {distance: args[0]}};
-        this._terminal.setBusy(true);
+        this.terminal.setBusy(true);
     },
 
     /**
@@ -449,7 +452,7 @@ App.Satellite = speculoos.Class({
         // This effect will be run in this._runEffects() method.
         //
         this._effects.moveDown = {fn: this._moveCameraDownEffect, heap: {distance: args[0]}};
-        this._terminal.setBusy(true);
+        this.terminal.setBusy(true);
     },
 
     /**
@@ -460,12 +463,12 @@ App.Satellite = speculoos.Class({
      */
     _onConnectCmd: function (args) {
         if (!this._earthVisible()) {
-            this._terminal.console.WriteLine('Connection is not available');
+            this.terminal.console.WriteLine('Connection is not available');
             return;
         }
 
         this._effects.connect = {fn: this._connectEffect, heap: {period: 3, timer: new THREE.Clock(true), sats: args}};
-        this._terminal.setBusy('Connecting...');
+        this.terminal.setBusy('Connecting...');
     },
 
     /**
@@ -487,7 +490,7 @@ App.Satellite = speculoos.Class({
      */
     _disconnect: function (args) {
         this._effects.disconnect = {fn: this._disconnectEffect, heap: {period: 3, timer: new THREE.Clock(true), sats: args}};
-        this._terminal.setBusy('Disconnecting...');
+        this.terminal.setBusy('Disconnecting...');
     },
 
     /**
@@ -550,7 +553,7 @@ App.Satellite = speculoos.Class({
      */
     _connectEffect: function (heap, effect) {
         if (!this._continueTimerEffect(heap, effect)) {
-            this._terminal.connect(true, heap.sats);
+            this.terminal.connect(true, heap.sats);
         }
     },
 
@@ -562,8 +565,8 @@ App.Satellite = speculoos.Class({
      */
     _disconnectEffect: function (heap, effect) {
         if (!this._continueTimerEffect(heap, effect, true)) {
-            this._terminal.connect(false, heap.sats);
-            this._terminal.message('Satellites have disconnected');
+            this.terminal.connect(false, heap.sats);
+            this.terminal.message('Satellites have disconnected');
             this._disconnecting = false;
         }
     },
@@ -575,7 +578,7 @@ App.Satellite = speculoos.Class({
      * @private
      */
     _checkConnectionEffect: function (heap, effect) {
-        if (!this._earthVisible() && this._terminal.hasConnections() && !this._disconnecting && !this._terminal.isBusy()) {
+        if (!this._earthVisible() && this.terminal.hasConnections() && !this._disconnecting && !this.terminal.isBusy()) {
             this._disconnect();
             this._disconnecting = true;
         }
@@ -632,6 +635,6 @@ App.Satellite = speculoos.Class({
      */
     _stopEffect: function (effect) {
         delete this._effects[effect];
-        this._terminal.setBusy(false);
+        this.terminal.setBusy(false);
     }
 });

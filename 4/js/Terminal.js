@@ -111,6 +111,9 @@ App.Terminal = speculoos.Class({
     initPrivates: function () {
         App.Terminal.base.initPrivates.apply(this, arguments);
 
+        //
+        // TODO: move these variables to initPrivates/Publics() methods
+        //
         /**
          * @prop
          * {HTMLElement} Reference to the HTML node of element, where we will add terminal container
