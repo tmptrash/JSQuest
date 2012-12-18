@@ -159,7 +159,6 @@ App.Satellite = speculoos.Class({
         this._createMoonMesh();                             // Moon
         this._createStars();                                // Stars
         this._postprocess();                                // Analog camera effect
-        this._createTerminal();                             // Satellite's terminal console
     },
 
     /**
@@ -179,6 +178,41 @@ App.Satellite = speculoos.Class({
         //
         this.renderer.clear();
         this.composer.render(this.delta);
+    },
+
+    /**
+     * Adds one effect to effect set. It will be run on onAnimate() method
+     * @param {String} name Name of the effect
+     * @param {Object} heap Local heap for this effect. Will be removed ofter it will die.
+     * @param {Function} fn Callback effect method
+     * @param {Object|undefined} scope Scope for fn callback
+     */
+    addEffect: function (name, heap, fn, scope) {
+        this._effects[name] = {
+            fn   : fn,
+            scope: scope,
+            heap : heap
+        };
+    },
+
+    /**
+     * Stops specified effect. Removes it from the list of effects and set terminal to unbusy state.
+     * @param {String} effect Name of the effect
+     * @private
+     */
+    delEffect: function (effect) {
+        delete this._effects[effect];
+    },
+
+    /**
+     * Return true if the earth is visible. It means that the earth are before the camera. The solution was found
+     * at https://github.com/mrdoob/three.js/issues/1209
+     * @return {Boolean}
+     * @private
+     */
+    earthVisible: function () {
+        this._frustum.setFromMatrix(this._frustumMat.multiply(this.camera.projectionMatrix, this.camera.matrixWorldInverse));
+        return this._frustum.contains(this.meshPlanet);
     },
 
     /**
@@ -219,7 +253,7 @@ App.Satellite = speculoos.Class({
 
         for (i in effects) {
             if (effects.hasOwnProperty(i)) {
-                effects[i].fn.call(this, effects[i].heap, i);
+                effects[i].fn.call(effects[i].scope || this, effects[i].heap, i);
             }
         }
     },
@@ -370,272 +404,5 @@ App.Satellite = speculoos.Class({
 
         this.composer.addPass(renderModel);
         this.composer.addPass(effectFilm);
-    },
-
-    /**
-     * Creates terminal console container with 5 satellites and one console text area.
-     * Set this container to this._terminal
-     * @private
-     */
-    _createTerminal: function () {
-        this.terminal = new App.Terminal({
-            user: 'root',
-            host: 'kepler',
-            id  : Lib.Helper.getId()
-        });
-
-        //
-        // TODO: All this part should be in App.Scenario class
-        //
-        this.terminal.on('left',       this._onLeftCmd,       this);
-        this.terminal.on('right',      this._onRightCmd,      this);
-        this.terminal.on('up',         this._onUpCmd,         this);
-        this.terminal.on('down',       this._onDownCmd,       this);
-        this.terminal.on('connect',    this._onConnectCmd,    this);
-        this.terminal.on('disconnect', this._onDisconnectCmd, this);
-
-        //
-        // Make demon effect. It works every time
-        //
-        this._effects.checkConnection = {fn: this._checkConnectionEffect, heap: {}};
-    },
-
-    /**
-     * Handler of left command. It moves telescope smoothly from current position
-     * to the left on distance points.
-     * @param {Array} args Arguments passed to left command
-     * @private
-     */
-    _onLeftCmd: function (args) {
-        //
-        // This effect will be run in this._runEffects() method.
-        //
-        this._effects.moveLeft = {fn: this._moveCameraLeftEffect, heap: {distance: args[0]}};
-        this.terminal.setBusy(true);
-    },
-
-    /**
-     * Handler of right command. It moves telescope smoothly from current position
-     * to the right on x points.
-     * @param {Array} args Arguments passed to right command
-     * @private
-     */
-    _onRightCmd: function (args) {
-        //
-        // This effect will be run in this._runEffects() method.
-        //
-        this._effects.moveRight = {fn: this._moveCameraRightEffect, heap: {distance: args[0]}};
-        this.terminal.setBusy(true);
-    },
-
-    /**
-     * Handler of up command. It moves telescope smoothly from current position
-     * upper on x points.
-     * @param {Array} args Arguments passed to up command
-     * @private
-     */
-    _onUpCmd: function (args) {
-        //
-        // This effect will be run in this._runEffects() method.
-        //
-        this._effects.moveUp = {fn: this._moveCameraUpEffect, heap: {distance: args[0]}};
-        this.terminal.setBusy(true);
-    },
-
-    /**
-     * Handler of down command. It moves telescope smoothly from current position
-     * to the down on x points.
-     * @param {Array} args Arguments passed to down command
-     * @private
-     */
-    _onDownCmd: function (args) {
-        //
-        // This effect will be run in this._runEffects() method.
-        //
-        this._effects.moveDown = {fn: this._moveCameraDownEffect, heap: {distance: args[0]}};
-        this.terminal.setBusy(true);
-    },
-
-    /**
-     * Handler of connect command. It checks if the earth in a view region, then it calls
-     * connect(true) method from terminal instance. Satellite names should be in format 's' + X, where 1 <= X <= 5
-     * @param {Array} args Arguments passed to the command
-     * @private
-     */
-    _onConnectCmd: function (args) {
-        if (!this._earthVisible()) {
-            this.terminal.console.WriteLine('Connection is not available');
-            return;
-        }
-
-        this._effects.connect = {fn: this._connectEffect, heap: {period: 3, timer: new THREE.Clock(true), sats: args}};
-        this.terminal.setBusy('Connecting...');
-    },
-
-    /**
-     * Handler of disconnect command. It checks if the earth in a view region, then it calls
-     * connect(false) method from terminal instance. Satellite names should be in format 's' + X, where 1 <= X <= 5
-     * @param {Array} args Arguments passed to the command
-     * @private
-     */
-    _onDisconnectCmd: function (args) {
-        if (this._earthVisible() && !this._disconnecting) {
-            this._disconnect(args);
-        }
-    },
-
-    /**
-     * Disconnects specified satellites from current
-     * @param {Array|undefined} args List of satellites to disconnect or undefined for all satellites
-     * @private
-     */
-    _disconnect: function (args) {
-        this._effects.disconnect = {fn: this._disconnectEffect, heap: {period: 3, timer: new THREE.Clock(true), sats: args}};
-        this.terminal.setBusy('Disconnecting...');
-    },
-
-    /**
-     * Moves camera to the left and decrease the distance on 1. It works with the local heap's
-     * property - distance.
-     * @param {Object} heap Local heap for this method
-     * @param {String} effect Name of current effect
-     * @private
-     */
-    _moveCameraLeftEffect: function (heap, effect) {
-        if (this._continueDistanceEffect(heap, effect)) {
-            this.camera.rotation.y += this.delta * this._moveSpeed;
-        }
-    },
-
-    /**
-     * Moves camera to the right and decrease the distance on 1. It works with the local heap's
-     * property - distance.
-     * @param {Object} heap Local heap for this method
-     * @param {String} effect Name of current effect
-     * @private
-     */
-    _moveCameraRightEffect: function (heap, effect) {
-        if (this._continueDistanceEffect(heap, effect)) {
-            this.camera.rotation.y -= this.delta * this._moveSpeed;
-        }
-    },
-
-    /**
-     * Moves camera upper and decrease the distance on 1. It works with the local heap's
-     * property - distance.
-     * @param {Object} heap Local heap for this method
-     * @param {String} effect Name of current effect
-     * @private
-     */
-    _moveCameraUpEffect: function (heap, effect) {
-        if (this._continueDistanceEffect(heap, effect)) {
-            this.camera.rotation.x += this.delta * this._moveSpeed;
-        }
-    },
-
-    /**
-     * Moves camera to the down and decrease the distance on 1. It works with the local heap's
-     * property - distance.
-     * @param {Object} heap Local heap for this method
-     * @param {String} effect Name of current effect
-     * @private
-     */
-    _moveCameraDownEffect: function (heap, effect) {
-        if (this._continueDistanceEffect(heap, effect)) {
-            this.camera.rotation.x -= this.delta * this._moveSpeed;
-        }
-    },
-
-    /**
-     * Effect of the connection to the satellites. It calls every time in onAnimate() method (on every frame).
-     * @param {Object} heap Local heap for this method. It contains period property.
-     * @param {String} effect Name of current effect
-     * @private
-     */
-    _connectEffect: function (heap, effect) {
-        if (!this._continueTimerEffect(heap, effect)) {
-            this.terminal.connect(true, heap.sats);
-        }
-    },
-
-    /**
-     * Effect of the disconnection with satellites. It calls every time in onAnimate() method (on every frame).
-     * @param {Object} heap Local heap for this method. It contains period property.
-     * @param {String} effect Name of current effect
-     * @private
-     */
-    _disconnectEffect: function (heap, effect) {
-        if (!this._continueTimerEffect(heap, effect, true)) {
-            this.terminal.connect(false, heap.sats);
-            this.terminal.message('Satellites have disconnected');
-            this._disconnecting = false;
-        }
-    },
-
-    /**
-     * Checks if the earth is visible from our satellite. If it invisible, effect will be removed (stopped)
-     * @param {Object} heap Local heap for this method
-     * @param {String} effect Name of current effect
-     * @private
-     */
-    _checkConnectionEffect: function (heap, effect) {
-        if (!this._earthVisible() && this.terminal.hasConnections() && !this._disconnecting && !this.terminal.isBusy()) {
-            this._disconnect();
-            this._disconnecting = true;
-        }
-    },
-
-    /**
-     * Return true if the earth is visible. It means that the earth are before the camera. The solution was found
-     * at https://github.com/mrdoob/three.js/issues/1209
-     * @return {Boolean}
-     * @private
-     */
-    _earthVisible: function () {
-        this._frustum.setFromMatrix(this._frustumMat.multiply(this.camera.projectionMatrix, this.camera.matrixWorldInverse));
-        return this._frustum.contains(this.meshPlanet);
-    },
-
-    /**
-     * Decreases distance in a heap object and return true if distance is greater then 0, false otherwise. Main purpose
-     * of this method in removing specified effect at the end of the distance. It calls every time then onAnimate() calls.
-     * @param {Object} heap Reference to the heap object with distance property
-     * @param {String} effect Name of current effect
-     * @return {Boolean} true - means that effect should be continued, false - otherwise.
-     * @private
-     */
-    _continueDistanceEffect: function (heap, effect) {
-        if (heap.distance === 0) {
-            this._stopEffect(effect);
-            return false;
-        }
-        heap.distance--;
-
-        return true;
-    },
-
-    /**
-     * Checks if started, at the moment of the effect begin, timer is expired. It uses period and start
-     * properties from the heap
-     * @return {Boolean} true - means that effect should be continued, false - otherwise.
-     * @private
-     */
-    _continueTimerEffect: function (heap, effect) {
-        if (heap.timer.getElapsedTime() > heap.period) {
-            this._stopEffect(effect);
-            return false;
-        }
-
-        return true;
-    },
-
-    /**
-     * Stops specified effect. Removes it from the list of effects and set terminal to unbusy state.
-     * @param {String} effect Name of the effect
-     * @private
-     */
-    _stopEffect: function (effect) {
-        delete this._effects[effect];
-        this.terminal.setBusy(false);
     }
 });

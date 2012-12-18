@@ -5,8 +5,8 @@
  */
 function main() {
     //
-    // Create singleton instance of application class
+    // Create singleton instance of scenario (application) class
     //
-    App.app = new App.Satellite();
+    App.app = new App.Scenario();
     App.app.run();
 }
