@@ -116,6 +116,7 @@ App.Scenario = speculoos.Class({
         this._terminal.on('down',       this._onDownCmd,       this);
         this._terminal.on('connect',    this._onConnectCmd,    this);
         this._terminal.on('disconnect', this._onDisconnectCmd, this);
+        this._terminal.on('list',       this._onListCmd,       this);
     },
 
     /**
@@ -208,6 +209,14 @@ App.Scenario = speculoos.Class({
         if (this._satellite.earthVisible() && !this._disconnecting) {
             this._disconnect(args);
         }
+    },
+
+    /**
+     * list comman handler. Lists all available databases for current satellite.
+     * @private
+     */
+    _onListCmd: function () {
+        this._terminal.console.WriteLine(this._database.list());
     },
 
     /**

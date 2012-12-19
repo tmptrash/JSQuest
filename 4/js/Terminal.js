@@ -82,7 +82,8 @@ App.Terminal = speculoos.Class({
             ['up',         'Info : Moves telescope to the top on X points.\nUsage: up 42'],
             ['down',       'Info : Moves telescope to the down on X points.\nUsage: down 72'],
             ['connect',    'Info : Connects to specified list of satellites.\nUsage: connect s1 s3'],
-            ['disconnect', 'Info : Disconnects specified list of satellites from current.\nUsage: disconnect s1 s3']
+            ['disconnect', 'Info : Disconnects specified list of satellites from current.\nUsage: disconnect s1 s3'],
+            ['list',       'Info : Lists all available databases on current satellite.\nUsage: list']
         ];
     },
 
@@ -174,7 +175,8 @@ App.Terminal = speculoos.Class({
             ['up',         1],
             ['down',       1],
             ['connect',    null],
-            ['disconnect', null]
+            ['disconnect', null],
+            ['list',       0]
         ]);
 
         this._updateSatelliteIcons();
