@@ -54,7 +54,7 @@ App.Fs = speculoos.Class({
      * Parent constructor doesn't call without this
      */
     constructor: function () {
-        App.Fs.base.constructor.apply(this, arguments);
+        this.parent(arguments);
     },
 
     /**
@@ -62,7 +62,7 @@ App.Fs = speculoos.Class({
      * Validates configuration  of the class. PAss
      */
     initConfig: function () {
-        App.Fs.base.initConfig.apply(this, arguments);
+        this.parent(arguments);
 
         //
         // Checks if file system config has a correct structure
@@ -75,7 +75,7 @@ App.Fs = speculoos.Class({
      * Private fields creator/initializer
      */
     initPrivates: function () {
-        App.Fs.base.initPrivates.apply(this, arguments);
+        this.parent(arguments);
 
         /**
          * @prop
@@ -91,6 +91,8 @@ App.Fs = speculoos.Class({
      * Main initializer method of the class.
      */
     init: function () {
+        this.parent(arguments);
+
         //
         // Adds references to the parent folders for all folders
         //

@@ -143,7 +143,7 @@ App.SatelliteFs = speculoos.Class({
      * Constructs File System class
      */
     constructor: function () {
-        App.SatelliteFs.base.constructor.call(this, {
+        this.parent(this, [{
             bin  : {
                 //
                 // Here is an emulation of system binaries - commands we can use in terminal
@@ -263,7 +263,7 @@ App.SatelliteFs = speculoos.Class({
                     'perm    jack    guest   111     111     '
             },
             perm : 'Permission file. It contains permissions for all files within current folder.\nFILE    USER1   USER2   PERM1   PERM2   \nperm    jack    guest   111     000     '
-        });
+        }]);
     },
 
     /**
@@ -271,7 +271,7 @@ App.SatelliteFs = speculoos.Class({
      * Creates/initializes all private fields of the class.
      */
     initPrivates: function () {
-        App.SatelliteFs.base.initPrivates.apply(this, arguments);
+        this.parent(arguments);
 
         /**
          * @prop
@@ -304,7 +304,7 @@ App.SatelliteFs = speculoos.Class({
      * Main initializer method of the class.
      */
     init: function () {
-        App.SatelliteFs.base.init.apply(this, arguments);
+        this.parent(arguments);
 
         //
         // We should parse permission file in the jack folder, we started from

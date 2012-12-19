@@ -106,7 +106,7 @@ var Simple = speculoos.Class({
      * Uses only for parent constructor call.
      */
     constructor: function () {
-        Simple.base.constructor.apply(this, arguments);
+        this.parent(arguments);
     },
 
     /**

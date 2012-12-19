@@ -11,34 +11,40 @@ App.Scenario = speculoos.Class({
      * @constructor
      * We use it only for calling constructor from super class.
      */
-    constructor: function (cfg) {
-        App.Satellite.base.constructor.call(this, cfg);
+    constructor: function () {
+        this.parent(arguments);
     },
 
     /**
      * @override
      */
     initPrivates: function () {
-        App.Scenario.base.initPrivates.apply(this, arguments);
+        this.parent(arguments);
 
         /**
          * @prop
          * {App.Terminal} Instance of the terminal we are working with.
          * @private
          */
-        this._terminal  = null;
+        this._terminal      = null;
         /**
          * @prop
          * {App.Satellite} Instance of the satellite.
          * @private
          */
-        this._satellite = null;
+        this._satellite     = null;
         /**
          * @prop
          * {Number} Camera speed coefficient
          * @private
          */
-        this._moveSpeed = 0.066;
+        this._moveSpeed     = 0.066;
+        /**
+         * @prop
+         * {Boolean} true if disconnection process is active at the moment
+         * @private
+         */
+        this._disconnecting = false;
     },
 
     /**
@@ -46,7 +52,7 @@ App.Scenario = speculoos.Class({
      * Main initializer. Creates a terminal and a Satellite objects.
      */
     init: function () {
-        App.Scenario.base.init.apply(this, arguments);
+        this.parent(arguments);
 
         this._createTerminal();
         this._createSatellite();
@@ -85,7 +91,7 @@ App.Scenario = speculoos.Class({
      * @private
      */
     _delEffect: function (effect) {
-        this._satellite.delEffect(name);
+        this._satellite.delEffect(effect);
         this._terminal.setBusy(false);
     },
 

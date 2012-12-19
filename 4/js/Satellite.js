@@ -20,8 +20,8 @@ App.Satellite = speculoos.Class({
      * @constructor
      * We use it only for calling constructor from super class.
      */
-    constructor: function (cfg) {
-        App.Satellite.base.constructor.call(this, cfg);
+    constructor: function () {
+        this.parent(arguments);
     },
 
     /**
@@ -30,7 +30,7 @@ App.Satellite = speculoos.Class({
      * null or with special initial values. They must be declared here first.
      */
     initPrivates: function () {
-        App.Satellite.base.initPrivates.apply(this, arguments);
+        this.parent(arguments);
 
         var isNumber        = Lib.Helper.isNumber;
 
@@ -60,12 +60,6 @@ App.Satellite = speculoos.Class({
          * @private
          */
         this._frustumMat    = new THREE.Matrix4();
-        /**
-         * @prop
-         * {Boolean} true if disconnection process is active at the moment
-         * @private
-         */
-        this._disconnecting = false;
 
         //
         // Parameters, created from configuration
@@ -104,7 +98,7 @@ App.Satellite = speculoos.Class({
      * null or with special initial values. They must be declared here first.
      */
     initPublics: function () {
-        App.Satellite.base.initPublics.apply(this, arguments);
+        this.parent(arguments);
 
         /**
          * @prop
@@ -149,7 +143,7 @@ App.Satellite = speculoos.Class({
      * It also positions camera, 3d objects and light on the scene before it will be shown.
      */
     init: function () {
-        App.Satellite.base.init.apply(this, arguments);
+        this.parent(arguments);
 
         this.camera.position.z = this._radius * this._zoom; // Camera
         this.light.position.set(-1, 0, 1).normalize();      // Light
@@ -167,7 +161,7 @@ App.Satellite = speculoos.Class({
      * 3d objects in the scene.
      */
     onAnimate: function () {
-        App.Satellite.base.onAnimate.call(this);
+        this.parent(arguments);
 
         this._moveObjects();
         this._moveCamera();

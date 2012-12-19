@@ -62,7 +62,7 @@ App.Terminal = speculoos.Class({
      * how we fix a bug from speculoos library.
      */
     constructor: function () {
-        App.Terminal.base.constructor.apply(this, arguments);
+        this.parent(arguments);
     },
 
     /**
@@ -70,7 +70,7 @@ App.Terminal = speculoos.Class({
      * Prepares configuration. Adds commands supported by this terminal
      */
     initConfig: function () {
-        App.Terminal.base.initConfig.apply(this, arguments);
+        this.parent(arguments);
 
         /**
          * @conf
@@ -92,7 +92,7 @@ App.Terminal = speculoos.Class({
      * No matter if they will be initialized by null or special value.
      */
     initPrivates: function () {
-        App.Terminal.base.initPrivates.apply(this, arguments);
+        this.parent(arguments);
 
         /**
          * @prop
@@ -132,7 +132,7 @@ App.Terminal = speculoos.Class({
      * don't initialize it.
      */
     initPublics: function () {
-        App.Terminal.base.initPublics.apply(this, arguments);
+        this.parent(arguments);
 
         /**
          * @prop
@@ -182,7 +182,7 @@ App.Terminal = speculoos.Class({
         //
         // We should call parent method here, because we use there div, we created before
         //
-        App.Terminal.base.init.apply(this, arguments);
+        this.parent(arguments);
     },
 
     /**
@@ -194,7 +194,7 @@ App.Terminal = speculoos.Class({
         var msg    = Lib.Helper.isString(busy) ? busy : 'Working...';
         var isBusy = Lib.Helper.isString(busy) || busy;
 
-        App.Terminal.base.setBusy.apply(this, [isBusy]);
+        this.parent([isBusy]);
 
         this._isBusy                        = isBusy;
         this.loaderEl.style.visibility      = isBusy ? 'visible' : 'hidden';
@@ -333,5 +333,5 @@ App.Terminal = speculoos.Class({
             }
             this.fire(command, cmdArgs.slice(1));
         };
-    },
+    }
 });

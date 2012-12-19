@@ -32,7 +32,7 @@ App.WebGlContainer = speculoos.Class({
             return this;
         }
 
-        return App.WebGlContainer.base.constructor.apply(this, arguments);
+        this.parent(arguments);
     },
 
     /**
@@ -43,7 +43,7 @@ App.WebGlContainer = speculoos.Class({
         var me       = this;
         var isNumber = Lib.Helper.isNumber;
 
-        App.WebGlContainer.base.initPrivates.apply(this, arguments);
+        this.parent(arguments);
 
        /**
         * @prop
@@ -90,7 +90,7 @@ App.WebGlContainer = speculoos.Class({
     initPublics: function () {
         var me = this;
 
-        App.WebGlContainer.base.initPublics.apply(me, arguments);
+        this.parent(arguments);
 
         /**
          * @prop
@@ -126,7 +126,7 @@ App.WebGlContainer = speculoos.Class({
     init: function () {
         var me = this;
 
-        App.WebGlContainer.base.init.apply(me, arguments);
+        this.parent(arguments);
 
         me.scene.fog = new THREE.FogExp2(me._fogColor, me._fogDensity);
         me.scene.add(me.light);

@@ -67,7 +67,7 @@ var Alan = speculoos.Class({
      * of Alan commands and file extension into the Simple interpreter class.
      */
     constructor: function () {
-        Alan.base.constructor.call(this, {
+        this.parent(this, [{
             /**
              * @conf
              * {String} Script files extension
@@ -95,7 +95,7 @@ var Alan = speculoos.Class({
                 hex   : 2,
                 'set' : {args: 2, regexp: /^\s*(set)\s+([a-zA-Z_]+[0-9]*[a-zA-Z_]*)+\s*,\s*((\[.*\])|(\'.*\')|([0-9]+)|([a-zA-Z_]+[0-9]*[a-zA-Z_]*))\s*(#{1}.*)*$/}
             }
-        });
+        }]);
     },
 
     /**

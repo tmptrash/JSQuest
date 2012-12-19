@@ -36,7 +36,7 @@ App.Terminal = speculoos.Class({
             ['info',    'Info : Shows information about terminal.\nUsage: info']
         ];
 
-        App.Terminal.base.constructor.call(this, cfg);
+        this.parent(arguments);
     },
 
     /**
@@ -45,7 +45,7 @@ App.Terminal = speculoos.Class({
      * No matter if they will be initialized by null or special value.
      */
     initPrivates: function () {
-        App.Terminal.base.initPrivates.call(this);
+        this.parent(arguments);
 
         /**
          * @prop
