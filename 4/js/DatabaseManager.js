@@ -146,7 +146,7 @@ App.DatabaseManager = speculoos.Class({
 
     /**
      * Packs specified databases (files) into another one with prefix this._PACK_POSTFIX
-     * @param {Array} files
+     * @param {Array} files Files we should to pack
      */
     pack: function (files) {
         this._change(files, function (curDbs, files, file) {
@@ -154,12 +154,25 @@ App.DatabaseManager = speculoos.Class({
             // Skips already packed files
             //
             if (curDbs[file] && file.indexOf(this._PACK_POSTFIX) === -1) {
-                curDbs[file + this._PACK_POSTFIX] = curDbs[file] / 7;
+                curDbs[file + this._PACK_POSTFIX] = (curDbs[file] / 7).toFixed();
             }
         });
     },
 
-    unpack: function () {},
+    /**
+     * Unpacks specified databases (files) into another one with prefix this._PACK_POSTFIX
+     * @param {Array} files Files we should to unpack
+     */
+    unpack: function (files) {
+        this._change(files, function (curDbs, files, file) {
+            //
+            // Skips not packed files
+            //
+            if (curDbs[file] && file.indexOf(this._PACK_POSTFIX) !== -1) {
+                curDbs[file.substr(0, file.length - this._PACK_POSTFIX.length)] = (curDbs[file] * 7).toFixed();
+            }
+        });
+    },
 
     list: function () {},
 
