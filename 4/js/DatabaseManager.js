@@ -27,25 +27,31 @@ App.DatabaseManager = speculoos.Class({
      * {String} Prefix for local storage, where we stores databases (files) for current satellite
      * @private
      */
-    _DATA_PREFIX : 'jsql4',
+    _DATA_PREFIX    : 'jsql4',
     /**
      * @const
      * {String} Name of key for databases (files)
      * @private
      */
-    _DATA_FILES  : 'files',
+    _DATA_FILES     : 'files',
     /**
      * @const
      * {String} Name of key for synchronized property
      * @private
      */
-    _DATA_SYNC   : 'synchronized',
+    _DATA_SYNC      : 'synchronized',
     /**
      * @const
      * {String} Postfix for packed databases (files)
      * @private
      */
-    _PACK_POSTFIX: '-p',
+    _PACK_POSTFIX   : '-p',
+    /**
+     * @const
+     * {String} Postfix for encrypted databases (files)
+     * @private
+     */
+    _ENCRYPT_POSTFIX: '-e',
 
 
     /**
@@ -77,10 +83,10 @@ App.DatabaseManager = speculoos.Class({
          * @private
          */
         this._defaultDb = {
-            facebook  : 10087108,
-            vk        : 12567098,
-            icq       : 24405,
-            tels      : 4587
+            facebook  : {size: 10087108},
+            vk        : {size: 12567098},
+            icq       : {size: 24405},
+            tels      : {size: 4587}
         };
         /**
          * @prop
@@ -90,23 +96,23 @@ App.DatabaseManager = speculoos.Class({
          */
         this._remoteDb  = {
             s1: {
-                skype     : 45075
+                skype     : {size: 45075}
             },
             s2: {
-                classmates: 107896,
-                friendster: 1024555,
-                myspace   : 1888767,
-                badoo     : 48957,
-                linkedin  : 59847
+                classmates: {size: 107896},
+                friendster: {size: 1024555},
+                myspace   : {size: 1888767},
+                badoo     : {size: 48957},
+                linkedin  : {size: 59847}
             },
             s3: {
-                mail      : 8512758
+                mail      : {size: 8512758}
             },
             s4: {
-                passport  : 79458
+                passport  : {size: 79458}
             },
             s5: {
-                google    : 26489837653
+                google    : {size: 26489837653}
             }
         };
     },
@@ -130,55 +136,144 @@ App.DatabaseManager = speculoos.Class({
     /**
      * Removes specified databases (files) from a local satellite.
      * @param {Array} files Array of file names
+     * @return {Boolean|String} true - ok, string message if error
      */
     remove: function (files) {
+        if (!Lib.Helper.isArray(files)) {
+            return 'Invalid parameter during removing databases. Array of database files required.';
+        }
         this._change(files, function (curDbs, files, file) {
             delete curDbs[file];
         });
+
+        return true;
     },
 
     /**
      * Synchronizes databases (files) from this satellite with specified satellites. Result will be on both
-     * this and remote satellites.
-     * @param {Array} files Array of file names
+     * this and remote satellites. Example of calling: sync(['vk', 'mail', 's3']), means that we should synchronize
+     * databases (files) vk and mail between current and s3 satellites.
+     * @param {Array} args Array of database (file) names and satellite name at the end.
+     * @return {Boolean|String} true - ok, string message if error
      */
-    sync: function (files) {},
+    sync: function (args) {
+        var sat;
+        var files;
+
+        if (!Lib.Helper.isArray(args)) {
+            return 'Invalid arguments format for sync command. Array required. Should be: db1 db2...dbx satx';
+        }
+        if (args.length < 2) {
+            return 'Invalid amount of arguments for sync command. Should be at least two.';
+        }
+
+        sat   = args[args.length - 1];
+        files = args.splice(0, args.length - 1);
+
+        // TODO:
+
+        return true;
+    },
 
     /**
      * Packs specified databases (files) into another one with prefix this._PACK_POSTFIX
      * @param {Array} files Files we should to pack
+     * @return {Boolean|String} true - ok, string message if error
      */
     pack: function (files) {
+        if (!Lib.Helper.isArray(files)) {
+            return 'Invalid parameter during packing databases. Array of database files required.';
+        }
+
         this._change(files, function (curDbs, files, file) {
             //
             // Skips already packed files
             //
             if (curDbs[file] && file.indexOf(this._PACK_POSTFIX) === -1) {
-                curDbs[file + this._PACK_POSTFIX] = (curDbs[file] / 7).toFixed();
+                curDbs[file + this._PACK_POSTFIX] = (curDbs[file].size / 7).toFixed();
             }
         });
+
+        return true;
     },
 
     /**
      * Unpacks specified databases (files) into another one with prefix this._PACK_POSTFIX
      * @param {Array} files Files we should to unpack
+     * @return {Boolean|String} true - ok, string message if error
      */
     unpack: function (files) {
+        if (!Lib.Helper.isArray(files)) {
+            return 'Invalid parameter during unpacking databases. Array of database files required.';
+        }
+
         this._change(files, function (curDbs, files, file) {
             //
             // Skips not packed files
             //
             if (curDbs[file] && file.indexOf(this._PACK_POSTFIX) !== -1) {
-                curDbs[file.substr(0, file.length - this._PACK_POSTFIX.length)] = (curDbs[file] * 7).toFixed();
+                curDbs[file.substr(0, file.length - this._PACK_POSTFIX.length)] = (curDbs[file].size * 7).toFixed();
             }
         });
+
+        return true;
     },
 
-    list: function () {},
+    /**
+     * Returns a list of available databases (files) for current satellite. Format: {fileName: {size: Number}, ...} where
+     *     fileName - Name of database (file)
+     *     size     - File size
+     * @return {Object} Map of files
+     */
+    list: function () {
+        return this._get(this._DATA_FILES);
+    },
 
-    encrypt: function () {},
+    /**
+     * Encrypts database (file) with specified key. We just emulates an encryption.
+     * @param {String} file Database (file) name to encrypt
+     * @param {String} key  Encryption key. You should use it for decryption. Can be empty.
+     * @return {Boolean|String} true - ok, string message if error
+     */
+    encrypt: function (file, key) {
+        var dbs = this._get(this._DATA_FILES);
 
-    decrypt: function () {},
+        if (dbs[file] === undefined) {
+            return 'Database file does not exist';
+        }
+        if (!Lib.Helper.isString(key)) {
+            return 'Invalid key. String type required.';
+        }
+
+        dbs[file + this._ENCRYPT_POSTFIX]     = dbs[file];
+        dbs[file + this._ENCRYPT_POSTFIX].key = key;
+
+        return true;
+    },
+
+    /**
+     * Decrypts database (file) with specified key. We just emulate a decryption.
+     * @param {String} file Database (file) name to decrypt
+     * @param {String} key  Decryption key, which was used for encryption. Can be empty.
+     * @return {Boolean|String} true - ok, string message if error
+     */
+    decrypt: function (file, key) {
+        var dbs = this._get(this._DATA_FILES);
+        var newFile;
+
+        if (dbs[file] === undefined) {
+            return 'Database file does not exist';
+        }
+        if (dbs[file].key !== key) {
+            return 'Selected database file was encrypted with another key';
+        }
+
+        newFile      = file.substr(0, file.length - this._ENCRYPT_POSTFIX);
+        dbs[newFile] = dbs[file];
+        delete dbs[newFile].key;
+
+        return true;
+    },
 
     /**
      * Returns value from local storage by key. Real key will be created by concatenating of
