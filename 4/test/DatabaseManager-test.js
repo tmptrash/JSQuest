@@ -9,11 +9,5 @@ TestCase('App.DatabaseManager', {
         assertNoException('Construct App.DatabaseManager', function () {
             new App.DatabaseManager();
         });
-    },
-
-    testGetHashByUser: function () {
-        assertNoException('Check MD5 hashes for different users', function() {
-            // TODO:
-        });
     }
 });
