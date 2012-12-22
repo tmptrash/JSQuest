@@ -1,0 +1,10 @@
+load:
+  - ../../lib/js/external/speculoos.js
+  - ../../lib/js/external/Helper.js
+  - ../../lib/js/Helper.js
+  - ../../lib/js/Class.js
+  - ../js/Core.js
+  - ../js/DatabaseManager.js
+
+test:
+  - DatabaseManager-test.js

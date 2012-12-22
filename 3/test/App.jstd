@@ -7,6 +7,6 @@ load:
   - ../app/Terminal.js
 
 test:
-  - Helper.js
+  - Helper-test.js
   - Fs-test.js
   - SatelliteFs-test.js
