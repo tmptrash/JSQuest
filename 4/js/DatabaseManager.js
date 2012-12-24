@@ -9,7 +9,7 @@
  *
  * Supported commands:
  *     remove     db1...dbx         Remove specified list of databases (db1...dbx - database names)
- *     sync       db1...dbx sx      Synchronize databases with specified satellite (db1...dbx - database names, sx - satellite name)
+ *     sync       s1...sx           Synchronize databases of current satellite with specified satellites (sx - satellite name)
  *     pack       db1...dbx         Packs databases into db1p...dbxp, where "p" means packed (db1...dbx - database names)
  *     unpack     db1p...dbxp       Unpacks databases into db1...dbx (db1p...dbxp - packed database names)
  *     list                         Lists all available databases with sizes
@@ -34,6 +34,12 @@ App.DatabaseManager = speculoos.Class({
      * @private
      */
     _DATA_FILES     : 'files',
+    /**
+     * @const
+     * {String} Name of key for databases (files), which were deleted
+     * @private
+     */
+    _DATA_FILES_DEL : 'files-del',
     /**
      * @const
      * {String} Name of key for synchronized property
@@ -139,38 +145,56 @@ App.DatabaseManager = speculoos.Class({
      * @return {Boolean|String} true - ok, string message if error
      */
     remove: function (files) {
+        var delDbs;
+
         if (!Lib.Helper.isArray(files)) {
             return 'Invalid parameter during removing databases. Array of database files required.';
         }
-        this._change(files, function (curDbs, files, file) {
+
+        delDbs = this._get(this._DATA_FILES_DEL);
+        this._changeFiles(files, function (curDbs, files, file) {
+            delDbs[file] = curDbs[file];
             delete curDbs[file];
         });
+        this._set(this._DATA_FILES_DEL, delDbs);
 
         return true;
     },
 
     /**
      * Synchronizes databases (files) from this satellite with specified satellites. Result will be on both
-     * this and remote satellites. Example of calling: sync(['vk', 'mail', 's3']), means that we should synchronize
+     * this and remote satellites. Example of calling: sync(['s1', 's2', 's4']), means that we should synchronize
      * databases (files) vk and mail between current and s3 satellites.
-     * @param {Array} args Array of database (file) names and satellite name at the end.
+     * @param {Array} args Array of satellite names
      * @return {Boolean|String} true - ok, string message if error
      */
     sync: function (args) {
-        var sat;
-        var files;
+        var db;
+        var remoteDb = this._remoteDb;
+        var dbs      = this._get(this._DATA_FILES);
+        var delDbs   = this._get(this._DATA_FILES_DEL);
+        var remoteFiles;
+        var i;
+        var len;
 
         if (!Lib.Helper.isArray(args)) {
-            return 'Invalid arguments format for sync command. Array required. Should be: db1 db2...dbx satx';
+            return 'Invalid arguments format for sync command. Array required. Should be: sat1...satx';
         }
-        if (args.length < 2) {
-            return 'Invalid amount of arguments for sync command. Should be at least two.';
+        if (args.length < 1) {
+            return 'Invalid amount of arguments for sync command. Should be at least one.';
         }
 
-        sat   = args[args.length - 1];
-        files = args.splice(0, args.length - 1);
-
-        // TODO:
+        for (i = 0, len = args.length; i < len; i++) {
+            remoteFiles = remoteDb[args[i]];
+            for (db in remoteFiles) {
+                if (remoteFiles.hasOwnProperty(db)) {
+                    if (dbs[db] === undefined && delDbs[db] === undefined) {
+                        dbs[db] = remoteFiles[db];
+                    }
+                }
+            }
+        }
+        this._set(this._DATA_FILES, dbs);
 
         return true;
     },
@@ -181,18 +205,28 @@ App.DatabaseManager = speculoos.Class({
      * @return {Boolean|String} true - ok, string message if error
      */
     pack: function (files) {
+        var delDbs;
+        var newDb;
+
         if (!Lib.Helper.isArray(files)) {
             return 'Invalid parameter during packing databases. Array of database files required.';
         }
 
-        this._change(files, function (curDbs, files, file) {
+        delDbs = this._get(this._DATA_FILES_DEL);
+        this._changeFiles(files, function (curDbs, files, file) {
+            newDb = file + this._PACK_POSTFIX;
             //
             // Skips already packed files
             //
             if (curDbs[file] && file.indexOf(this._PACK_POSTFIX) === -1) {
-                curDbs[file + this._PACK_POSTFIX] = (curDbs[file].size / 7).toFixed();
+                curDbs[newDb] = (curDbs[file].size / 7).toFixed();
+                //
+                // If we add file with similar name as deleted, then we must unset it from deleted files map.
+                //
+                delete delDbs[newDb];
             }
         });
+        this._set(this._DATA_FILES_DEL, delDbs);
 
         return true;
     },
@@ -203,18 +237,28 @@ App.DatabaseManager = speculoos.Class({
      * @return {Boolean|String} true - ok, string message if error
      */
     unpack: function (files) {
+        var delDbs;
+        var newDb;
+
         if (!Lib.Helper.isArray(files)) {
             return 'Invalid parameter during unpacking databases. Array of database files required.';
         }
 
-        this._change(files, function (curDbs, files, file) {
+        delDbs = this._get(this._DATA_FILES_DEL);
+        this._changeFiles(files, function (curDbs, files, file) {
+            newDb = file.substr(0, file.length - this._PACK_POSTFIX.length);
             //
             // Skips not packed files
             //
             if (curDbs[file] && file.indexOf(this._PACK_POSTFIX) !== -1) {
-                curDbs[file.substr(0, file.length - this._PACK_POSTFIX.length)] = (curDbs[file].size * 7).toFixed();
+                curDbs[newDb] = (curDbs[file].size * 7).toFixed();
             }
+            //
+            // If we add file with similar name as deleted, then we must unset it from deleted files map.
+            //
+            delete delDbs[newDb];
         });
+        this._set(this._DATA_FILES_DEL, delDbs);
 
         return true;
     },
@@ -236,7 +280,9 @@ App.DatabaseManager = speculoos.Class({
      * @return {Boolean|String} true - ok, string message if error
      */
     encrypt: function (file, key) {
-        var dbs = this._get(this._DATA_FILES);
+        var dbs    = this._get(this._DATA_FILES);
+        var delDbs = this._get(this._DATA_FILES_DEL);
+        var newDb;
 
         if (dbs[file] === undefined) {
             return 'Database file does not exist';
@@ -245,8 +291,14 @@ App.DatabaseManager = speculoos.Class({
             return 'Invalid key. String type required.';
         }
 
-        dbs[file + this._ENCRYPT_POSTFIX]     = dbs[file];
-        dbs[file + this._ENCRYPT_POSTFIX].key = key;
+        newDb = file + this._ENCRYPT_POSTFIX;
+        dbs[newDb]     = dbs[file];
+        dbs[newDb].key = key;
+        //
+        // If we add file with similar name as deleted, then we must unset it from deleted files map.
+        //
+        delete delDbs[newDb];
+        this._set(this._DATA_FILES_DEL, delDbs);
 
         return true;
     },
@@ -258,8 +310,9 @@ App.DatabaseManager = speculoos.Class({
      * @return {Boolean|String} true - ok, string message if error
      */
     decrypt: function (file, key) {
-        var dbs = this._get(this._DATA_FILES);
-        var newFile;
+        var dbs    = this._get(this._DATA_FILES);
+        var delDbs = this._get(this._DATA_FILES_DEL);
+        var newDb;
 
         if (dbs[file] === undefined) {
             return 'Database file does not exist';
@@ -268,9 +321,15 @@ App.DatabaseManager = speculoos.Class({
             return 'Selected database file was encrypted with another key';
         }
 
-        newFile      = file.substr(0, file.length - this._ENCRYPT_POSTFIX);
-        dbs[newFile] = dbs[file];
-        delete dbs[newFile].key;
+        newDb      = file.substr(0, file.length - this._ENCRYPT_POSTFIX);
+        dbs[newDb] = dbs[file];
+        delete dbs[newDb].key;
+
+        //
+        // If we add file with similar name as deleted, then we must unset it from deleted files map.
+        //
+        delete delDbs[newDb];
+        this._set(this._DATA_FILES_DEL, delDbs);
 
         return true;
     },
@@ -292,10 +351,13 @@ App.DatabaseManager = speculoos.Class({
 
     _save: function () {
         this._set(this._DATA_FILES, this._defaultDb);
+        this._set(this._DATA_FILES_DEL, {});
     },
 
     /**
-     * This is a helper method, that iterates thought
+     * This is a helper method, that iterates thought databases (files) saved in local storage (available
+     * on current satellite). During iteration you can change list of databases or change it's properties.
+     * At the ent of iteration, they will be stored back to the local storage.
      * @param {Array} files Array of database (file) names
      * @param {Function} cb Callback function. Parameters:
      *     {Object} dbs   Reference to all available databases (files) on current satellite
@@ -304,7 +366,7 @@ App.DatabaseManager = speculoos.Class({
      *     {Number} i     Index of current database (file)
      * @private
      */
-    _change: function (files, cb) {
+    _changeFiles: function (files, cb) {
         var dbs = this._get(this._DATA_FILES);
         var file;
         var filesLen;
@@ -315,4 +377,28 @@ App.DatabaseManager = speculoos.Class({
 
         this._set(this._DATA_FILES, dbs);
     }
+
+    /**
+     * This is a helper method, that iterates thought removed databases (files) saved in local storage (available
+     * on current satellite). During iteration you can change list of databases or change it's properties.
+     * At the ent of iteration, they will be stored back to the local storage.
+     * @param {Array} files Array of database (file) names
+     * @param {Function} cb Callback function. Parameters:
+     *     {Object} dbs   Reference to all available databases (files) on current satellite
+     *     {Array}  files Array of databases (files) we working with
+     *     {String} fn    Name of current database (file)
+     *     {Number} i     Index of current database (file)
+     * @private
+     */
+//    _changeDeletedFiles: function (files, cb) {
+//        var dbs = this._get(this._DATA_FILES_DEL);
+//        var file;
+//        var filesLen;
+//
+//        for (file = 0, filesLen = files.length; file < filesLen; file++) {
+//            cb.call(this, dbs, files, files[file], file);
+//        }
+//
+//        this._set(this._DATA_FILES_DEL, dbs);
+//    }
 });

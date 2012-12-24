@@ -26,7 +26,7 @@
  *     connect    s1...sx           Connects to specified list of satellites (s1...sx - satellites)
  *     disconnect s1...sx           Disconnects from the list of satellites (s1...sx - satellites)
  *     remove     db1...dbx         Remove specified list of databases (db1...dbx - database names)
- *     sync       db1...dbx sx      Synchronize databases with specified satellite (db1...dbx - database names, sx - satellite name)
+ *     sync       s1...sx           Synchronize databases of current satellite with specified satellites (sx - satellite name)
  *     pack       db1...dbx         Packs databases into db1p...dbxp, where "p" means packed (db1...dbx - database names)
  *     unpack     db1p...dbxp       Unpacks databases into db1...dbx (db1p...dbxp - packed database names)
  *     send       db1...dbx sx      Send databases to the satellite (db1...dbx - database names, sx - satellite name)
