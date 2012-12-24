@@ -5,6 +5,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="speculoos" level="project" />
+    <orderEntry type="library" name="JsTestDriver Assertion Framework" level="application" />
   </component>
 </module>
 

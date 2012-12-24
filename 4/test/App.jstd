@@ -5,6 +5,7 @@ load:
   - ../../lib/js/Helper.js
   - ../../lib/js/Class.js
   - ../js/Core.js
+  - Helper.js
   - ../js/DatabaseManager.js
 
 test:

@@ -140,6 +140,14 @@ App.DatabaseManager = speculoos.Class({
     },
 
     /**
+     * Returns dimension of files. e.g. Tb, Gb, Mb, bytes, bits
+     * @return {String}
+     */
+    getDimension: function () {
+        return this._dimension;
+    },
+
+    /**
      * Removes specified databases (files) from a local satellite.
      * @param {Array} files Array of file names
      * @return {Boolean|String} true - ok, string message if error
