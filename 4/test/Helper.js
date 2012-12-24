@@ -4,56 +4,56 @@
 App.test = {};
 App.test.Helper = {
     callWithAllTypes: function (msg, cb) {
-        assertException(function () {
+        assertException(msg + ' - not empty string', function () {
             cb('Hello world!');
-        }, undefined, msg + ' - not empty string');
-        assertException(function () {
+        });
+        assertException(msg + ' - string with one space', function () {
             cb(' ');
-        }, undefined, msg + ' - string with one space');
-        assertException(function () {
+        });
+        assertException(msg + ' - empty string', function () {
             cb('');
-        }, undefined, msg + ' - empty string');
-        assertException(function () {
+        });
+        assertException(msg + ' - number 123', function () {
             cb(123);
-        }, undefined, msg + ' - number 123');
-        assertException(function () {
+        });
+        assertException(msg + ' - number 0', function () {
             cb(0);
-        }, undefined, msg + ' - number 0');
-        assertException(function () {
+        });
+        assertException(msg + ' - number -1', function () {
             cb(-1);
-        }, undefined, msg + ' - number -1');
-        assertException(function () {
+        });
+        assertException(msg + ' - empty function', function () {
             cb(function () {});
-        }, undefined, msg + ' - empty function');
-        assertException(function () {
+        });
+        assertException(msg + ' - empty array', function () {
             cb([]);
-        }, undefined, msg + ' - empty array');
-        assertException(function () {
+        });
+        assertException(msg + ' - not empty array', function () {
             cb([1, 2, 3]);
-        }, undefined, msg + ' - not empty array');
-        assertException(function () {
+        });
+        assertException(msg + ' - NaN', function () {
             cb(NaN);
-        }, undefined, msg + ' - NaN');
-        assertException(function () {
+        });
+        assertException(msg + ' - Infinity', function () {
             cb(Infinity);
-        }, undefined, msg + ' - Infinity');
-        assertException(function () {
+        });
+        assertException(msg + ' - undefined', function () {
             cb(undefined);
-        }, undefined, msg + ' - undefined');
-        assertException(function () {
+        });
+        assertException(msg + ' - null', function () {
             cb(null);
-        }, undefined, msg + ' - null');
-        assertException(function () {
+        });
+        assertException(msg + ' - boolean true', function () {
             cb(true);
-        }, undefined, msg + ' - boolean true');
-        assertException(function () {
+        });
+        assertException(msg + ' - boolean false', function () {
             cb(false);
-        }, undefined, msg + ' - boolean false');
-        assertException(function () {
+        });
+        assertException(msg + ' - regexp', function () {
             cb(/[^]/);
-        }, undefined, msg + ' - regexp');
-        assertException(function () {
+        });
+        assertException(msg + ' - object', function () {
             cb({});
-        }, undefined, msg + ' - object');
+        });
     }
 };
