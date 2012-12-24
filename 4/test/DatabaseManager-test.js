@@ -89,6 +89,28 @@ var tc = new TestCase('App.DatabaseManager', {
         });
     },
 
+    testSync: function () {
+        var me = this;
+
+        assertNoException('Check remove command with invalid arguments', function () {
+            App.test.Helper.callWithAllTypes('Check remove for type', function (arg) {
+                if (Lib.Helper.isArray(arg)) {
+                    throw new Error('Array');
+                }
+
+                localStorage.removeItem('jsql4synchronized');
+                localStorage.removeItem('jsql4files');
+
+                var dm  = new App.DatabaseManager();
+                var msg = dm.sync(arg);
+
+                if (msg !== true) {
+                    throw new Error(msg);
+                }
+            });
+        });
+    },
+
     /**
      * Checks default list of databases (files) on current satellite
      * @param {Object} dbs Databases (files) of current satellite
