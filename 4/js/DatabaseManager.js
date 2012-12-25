@@ -186,7 +186,7 @@ App.DatabaseManager = speculoos.Class({
         var len;
 
         if (!Lib.Helper.isArray(args)) {
-            return 'Invalid arguments format for sync command. Array required. Should be: sat1...satx';
+            return 'Invalid arguments format for sync command. Array required. Should be: s1...sx';
         }
         if (args.length < 1) {
             return 'Invalid amount of arguments for sync command. Should be at least one.';

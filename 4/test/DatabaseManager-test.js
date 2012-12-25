@@ -101,10 +101,9 @@ var tc = new TestCase('App.DatabaseManager', {
                 localStorage.removeItem('jsql4files');
 
                 var dm  = new App.DatabaseManager();
-                var msg = dm.sync(arg);
 
-                if (msg !== true) {
-                    throw new Error(msg);
+                if (dm.sync(arg) !== true) {
+                    throw new Error('Invalid argument');
                 }
             });
         });
@@ -114,16 +113,12 @@ var tc = new TestCase('App.DatabaseManager', {
             localStorage.removeItem('jsql4files');
 
             var dm  = new App.DatabaseManager();
-            var msg;
             var dbs;
 
             //
             // Sync with first satellite
             //
-            msg = dm.sync(['s1']);
-            if (msg !== true) {
-                throw new Error(msg);
-            }
+            assertTrue('Check sync', dm.sync(['s1']) === true);
             dbs = dm.list();
             me._checkDefaultFiles(dbs);
             assertTrue('Check added skype database', dbs.skype.size === 45075);
@@ -139,10 +134,7 @@ var tc = new TestCase('App.DatabaseManager', {
             //
             // Sync with first satellite again. skype database should be added again
             //
-            msg = dm.sync(['s1']);
-            if (msg !== true) {
-                throw new Error(msg);
-            }
+            assertTrue('Check sync', dm.sync(['s1']) === true);
             dbs = dm.list();
             me._checkDefaultFiles(dbs);
             assertTrue('Check added skype database', dbs.skype === undefined);
@@ -153,16 +145,12 @@ var tc = new TestCase('App.DatabaseManager', {
             localStorage.removeItem('jsql4files');
 
             var dm  = new App.DatabaseManager();
-            var msg;
             var dbs;
 
             //
             // Sync with two satellites
             //
-            msg = dm.sync(['s1', 's3']);
-            if (msg !== true) {
-                throw new Error(msg);
-            }
+            assertTrue('Check sync', dm.sync(['s1', 's3']) === true);
             dbs = dm.list();
             me._checkDefaultFiles(dbs);
             assertTrue('Check added skype database', dbs.skype.size === 45075);
@@ -180,14 +168,66 @@ var tc = new TestCase('App.DatabaseManager', {
             //
             // Sync with first satellite again. skype database should be added again
             //
-            msg = dm.sync(['s1', 's3']);
-            if (msg !== true) {
-                throw new Error(msg);
-            }
+            assertTrue('Check sync', dm.sync(['s1', 's3']) === true);
             dbs = dm.list();
             me._checkDefaultFiles(dbs);
             assertTrue('Check added skype database', dbs.skype === undefined);
             assertTrue('Check added mail database', dbs.mail === undefined);
+        });
+
+        assertNoException('Check sync command with two unknown satellites', function () {
+            localStorage.removeItem('jsql4synchronized');
+            localStorage.removeItem('jsql4files');
+
+            var dm = new App.DatabaseManager();
+
+            //
+            // Sync with two unknown satellites
+            //
+            assertTrue('Check sync', dm.sync(['unk1', 'unk2']) === true);
+            me._checkDefaultFiles(dm.list());
+        });
+
+        assertNoException('Check sync/remove commands with two satellites', function () {
+            localStorage.removeItem('jsql4synchronized');
+            localStorage.removeItem('jsql4files');
+
+            var dm = new App.DatabaseManager();
+            var dbs;
+
+            //
+            // Sync with two satellites
+            //
+            assertTrue('Check sync', dm.remove(['facebook']) === true);
+            dbs = dm.list();
+            assertTrue('Check removed facebook database', dbs.facebook === undefined);
+            dbs = dm.list();
+            assertTrue('Check sync', dm.sync(['s1', 's2']) === true);
+            dbs = dm.list();
+            assertTrue('Check removed facebook database', dbs.facebook === undefined);
+        });
+
+        assertNoException('Check sync/remove commands with two satellites', function () {
+            localStorage.removeItem('jsql4synchronized');
+            localStorage.removeItem('jsql4files');
+
+            var dm = new App.DatabaseManager();
+            var dbs;
+
+            //
+            // Sync with first satellite
+            //
+            assertTrue('Check sync', dm.sync(['s1']) === true);
+            dbs = dm.list();
+            me._checkDefaultFiles(dbs);
+            assertTrue('Check added skype database', dbs.skype.size === 45075);
+
+            //
+            // Check second run
+            //
+            dm = new App.DatabaseManager();
+            me._checkDefaultFiles(dbs);
+            assertTrue('Check added skype database', dbs.skype.size === 45075);
         });
     },
 
