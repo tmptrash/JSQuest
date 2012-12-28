@@ -359,6 +359,123 @@ var tc = new TestCase('App.DatabaseManager', {
         });
     },
 
+    testEncrypt: function () {
+        var me = this;
+
+        assertNoException('Check encrypt command with invalid database names', function () {
+            App.test.Helper.callWithAllTypes('Check encrypt for type', function (arg) {
+                if (Lib.Helper.isString(arg)) {
+                    throw new Error('String');
+                }
+
+                localStorage.removeItem('jsql4synchronized');
+                localStorage.removeItem('jsql4files');
+
+                var dm  = new App.DatabaseManager();
+
+                if (dm.encrypt(arg, '12345678') !== true) {
+                    throw new Error('Invalid argument');
+                }
+            });
+        });
+
+        assertNoException('Check encrypt command with invalid encryption key', function () {
+            App.test.Helper.callWithAllTypes('Check encrypt for type', function (arg) {
+                if (Lib.Helper.isString(arg)) {
+                    throw new Error('String');
+                }
+
+                localStorage.removeItem('jsql4synchronized');
+                localStorage.removeItem('jsql4files');
+
+                var dm  = new App.DatabaseManager();
+
+                if (dm.encrypt('vk', arg) !== true) {
+                    throw new Error('Invalid argument');
+                }
+            });
+        });
+
+        assertNoException('Check encrypt command with unknown database', function () {
+            localStorage.removeItem('jsql4synchronized');
+            localStorage.removeItem('jsql4files');
+
+            var dm = new App.DatabaseManager();
+
+            assertTrue('Check encrypt', dm.encrypt('unknown', '12345678') !== true);
+        });
+
+        assertNoException('Check encrypt command', function () {
+            localStorage.removeItem('jsql4synchronized');
+            localStorage.removeItem('jsql4files');
+
+            var dm = new App.DatabaseManager();
+            var dbs;
+
+            assertTrue('Check encrypt', dm.encrypt('vk', '12345678') === true);
+            dbs = dm.list();
+            me._checkDefaultFiles(dbs);
+            assertTrue('Check added vk-e database', Lib.Helper.isObject(dbs['vk-e']));
+        });
+    },
+
+    testDencrypt: function () {
+        var me = this;
+
+        assertNoException('Check decrypt command with invalid database names', function () {
+            App.test.Helper.callWithAllTypes('Check decrypt for type', function (arg) {
+                if (Lib.Helper.isString(arg)) {
+                    throw new Error('String');
+                }
+
+                localStorage.removeItem('jsql4synchronized');
+                localStorage.removeItem('jsql4files');
+
+                var dm  = new App.DatabaseManager();
+
+                if (dm.decrypt(arg, '12345678') !== true) {
+                    throw new Error('Invalid argument');
+                }
+            });
+        });
+
+        assertNoException('Check decrypt command with incorrect key', function () {
+            localStorage.removeItem('jsql4synchronized');
+            localStorage.removeItem('jsql4files');
+
+            var dm = new App.DatabaseManager();
+            var dbs;
+
+            assertTrue('Check encrypt', dm.encrypt('vk', '12345678') === true);
+            dbs = dm.list();
+            assertTrue('Check added vk-e database', Lib.Helper.isObject(dbs['vk-e']));
+            assertTrue('Check remove', dm.remove(['vk']) === true);
+            dbs = dm.list();
+            assertTrue('Check removed vk database', dbs.vk === undefined);
+            assertTrue('Check decrypt', dm.decrypt('vk-e', 'invalid') !== true);
+            dbs = dm.list();
+            assertTrue('Check added vk database', dbs.vk === undefined);
+        });
+
+        assertNoException('Check decrypt command', function () {
+            localStorage.removeItem('jsql4synchronized');
+            localStorage.removeItem('jsql4files');
+
+            var dm  = new App.DatabaseManager();
+            var dbs;
+
+            assertTrue('Check encrypt', dm.encrypt('vk', '12345678') === true);
+            dbs = dm.list();
+            assertTrue('Check added vk-e database', Lib.Helper.isObject(dbs['vk-e']));
+            assertTrue('Check remove', dm.remove(['vk']) === true);
+            dbs = dm.list();
+            assertTrue('Check added vk-e database', dbs.vk === undefined);
+            assertTrue('Check decrypt', dm.decrypt('vk-e', '12345678') === true);
+            dbs = dm.list();
+            assertTrue('Check added vk database', Lib.Helper.isObject(dbs.vk));
+        });
+    },
+
     /**
      * Checks default list of databases (files) on current satellite
      * @param {Object} dbs Databases (files) of current satellite

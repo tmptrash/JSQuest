@@ -302,6 +302,7 @@ App.DatabaseManager = speculoos.Class({
         newDb = file + this._ENCRYPT_POSTFIX;
         dbs[newDb]     = dbs[file];
         dbs[newDb].key = key;
+        this._set(this._DATA_FILES, dbs);
         //
         // If we add file with similar name as deleted, then we must unset it from deleted files map.
         //
@@ -329,10 +330,10 @@ App.DatabaseManager = speculoos.Class({
             return 'Selected database file was encrypted with another key';
         }
 
-        newDb      = file.substr(0, file.length - this._ENCRYPT_POSTFIX);
+        newDb      = file.substr(0, file.length - this._ENCRYPT_POSTFIX.length);
         dbs[newDb] = dbs[file];
         delete dbs[newDb].key;
-
+        this._set(this._DATA_FILES, dbs);
         //
         // If we add file with similar name as deleted, then we must unset it from deleted files map.
         //
