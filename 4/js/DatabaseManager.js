@@ -227,7 +227,7 @@ App.DatabaseManager = speculoos.Class({
             // Skips already packed files
             //
             if (curDbs[file] && file.indexOf(this._PACK_POSTFIX) === -1) {
-                curDbs[newDb] = (curDbs[file].size / 7).toFixed();
+                curDbs[newDb] = {size: parseInt((curDbs[file].size / 7).toFixed(), 10), prevSize: curDbs[file].size};
                 //
                 // If we add file with similar name as deleted, then we must unset it from deleted files map.
                 //
@@ -259,7 +259,7 @@ App.DatabaseManager = speculoos.Class({
             // Skips not packed files
             //
             if (curDbs[file] && file.indexOf(this._PACK_POSTFIX) !== -1) {
-                curDbs[newDb] = (curDbs[file].size * 7).toFixed();
+                curDbs[newDb] = {size: curDbs[file].prevSize};
             }
             //
             // If we add file with similar name as deleted, then we must unset it from deleted files map.
