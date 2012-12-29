@@ -84,7 +84,7 @@ App.Terminal = speculoos.Class({
             ['disconnect', 'Info : Disconnects specified list of satellites from the current.\nUsage: disconnect s1 s3'],
             ['list',       'Info : Lists all available databases on the current satellite.\nUsage: list'],
             ['remove',     'Info : Removes specified databases from the local satellite.\nUsage: remove db1 db2'],
-            ['sync',       'Info : Synchronizes databases between current and remote satellites. If you add new database on the local satellite and call sync command, new database will be uploaded to the remote satellites as well.\nUsage: sync'],
+            ['sync',       'Info : Synchronizes databases between current and remote satellites. If you add new database on the local satellite and call sync command, new database will be uploaded to the remote satellites as well.\nUsage: sync s1 s4'],
             ['pack',       'Info : Packs specified databases.\nUsage: pack db1 db3'],
             ['unpack',     'Info : Unpacks specified databases, packed by pack command.\nUsage: unpack db1-p db3-p'],
             ['encrypt',    'Info : Encrypts specified database with key.\nUsage: encrypt db1 12345678'],

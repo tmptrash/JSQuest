@@ -4,9 +4,12 @@ load:
   - ../../lib/js/external/Helper.js
   - ../../lib/js/Helper.js
   - ../../lib/js/Class.js
+  - ../../lib/js/Observer.js
   - ../js/Core.js
   - Helper.js
   - ../js/DatabaseManager.js
+  - ../js/Terminal.js
 
 test:
   - DatabaseManager-test.js
+  - Terminal-test.js

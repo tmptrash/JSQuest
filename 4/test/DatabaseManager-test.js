@@ -19,6 +19,9 @@ var tc = new TestCase('App.DatabaseManager', {
             //
             localStorage.removeItem('jsql4synchronized');
             localStorage.removeItem('jsql4files');
+            localStorage.removeItem('jsql4files-d');
+            localStorage.removeItem('jsql4files-2');
+            localStorage.removeItem('jsql4synchronized');
 
             var ct  = new App.DatabaseManager();
             var dbs = ct.list();
@@ -30,6 +33,9 @@ var tc = new TestCase('App.DatabaseManager', {
     testDimension: function () {
         localStorage.removeItem('jsql4synchronized');
         localStorage.removeItem('jsql4files');
+        localStorage.removeItem('jsql4files-d');
+        localStorage.removeItem('jsql4files-2');
+        localStorage.removeItem('jsql4synchronized');
 
         var ct = new App.DatabaseManager();
 
@@ -47,6 +53,9 @@ var tc = new TestCase('App.DatabaseManager', {
 
                 localStorage.removeItem('jsql4synchronized');
                 localStorage.removeItem('jsql4files');
+                localStorage.removeItem('jsql4files-d');
+                localStorage.removeItem('jsql4files-2');
+                localStorage.removeItem('jsql4synchronized');
 
                 var dm  = new App.DatabaseManager();
                 var msg = dm.remove(arg);
@@ -60,6 +69,9 @@ var tc = new TestCase('App.DatabaseManager', {
         assertNoException('Check one database remove', function () {
             localStorage.removeItem('jsql4synchronized');
             localStorage.removeItem('jsql4files');
+            localStorage.removeItem('jsql4files-d');
+            localStorage.removeItem('jsql4files-2');
+            localStorage.removeItem('jsql4synchronized');
 
             var dm = new App.DatabaseManager();
             var dbs;
@@ -71,6 +83,9 @@ var tc = new TestCase('App.DatabaseManager', {
         assertNoException('Check empty database remove', function () {
             localStorage.removeItem('jsql4synchronized');
             localStorage.removeItem('jsql4files');
+            localStorage.removeItem('jsql4files-d');
+            localStorage.removeItem('jsql4files-2');
+            localStorage.removeItem('jsql4synchronized');
 
             var dm  = new App.DatabaseManager();
 
@@ -80,6 +95,9 @@ var tc = new TestCase('App.DatabaseManager', {
         assertNoException('Check unknown database remove', function () {
             localStorage.removeItem('jsql4synchronized');
             localStorage.removeItem('jsql4files');
+            localStorage.removeItem('jsql4files-d');
+            localStorage.removeItem('jsql4files-2');
+            localStorage.removeItem('jsql4synchronized');
 
             var dm  = new App.DatabaseManager();
 
@@ -99,6 +117,9 @@ var tc = new TestCase('App.DatabaseManager', {
 
                 localStorage.removeItem('jsql4synchronized');
                 localStorage.removeItem('jsql4files');
+                localStorage.removeItem('jsql4files-d');
+                localStorage.removeItem('jsql4files-2');
+                localStorage.removeItem('jsql4synchronized');
 
                 var dm  = new App.DatabaseManager();
 
@@ -111,6 +132,9 @@ var tc = new TestCase('App.DatabaseManager', {
         assertNoException('Check sync command with one satellite', function () {
             localStorage.removeItem('jsql4synchronized');
             localStorage.removeItem('jsql4files');
+            localStorage.removeItem('jsql4files-d');
+            localStorage.removeItem('jsql4files-2');
+            localStorage.removeItem('jsql4synchronized');
 
             var dm  = new App.DatabaseManager();
             var dbs;
@@ -121,7 +145,7 @@ var tc = new TestCase('App.DatabaseManager', {
             assertTrue('Check sync', dm.sync(['s1']) === true);
             dbs = dm.list();
             me._checkDefaultFiles(dbs);
-            assertTrue('Check added skype database', dbs.skype.size === 45075);
+            assertTrue('Check added skype database', dbs.skype.size === 4507578638902);
 
             //
             // Remove database, added from first satellite
@@ -143,6 +167,9 @@ var tc = new TestCase('App.DatabaseManager', {
         assertNoException('Check sync command with two satellites', function () {
             localStorage.removeItem('jsql4synchronized');
             localStorage.removeItem('jsql4files');
+            localStorage.removeItem('jsql4files-d');
+            localStorage.removeItem('jsql4files-2');
+            localStorage.removeItem('jsql4synchronized');
 
             var dm  = new App.DatabaseManager();
             var dbs;
@@ -153,7 +180,7 @@ var tc = new TestCase('App.DatabaseManager', {
             assertTrue('Check sync', dm.sync(['s1', 's3']) === true);
             dbs = dm.list();
             me._checkDefaultFiles(dbs);
-            assertTrue('Check added skype database', dbs.skype.size === 45075);
+            assertTrue('Check added skype database', dbs.skype.size === 4507578638902);
             assertTrue('Check added mail database', dbs.mail.size === 8512758);
 
             //
@@ -178,6 +205,9 @@ var tc = new TestCase('App.DatabaseManager', {
         assertNoException('Check sync command with two unknown satellites', function () {
             localStorage.removeItem('jsql4synchronized');
             localStorage.removeItem('jsql4files');
+            localStorage.removeItem('jsql4files-d');
+            localStorage.removeItem('jsql4files-2');
+            localStorage.removeItem('jsql4synchronized');
 
             var dm = new App.DatabaseManager();
 
@@ -191,6 +221,9 @@ var tc = new TestCase('App.DatabaseManager', {
         assertNoException('Check sync/remove commands with two satellites', function () {
             localStorage.removeItem('jsql4synchronized');
             localStorage.removeItem('jsql4files');
+            localStorage.removeItem('jsql4files-d');
+            localStorage.removeItem('jsql4files-2');
+            localStorage.removeItem('jsql4synchronized');
 
             var dm = new App.DatabaseManager();
             var dbs;
@@ -210,6 +243,9 @@ var tc = new TestCase('App.DatabaseManager', {
         assertNoException('Check sync/remove commands with two satellites', function () {
             localStorage.removeItem('jsql4synchronized');
             localStorage.removeItem('jsql4files');
+            localStorage.removeItem('jsql4files-d');
+            localStorage.removeItem('jsql4files-2');
+            localStorage.removeItem('jsql4synchronized');
 
             var dm = new App.DatabaseManager();
             var dbs;
@@ -220,14 +256,14 @@ var tc = new TestCase('App.DatabaseManager', {
             assertTrue('Check sync', dm.sync(['s1']) === true);
             dbs = dm.list();
             me._checkDefaultFiles(dbs);
-            assertTrue('Check added skype database', dbs.skype.size === 45075);
+            assertTrue('Check added skype database', dbs.skype.size === 4507578638902);
 
             //
             // Check second run
             //
             dm = new App.DatabaseManager();
             me._checkDefaultFiles(dbs);
-            assertTrue('Check added skype database', dbs.skype.size === 45075);
+            assertTrue('Check added skype database', dbs.skype.size === 4507578638902);
         });
     },
 
@@ -242,6 +278,9 @@ var tc = new TestCase('App.DatabaseManager', {
 
                 localStorage.removeItem('jsql4synchronized');
                 localStorage.removeItem('jsql4files');
+                localStorage.removeItem('jsql4files-d');
+                localStorage.removeItem('jsql4files-2');
+                localStorage.removeItem('jsql4synchronized');
 
                 var dm  = new App.DatabaseManager();
 
@@ -254,6 +293,9 @@ var tc = new TestCase('App.DatabaseManager', {
         assertNoException('Check pack command with one database', function () {
             localStorage.removeItem('jsql4synchronized');
             localStorage.removeItem('jsql4files');
+            localStorage.removeItem('jsql4files-d');
+            localStorage.removeItem('jsql4files-2');
+            localStorage.removeItem('jsql4synchronized');
 
             var dm  = new App.DatabaseManager();
             var packedName = 'facebook-p';
@@ -277,6 +319,9 @@ var tc = new TestCase('App.DatabaseManager', {
         assertNoException('Check pack command with unknown database', function () {
             localStorage.removeItem('jsql4synchronized');
             localStorage.removeItem('jsql4files');
+            localStorage.removeItem('jsql4files-d');
+            localStorage.removeItem('jsql4files-2');
+            localStorage.removeItem('jsql4synchronized');
 
             var dm  = new App.DatabaseManager();
             var dbs;
@@ -299,6 +344,9 @@ var tc = new TestCase('App.DatabaseManager', {
 
                 localStorage.removeItem('jsql4synchronized');
                 localStorage.removeItem('jsql4files');
+                localStorage.removeItem('jsql4files-d');
+                localStorage.removeItem('jsql4files-2');
+                localStorage.removeItem('jsql4synchronized');
 
                 var dm  = new App.DatabaseManager();
 
@@ -311,6 +359,9 @@ var tc = new TestCase('App.DatabaseManager', {
         assertNoException('Check unpack command', function () {
             localStorage.removeItem('jsql4synchronized');
             localStorage.removeItem('jsql4files');
+            localStorage.removeItem('jsql4files-d');
+            localStorage.removeItem('jsql4files-2');
+            localStorage.removeItem('jsql4synchronized');
 
             var dm  = new App.DatabaseManager();
             var dbs;
@@ -337,6 +388,9 @@ var tc = new TestCase('App.DatabaseManager', {
         assertNoException('Check unpack command with unknown databases', function () {
             localStorage.removeItem('jsql4synchronized');
             localStorage.removeItem('jsql4files');
+            localStorage.removeItem('jsql4files-d');
+            localStorage.removeItem('jsql4files-2');
+            localStorage.removeItem('jsql4synchronized');
 
             var dm  = new App.DatabaseManager();
             var dbs;
@@ -349,6 +403,9 @@ var tc = new TestCase('App.DatabaseManager', {
         assertNoException('Check unpack command with not packed database', function () {
             localStorage.removeItem('jsql4synchronized');
             localStorage.removeItem('jsql4files');
+            localStorage.removeItem('jsql4files-d');
+            localStorage.removeItem('jsql4files-2');
+            localStorage.removeItem('jsql4synchronized');
 
             var dm  = new App.DatabaseManager();
             var dbs;
@@ -370,6 +427,9 @@ var tc = new TestCase('App.DatabaseManager', {
 
                 localStorage.removeItem('jsql4synchronized');
                 localStorage.removeItem('jsql4files');
+                localStorage.removeItem('jsql4files-d');
+                localStorage.removeItem('jsql4files-2');
+                localStorage.removeItem('jsql4synchronized');
 
                 var dm  = new App.DatabaseManager();
 
@@ -387,6 +447,9 @@ var tc = new TestCase('App.DatabaseManager', {
 
                 localStorage.removeItem('jsql4synchronized');
                 localStorage.removeItem('jsql4files');
+                localStorage.removeItem('jsql4files-d');
+                localStorage.removeItem('jsql4files-2');
+                localStorage.removeItem('jsql4synchronized');
 
                 var dm  = new App.DatabaseManager();
 
@@ -399,6 +462,9 @@ var tc = new TestCase('App.DatabaseManager', {
         assertNoException('Check encrypt command with unknown database', function () {
             localStorage.removeItem('jsql4synchronized');
             localStorage.removeItem('jsql4files');
+            localStorage.removeItem('jsql4files-d');
+            localStorage.removeItem('jsql4files-2');
+            localStorage.removeItem('jsql4synchronized');
 
             var dm = new App.DatabaseManager();
 
@@ -408,6 +474,9 @@ var tc = new TestCase('App.DatabaseManager', {
         assertNoException('Check encrypt command', function () {
             localStorage.removeItem('jsql4synchronized');
             localStorage.removeItem('jsql4files');
+            localStorage.removeItem('jsql4files-d');
+            localStorage.removeItem('jsql4files-2');
+            localStorage.removeItem('jsql4synchronized');
 
             var dm = new App.DatabaseManager();
             var dbs;
@@ -430,6 +499,9 @@ var tc = new TestCase('App.DatabaseManager', {
 
                 localStorage.removeItem('jsql4synchronized');
                 localStorage.removeItem('jsql4files');
+                localStorage.removeItem('jsql4files-d');
+                localStorage.removeItem('jsql4files-2');
+                localStorage.removeItem('jsql4synchronized');
 
                 var dm  = new App.DatabaseManager();
 
@@ -442,6 +514,9 @@ var tc = new TestCase('App.DatabaseManager', {
         assertNoException('Check decrypt command with incorrect key', function () {
             localStorage.removeItem('jsql4synchronized');
             localStorage.removeItem('jsql4files');
+            localStorage.removeItem('jsql4files-d');
+            localStorage.removeItem('jsql4files-2');
+            localStorage.removeItem('jsql4synchronized');
 
             var dm = new App.DatabaseManager();
             var dbs;
@@ -460,6 +535,9 @@ var tc = new TestCase('App.DatabaseManager', {
         assertNoException('Check decrypt command', function () {
             localStorage.removeItem('jsql4synchronized');
             localStorage.removeItem('jsql4files');
+            localStorage.removeItem('jsql4files-d');
+            localStorage.removeItem('jsql4files-2');
+            localStorage.removeItem('jsql4synchronized');
 
             var dm  = new App.DatabaseManager();
             var dbs;
