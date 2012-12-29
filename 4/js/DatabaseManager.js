@@ -40,7 +40,13 @@ App.DatabaseManager = speculoos.Class({
      * {String} Name of key for databases (files), which were deleted
      * @private
      */
-    _DATA_FILES_DEL : 'files-del',
+    _DATA_FILES_DEL : 'files-d',
+    /**
+     * @const
+     * {String} Name of key for satellites map, which were synchronized and cleaned
+     * @private
+     */
+    _SATS_SYNC      : 'sats-s',
     /**
      * @const
      * {String} Name of key for synchronized property
@@ -121,6 +127,19 @@ App.DatabaseManager = speculoos.Class({
             s5: {
                 google    : {size: 26489837653}
             }
+        };
+        /**
+         * @prop
+         * {Object} Map of satellites, which were synchronized and cleaned. Under cleaned, means
+         * that, all databases (files) from remote satellite were removed.
+         * @private
+         */
+        this._syncSats  = {
+            s1: false,
+            s2: false,
+            s3: false,
+            s4: false,
+            s5: false
         };
     },
 
@@ -205,6 +224,7 @@ App.DatabaseManager = speculoos.Class({
         }
         this._set(this._DATA_FILES, dbs);
         this._set(this._DATA_SYNC, true);
+        this._updateSatellitesSyncState(args);
 
         //
         // If there is no databases (files) on the local and remote satellites, 'empty' event should be called
@@ -370,6 +390,7 @@ App.DatabaseManager = speculoos.Class({
     _save: function () {
         this._set(this._DATA_FILES, this._defaultDb);
         this._set(this._DATA_FILES_DEL, {});
+        this._set(this._SATS_SYNC, this._syncSats);
     },
 
     /**
@@ -379,17 +400,13 @@ App.DatabaseManager = speculoos.Class({
      * @private
      */
     _empty: function () {
-        var dbs       = this._get(this._DATA_FILES);
         var delDbs    = this._get(this._DATA_FILES_DEL);
         var sats      = this._remoteDb;
         var remoteDbs;
         var db;
         var sat;
 
-        //
-        // dbs.length === 0 means, that all databases (files) were removed from local satellite
-        //
-        if (dbs.length === 0) {
+        if (!this._hasLocalFiles()) {
             for (sat in sats) {
                 if (sats.hasOwnProperty(sat)) {
                     remoteDbs = sats[sat];
@@ -406,6 +423,62 @@ App.DatabaseManager = speculoos.Class({
         }
 
         return false;
+    },
+
+    /**
+     * Returns true if current satellite has at least one database (file)
+     * @return {Boolean}
+     * @private
+     */
+    _hasLocalFiles: function () {
+        var dbs = this._get(this._DATA_FILES);
+        var db;
+
+        for (db in dbs) {
+            if (dbs.hasOwnProperty(db)) {
+                return true;
+            }
+        }
+
+        return false;
+    },
+
+    /**
+     * Updates internal satellites map. It contains map of satellites, which were synchronized and cleaned.
+     * @param {Array} sats Array of satellite names, we should to update
+     * @private
+     */
+    _updateSatellitesSyncState: function (sats) {
+        var syncSats   = this._get(this._SATS_SYNC);
+        var delDbs     = this._get(this._DATA_FILES_DEL);
+        var remoteSats = this._remoteDb;
+        var remoteDbs;
+        var db;
+        var sat;
+        var all;
+        var i;
+
+        for (i in sats) {
+            if (sats.hasOwnProperty(i)) {
+                sat = sats[i];
+                if (remoteSats.hasOwnProperty(sat)) {
+                    remoteDbs = remoteSats[sat];
+                    all       = true;
+                    for (db in remoteDbs) {
+                        if (remoteDbs.hasOwnProperty(db)) {
+                            if (!delDbs[db]) {
+                                all = false;
+                                break;
+                            }
+                        }
+                    }
+                    if (all) {
+                        syncSats[sat] = true;
+                    }
+                }
+            }
+        }
+        this._set(this._SATS_SYNC, syncSats);
     },
 
     /**

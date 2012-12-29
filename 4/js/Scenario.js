@@ -162,6 +162,7 @@ App.Scenario = speculoos.Class({
      */
     _onFinishQuest: function () {
         // TODO:
+        alert('The quest has finished!!!');
     },
 
     /**
@@ -280,7 +281,7 @@ App.Scenario = speculoos.Class({
      * @private
      */
     _onSyncCmd: function (args) {
-        this._addEffect('sync', {period: 12, timer: new THREE.Clock(true), sats: args}, this._syncEffect);
+        this._addEffect('sync', {period: 12, timer: new THREE.Clock(true), sats: args}, this._syncEffect, undefined, 'Synchronizing...');
     },
 
     /**
