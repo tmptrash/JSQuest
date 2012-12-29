@@ -1,5 +1,5 @@
 /**
- * Satellite's telescope console. It contains console commands for moving and zooming telescope and
+ * Satellite's camera console. It contains console commands for moving and zooming camera and
  * managing of huge databases between similar satellites. It creates all HTML structure for satellites
  * representation and console text area for commands. Every satellite can be in one of two states:
  * connected(green) and disconnected(grey).
@@ -19,10 +19,10 @@
  *  ------------------------
  *
  * Supported commands:
- *     left       x                 Move telescope to the left to x points
- *     right      x                 Move telescope to the right to x points
- *     up         x                 Move telescope to the top to x points
- *     down       x                 Move telescope to the down to x points
+ *     left       x                 Move camera to the left to x points
+ *     right      x                 Move camera to the right to x points
+ *     up         x                 Move camera to the top to x points
+ *     down       x                 Move camera to the down to x points
  *     connect    s1...sx           Connects to specified list of satellites (s1...sx - satellites)
  *     disconnect s1...sx           Disconnects from the list of satellites (s1...sx - satellites)
  *     remove     db1...dbx         Remove specified list of databases (db1...dbx - database names)
@@ -76,19 +76,20 @@ App.Terminal = speculoos.Class({
          * {Array} Only this class knows about it's commands
          */
         this.cfg.commands       = [
-            ['left',       'Info : Moves telescope to the left on X points.\nUsage: left 152'],
-            ['right',      'Info : Moves telescope to the right on X points.\nUsage: right 130'],
-            ['up',         'Info : Moves telescope to the top on X points.\nUsage: up 42'],
-            ['down',       'Info : Moves telescope to the down on X points.\nUsage: down 72'],
+            ['left',       'Info : Moves camera to the left on X points.\nUsage: left 152'],
+            ['right',      'Info : Moves camera to the right on X points.\nUsage: right 130'],
+            ['up',         'Info : Moves camera to the top on X points.\nUsage: up 42'],
+            ['down',       'Info : Moves camera to the down on X points.\nUsage: down 72'],
             ['connect',    'Info : Connects to specified list of satellites.\nUsage: connect s1 s3'],
             ['disconnect', 'Info : Disconnects specified list of satellites from the current.\nUsage: disconnect s1 s3'],
             ['list',       'Info : Lists all available databases on the current satellite.\nUsage: list'],
-            ['remove',     'Info : Removes specified databases from the local satellite.\nUsage: remove s1 s3'],
+            ['remove',     'Info : Removes specified databases from the local satellite.\nUsage: remove db1 db2'],
             ['sync',       'Info : Synchronizes databases between current and remote satellites. If you add new database on the local satellite and call sync command, new database will be uploaded to the remote satellites as well.\nUsage: sync'],
-            ['pack',       'Info : Packs specified databases.\nUsage: pack s1 s3'],
-            ['unpack',     'Info : Unpacks specified databases, packed by pack command.\nUsage: unpack s1-p s3-p'],
-            ['encrypt',    'Info : Encrypts specified database with key.\nUsage: encrypt s1 12345678'],
-            ['decrypt',    'Info : Decrypts specified database with key, encrypted by encrypt command.\nUsage: decrypt s1-e 12345678']
+            ['pack',       'Info : Packs specified databases.\nUsage: pack db1 db3'],
+            ['unpack',     'Info : Unpacks specified databases, packed by pack command.\nUsage: unpack db1-p db3-p'],
+            ['encrypt',    'Info : Encrypts specified database with key.\nUsage: encrypt db1 12345678'],
+            ['decrypt',    'Info : Decrypts specified database with key, encrypted by encrypt command.\nUsage: decrypt db1-e 12345678'],
+            ['info',       'Info : Shows general information.\nUsage: info']
         ];
     },
 
@@ -187,7 +188,8 @@ App.Terminal = speculoos.Class({
             ['pack',       null],
             ['unpack',     null],
             ['encrypt',    2],
-            ['decrypt',    2]
+            ['decrypt',    2],
+            ['info',       0]
         ]);
 
         this._updateSatelliteIcons();

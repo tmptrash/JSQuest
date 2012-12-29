@@ -103,7 +103,7 @@ App.DatabaseManager = speculoos.Class({
          */
         this._remoteDb  = {
             s1: {
-                skype     : {size: 45075}
+                skype     : {size: 4507578638902}
             },
             s2: {
                 classmates: {size: 107896},
@@ -178,11 +178,11 @@ App.DatabaseManager = speculoos.Class({
      * @return {Boolean|String} true - ok, string message if error
      */
     sync: function (args) {
-        var db;
         var remoteDb = this._remoteDb;
         var dbs      = this._get(this._DATA_FILES);
         var delDbs   = this._get(this._DATA_FILES_DEL);
         var remoteFiles;
+        var db;
         var i;
         var len;
 
@@ -204,11 +204,12 @@ App.DatabaseManager = speculoos.Class({
             }
         }
         this._set(this._DATA_FILES, dbs);
+        this._set(this._DATA_SYNC, true);
 
         //
         // If there is no databases (files) on the local and remote satellites, 'empty' event should be called
         //
-        if (dbs.length === 0) {
+        if (this._empty()) {
             this.fire('empty');
         }
 
@@ -369,6 +370,42 @@ App.DatabaseManager = speculoos.Class({
     _save: function () {
         this._set(this._DATA_FILES, this._defaultDb);
         this._set(this._DATA_FILES_DEL, {});
+    },
+
+    /**
+     * Returns true if all databases (files) are removed and this satellite synchronized with all remote satellites also.
+     * We can check it comparing removed databases (files) and all remote databases. All databases (files) should be
+     * in remove map.
+     * @private
+     */
+    _empty: function () {
+        var dbs       = this._get(this._DATA_FILES);
+        var delDbs    = this._get(this._DATA_FILES_DEL);
+        var sats      = this._remoteDb;
+        var remoteDbs;
+        var db;
+        var sat;
+
+        //
+        // dbs.length === 0 means, that all databases (files) were removed from local satellite
+        //
+        if (dbs.length === 0) {
+            for (sat in sats) {
+                if (sats.hasOwnProperty(sat)) {
+                    remoteDbs = sats[sat];
+                    for (db in remoteDbs) {
+                        if (remoteDbs.hasOwnProperty(db)) {
+                            if (!delDbs.hasOwnProperty(db)) {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+
+        return false;
     },
 
     /**

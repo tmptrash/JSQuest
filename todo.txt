@@ -6,3 +6,4 @@
 - Try to find fullscreen mode for browser
 - Music should be loaded from drop box like a playlist
 - add chrome detection
+- remove NASA caption everywhere and create new logo and the caption (e.g. Galileo)

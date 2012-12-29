@@ -1,5 +1,5 @@
 /**
- * Universe class. It shows universe with the stars, the earth and a console for telescope control. It doesn't
+ * Universe class. It shows universe with the stars, the earth and a console for camera control. It doesn't
  * contain all internal logic of last level. So this class is only a container for 3d objects and the console.
  * It doesn't contain logic or movements of these 3d objects. It works like a 3d container.
  *
@@ -37,7 +37,7 @@ App.Universe = speculoos.Class({
 
         /**
          * @prop
-         * {Number} Camera radius. Distance from the telescope to the earth. In range 2..50
+         * {Number} Camera radius. Distance from the camera to the earth. In range 2..50
          * TODO: remove this. We use camera.fov for zooming.
          * @private
          */

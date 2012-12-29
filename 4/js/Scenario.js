@@ -128,6 +128,7 @@ App.Scenario = speculoos.Class({
         this._terminal.on('unpack',     this._onUnpackCmd,     this);
         this._terminal.on('encrypt',    this._onEncryptCmd,    this);
         this._terminal.on('decrypt',    this._onDecryptCmd,    this);
+        this._terminal.on('info',       this._onInfoCmd,       this);
     },
 
     /**
@@ -164,7 +165,7 @@ App.Scenario = speculoos.Class({
     },
 
     /**
-     * Handler of left command. It moves telescope smoothly from current position
+     * Handler of left command. It moves camera smoothly from current position
      * to the left on distance points.
      * @param {Array} args Arguments passed to left command
      * @private
@@ -177,7 +178,7 @@ App.Scenario = speculoos.Class({
     },
 
     /**
-     * Handler of right command. It moves telescope smoothly from current position
+     * Handler of right command. It moves camera smoothly from current position
      * to the right on x points.
      * @param {Array} args Arguments passed to right command
      * @private
@@ -190,7 +191,7 @@ App.Scenario = speculoos.Class({
     },
 
     /**
-     * Handler of up command. It moves telescope smoothly from current position
+     * Handler of up command. It moves camera smoothly from current position
      * upper on x points.
      * @param {Array} args Arguments passed to up command
      * @private
@@ -203,7 +204,7 @@ App.Scenario = speculoos.Class({
     },
 
     /**
-     * Handler of down command. It moves telescope smoothly from current position
+     * Handler of down command. It moves camera smoothly from current position
      * to the down on x points.
      * @param {Array} args Arguments passed to down command
      * @private
@@ -258,35 +259,85 @@ App.Scenario = speculoos.Class({
                 //
                 // e.g.: facebook - 12356774 Gb
                 //
-                output += ((output !== '' ? '\n' : '') + (pad(l, 10) + list[l].size + ' ' + dim));
+                output += ((output !== '' ? '\n' : '') + (pad(l, 12) + list[l].size + ' ' + dim));
             }
         }
         this._terminal.console.WriteLine(output);
     },
 
     /**
-     * remove command handler. Creates 4 second waiting effect and calls App.DatabaseManager.remove() method after it.
+     * remove command handler. Creates 7 second waiting effect and calls App.DatabaseManager.remove() method after it.
      * @param {Array} args Array of databases (files) to remove
      * @private
      */
     _onRemoveCmd: function (args) {
-        this._addEffect('remove', {period: 4, timer: new THREE.Clock(true), files: args}, this._removeEffect);
+        this._addEffect('remove', {period: 7, timer: new THREE.Clock(true), files: args}, this._removeEffect);
     },
 
     /**
-     * sync command handler. Creates 7 second waiting effect and calls App.DatabaseManager.sync() method after it.
+     * sync command handler. Creates 12 second waiting effect and calls App.DatabaseManager.sync() method after it.
      * @param {Array} args Array of satellite names
      * @private
      */
     _onSyncCmd: function (args) {
-        this._addEffect('sync', {period: 7, sats: args}, this._syncEffect);
+        this._addEffect('sync', {period: 12, timer: new THREE.Clock(true), sats: args}, this._syncEffect);
     },
-/*
-        this._terminal.on('pack',       this._onPackCmd,       this);
-        this._terminal.on('unpack',     this._onUnpackCmd,     this);
-        this._terminal.on('encrypt',    this._onEncryptCmd,    this);
-        this._terminal.on('decrypt',    this._onDecryptCmd,    this);
- */
+
+    /**
+     * pack command handler. Creates 8 second waiting effect and calls App.DatabaseManager.pack() method after it.
+     * @param {Array} args Array of databases to pack
+     * @private
+     */
+    _onPackCmd: function (args) {
+        this._addEffect('pack', {period: 8, timer: new THREE.Clock(true), files: args}, this._packEffect);
+    },
+
+    /**
+     * unpack command handler. Creates 4 second waiting effect and calls App.DatabaseManager.unpack() method after it.
+     * @param {Array} args Array of databases to unpack
+     * @private
+     */
+    _onUnpackCmd: function (args) {
+        this._addEffect('unpack', {period: 4, timer: new THREE.Clock(true), files: args}, this._unpackEffect);
+    },
+
+    /**
+     * encrypt command handler. Creates 9 second waiting effect and calls App.DatabaseManager.encrypt() method after it.
+     * @param {Array} args Array of two elements: database (files) name and the key
+     * @private
+     */
+    _onEncryptCmd: function (args) {
+        this._addEffect('encrypt', {period: 9, timer: new THREE.Clock(true), file: args[0], key: args[1]}, this._encryptEffect);
+    },
+
+    /**
+     * decrypt command handler. Creates 6 second waiting effect and calls App.DatabaseManager.encrypt() method after it.
+     * @param {Array} args Array of two elements: database (files) name and the key
+     * @private
+     */
+    _onDecryptCmd: function (args) {
+        this._addEffect('decrypt', {period: 6, timer: new THREE.Clock(true), file: args[0], key: args[1]}, this._decryptEffect);
+    },
+
+    /**
+     * info command handler. Shows general information message.
+     * @private
+     */
+    _onInfoCmd: function () {
+        //
+        // We use array only for readability
+        //
+        var msg = [
+            'Welcome to Kepler v1.0\n\nThis is satellite database management terminal. It manages databases placed on different satellites in real time. ',
+            'There are five available satellites for now and they are marked from s1 to s5. You can use these names in commands. ',
+            'For example: connect s2 - will connect this satellite and the s2. Every database is in the file. You can remove, pack, ',
+            'encrypt, list and synchronize these files manually in real time (see "help" command for details).\n\nAlso, this satellite has ',
+            'an analog camera and the signal transmitter. You can rotate this camera using simple interface (see "help" command for details) and use ',
+            'the transmitter to communicate with other satellites.'
+        ];
+        this._terminal.console.WriteLine(msg.join(''));
+    },
+
     /**
      * Disconnects specified satellites from current
      * @param {Array|undefined} args List of satellites to disconnect or undefined for all satellites
@@ -381,6 +432,54 @@ App.Scenario = speculoos.Class({
     _syncEffect: function (heap, effect) {
         if (!this._continueTimerEffect(heap, effect)) {
             this._databaseManager.sync(heap.sats);
+        }
+    },
+
+    /**
+     * Effect of database packing. It calls every time in onAnimate() method (on every frame).
+     * @param {Object} heap Local heap for this method. It contains period property.
+     * @param {String} effect Name of current effect
+     * @private
+     */
+    _packEffect: function (heap, effect) {
+        if (!this._continueTimerEffect(heap, effect)) {
+            this._databaseManager.pack(heap.files);
+        }
+    },
+
+    /**
+     * Effect of database unpacking. It calls every time in onAnimate() method (on every frame).
+     * @param {Object} heap Local heap for this method. It contains period property.
+     * @param {String} effect Name of current effect
+     * @private
+     */
+    _unpackEffect: function (heap, effect) {
+        if (!this._continueTimerEffect(heap, effect)) {
+            this._databaseManager.unpack(heap.files);
+        }
+    },
+
+    /**
+     * Effect of database encrypting. It calls every time in onAnimate() method (on every frame).
+     * @param {Object} heap Local heap for this method. It contains period property.
+     * @param {String} effect Name of current effect
+     * @private
+     */
+    _encryptEffect: function (heap, effect) {
+        if (!this._continueTimerEffect(heap, effect)) {
+            this._databaseManager.encrypt(heap.file, heap.key);
+        }
+    },
+
+    /**
+     * Effect of database decrypting. It calls every time in onAnimate() method (on every frame).
+     * @param {Object} heap Local heap for this method. It contains period property.
+     * @param {String} effect Name of current effect
+     * @private
+     */
+    _decryptEffect: function (heap, effect) {
+        if (!this._continueTimerEffect(heap, effect)) {
+            this._databaseManager.decrypt(heap.file, heap.key);
         }
     },
 
