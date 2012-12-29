@@ -6,6 +6,7 @@
 - add chrome detection
 - add terminal description. the main idea of the terminal
 - add detailed commands description
+- add connected message after success connect command
 - commands for the console:
     left       x                 Move camera to the left to x points
     right      x                 Move camera to the right to x points

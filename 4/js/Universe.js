@@ -1,6 +1,7 @@
 /**
- * Satellite class. It shows universe with the stars, the earth and a console for telescope control. It doesn't
+ * Universe class. It shows universe with the stars, the earth and a console for telescope control. It doesn't
  * contain all internal logic of last level. So this class is only a container for 3d objects and the console.
+ * It doesn't contain logic or movements of these 3d objects. It works like a 3d container.
  *
  * {Object} Configuration object of class:
  *          {Number} radius         Earth radius
@@ -13,7 +14,7 @@
  * @author DeadbraiN
  * @email deadbrainman@gmail.com
  */
-App.Satellite = speculoos.Class({
+App.Universe = speculoos.Class({
     extend: App.WebGlContainer,
 
     /**
@@ -231,7 +232,7 @@ App.Satellite = speculoos.Class({
         //
         // Rotates the camera
         //
-        this.cameraAngle += Math.PI / 360 * this.delta;
+        this.cameraAngle += Math.PI / 360 * this.delta / 2;
         camera.position.x = this._radius * this._zoom * Math.cos(this.cameraAngle);
         camera.position.z = this._radius * this._zoom * Math.sin(this.cameraAngle);
     },

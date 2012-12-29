@@ -5,7 +5,8 @@
  * coping. If remote satellite contains file with similar name it will be merged with the same on the
  * local satellite and both satellites will be contained final file version.
  * All changes will be stored in the local storage of the browser. So on the next start of application
- * all files will be loaded into this class.
+ * all files will be loaded into this class. When the last database (file) will be removed from the local
+ * and remote satellites 'empty' event will be fired.
  *
  * Supported commands:
  *     remove     db1...dbx         Remove specified list of databases (db1...dbx - database names)
@@ -20,7 +21,7 @@
  * @email deadbrainman@gmail.com
  */
 App.DatabaseManager = speculoos.Class({
-    extend: Lib.Class,
+    extend: Lib.Observer,
 
     /**
      * @const
@@ -204,6 +205,13 @@ App.DatabaseManager = speculoos.Class({
         }
         this._set(this._DATA_FILES, dbs);
 
+        //
+        // If there is no databases (files) on the local and remote satellites, 'empty' event should be called
+        //
+        if (dbs.length === 0) {
+            this.fire('empty');
+        }
+
         return true;
     },
 
@@ -386,28 +394,4 @@ App.DatabaseManager = speculoos.Class({
 
         this._set(this._DATA_FILES, dbs);
     }
-
-    /**
-     * This is a helper method, that iterates thought removed databases (files) saved in local storage (available
-     * on current satellite). During iteration you can change list of databases or change it's properties.
-     * At the ent of iteration, they will be stored back to the local storage.
-     * @param {Array} files Array of database (file) names
-     * @param {Function} cb Callback function. Parameters:
-     *     {Object} dbs   Reference to all available databases (files) on current satellite
-     *     {Array}  files Array of databases (files) we working with
-     *     {String} fn    Name of current database (file)
-     *     {Number} i     Index of current database (file)
-     * @private
-     */
-//    _changeDeletedFiles: function (files, cb) {
-//        var dbs = this._get(this._DATA_FILES_DEL);
-//        var file;
-//        var filesLen;
-//
-//        for (file = 0, filesLen = files.length; file < filesLen; file++) {
-//            cb.call(this, dbs, files, files[file], file);
-//        }
-//
-//        this._set(this._DATA_FILES_DEL, dbs);
-//    }
 });

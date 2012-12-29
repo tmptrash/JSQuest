@@ -31,7 +31,6 @@
  *     unpack     db1p...dbxp       Unpacks databases into db1...dbx (db1p...dbxp - packed database names)
  *     send       db1...dbx sx      Send databases to the satellite (db1...dbx - database names, sx - satellite name)
  *     list                         Lists all available databases with sizes
- *     msg        sx message        Send a message to specified satellite (sx - satellite, message - text message)
  *     encrypt    dbx key           Encrypts database by key (dbx - database name, key - string key for encryption)
  *     decrypt    dbxe key          Decrypts database by key (dbxe - encrypted database name, key - string key for encryption)
  *
@@ -82,8 +81,14 @@ App.Terminal = speculoos.Class({
             ['up',         'Info : Moves telescope to the top on X points.\nUsage: up 42'],
             ['down',       'Info : Moves telescope to the down on X points.\nUsage: down 72'],
             ['connect',    'Info : Connects to specified list of satellites.\nUsage: connect s1 s3'],
-            ['disconnect', 'Info : Disconnects specified list of satellites from current.\nUsage: disconnect s1 s3'],
-            ['list',       'Info : Lists all available databases on current satellite.\nUsage: list']
+            ['disconnect', 'Info : Disconnects specified list of satellites from the current.\nUsage: disconnect s1 s3'],
+            ['list',       'Info : Lists all available databases on the current satellite.\nUsage: list'],
+            ['remove',     'Info : Removes specified databases from the local satellite.\nUsage: remove s1 s3'],
+            ['sync',       'Info : Synchronizes databases between current and remote satellites. If you add new database on the local satellite and call sync command, new database will be uploaded to the remote satellites as well.\nUsage: sync'],
+            ['pack',       'Info : Packs specified databases.\nUsage: pack s1 s3'],
+            ['unpack',     'Info : Unpacks specified databases, packed by pack command.\nUsage: unpack s1-p s3-p'],
+            ['encrypt',    'Info : Encrypts specified database with key.\nUsage: encrypt s1 12345678'],
+            ['decrypt',    'Info : Decrypts specified database with key, encrypted by encrypt command.\nUsage: decrypt s1-e 12345678']
         ];
     },
 
@@ -176,7 +181,13 @@ App.Terminal = speculoos.Class({
             ['down',       1],
             ['connect',    null],
             ['disconnect', null],
-            ['list',       0]
+            ['list',       0],
+            ['remove',     null],
+            ['sync',       0],
+            ['pack',       null],
+            ['unpack',     null],
+            ['encrypt',    2],
+            ['decrypt',    2]
         ]);
 
         this._updateSatelliteIcons();

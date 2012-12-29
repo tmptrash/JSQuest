@@ -9,7 +9,7 @@ App.Scenario = speculoos.Class({
 
     /**
      * @constructor
-     * We use it only for calling constructor from super class.
+     * We use it only for calling constructor from super class. Parent class will not be called without this.
      */
     constructor: function () {
         this.parent(arguments);
@@ -26,36 +26,44 @@ App.Scenario = speculoos.Class({
          * {App.Terminal} Instance of the terminal we are working with.
          * @private
          */
-        this._terminal      = null;
+        this._terminal        = null;
         /**
          * @prop
-         * {App.Satellite} Instance of the satellite.
+         * {App.Universe} Instance of the the universe class.
          * @private
          */
-        this._satellite     = null;
+        this._universe        = null;
         /**
          * @prop
          * {Number} Camera speed coefficient
          * @private
          */
-        this._moveSpeed     = 0.066;
+        this._moveSpeed       = 0.066;
         /**
          * @prop
          * {Boolean} true if disconnection process is active at the moment
          * @private
          */
-        this._disconnecting = false;
+        this._disconnecting   = false;
+        /**
+         * @prop
+         * {App.DatabaseManager} Instance of App.DatabaseManager class. It contains all available databases (files)
+         * for the local satellite.
+         * @private
+         */
+        this._databaseManager = null;
     },
 
     /**
      * @override
-     * Main initializer. Creates a terminal and a Satellite objects.
+     * Main initializer. Creates a terminal and a Universe objects.
      */
     init: function () {
         this.parent(arguments);
 
+        this._createUniverse();
         this._createTerminal();
-        this._createSatellite();
+        this._createDatabaseManager();
 
         //
         // Make demon effect. It works every time
@@ -67,7 +75,7 @@ App.Scenario = speculoos.Class({
      * Runs an application. It means that, it start the 3d animation loop and starts the terminal.
      */
     run: function () {
-        this._satellite.run();
+        this._universe.run();
     },
 
     /**
@@ -79,7 +87,7 @@ App.Scenario = speculoos.Class({
      * @param {String|Boolean|undefined} msg Message for busy state. If false - it doesn't call setBusy() method
      */
     _addEffect: function (name, heap, fn, scope, msg) {
-        this._satellite.addEffect(name, heap, fn, scope || this);
+        this._universe.addEffect(name, heap, fn, scope || this);
         if (msg !== false) {
             this._terminal.setBusy(msg || true);
         }
@@ -91,7 +99,7 @@ App.Scenario = speculoos.Class({
      * @private
      */
     _delEffect: function (effect) {
-        this._satellite.delEffect(effect);
+        this._universe.delEffect(effect);
         this._terminal.setBusy(false);
     },
 
@@ -107,9 +115,6 @@ App.Scenario = speculoos.Class({
             id  : Lib.Helper.getId()
         });
 
-        //
-        // TODO: All this part should be in App.Scenario class
-        //
         this._terminal.on('left',       this._onLeftCmd,       this);
         this._terminal.on('right',      this._onRightCmd,      this);
         this._terminal.on('up',         this._onUpCmd,         this);
@@ -117,19 +122,45 @@ App.Scenario = speculoos.Class({
         this._terminal.on('connect',    this._onConnectCmd,    this);
         this._terminal.on('disconnect', this._onDisconnectCmd, this);
         this._terminal.on('list',       this._onListCmd,       this);
+        this._terminal.on('remove',     this._onRemoveCmd,     this);
+        this._terminal.on('sync',       this._onSyncCmd,       this);
+        this._terminal.on('pack',       this._onPackCmd,       this);
+        this._terminal.on('unpack',     this._onUnpackCmd,     this);
+        this._terminal.on('encrypt',    this._onEncryptCmd,    this);
+        this._terminal.on('decrypt',    this._onDecryptCmd,    this);
     },
 
     /**
-     * Creates satellite class instance and stores it in this._satellite property.
+     * Creates database manager. It contains all available databases (files) for the local satellite. We should
+     * manage all these databases (files) through this instance.
      * @private
      */
-    _createSatellite: function () {
+    _createDatabaseManager: function () {
+        this._databaseManager = new App.DatabaseManager();
+
+        this._databaseManager.on('empty', this._onFinishQuest, this);
+    },
+
+    /**
+     * Creates Universe class instance and stores it in this._universe property.
+     * @private
+     */
+    _createUniverse: function () {
         //
         // Create singleton instance of application class
         //
-        this._satellite = new App.Satellite({
+        this._universe = new App.Universe({
             moveSpeed: this._moveSpeed
         });
+    },
+
+    /**
+     * Calls, then all databases (files) will be deleted from the local satellite and all remote satellites also.
+     * It means, that our quest is over :(
+     * @private
+     */
+    _onFinishQuest: function () {
+        // TODO:
     },
 
     /**
@@ -191,7 +222,7 @@ App.Scenario = speculoos.Class({
      * @private
      */
     _onConnectCmd: function (args) {
-        if (!this._satellite.earthVisible()) {
+        if (!this._universe.earthVisible()) {
             this._terminal.console.WriteLine('Connection is not available');
             return;
         }
@@ -206,19 +237,56 @@ App.Scenario = speculoos.Class({
      * @private
      */
     _onDisconnectCmd: function (args) {
-        if (this._satellite.earthVisible() && !this._disconnecting) {
+        if (this._universe.earthVisible() && !this._disconnecting) {
             this._disconnect(args);
         }
     },
 
     /**
-     * list comman handler. Lists all available databases for current satellite.
+     * list command handler. Lists all available databases for current satellite.
      * @private
      */
     _onListCmd: function () {
-        this._terminal.console.WriteLine(this._database.list());
+        var list   = this._databaseManager.list();
+        var dim    = this._databaseManager.getDimension();
+        var pad    = Lib.Helper.pad;
+        var output = '';
+        var l;
+
+        for (l in list) {
+            if (list.hasOwnProperty(l)) {
+                //
+                // e.g.: facebook - 12356774 Gb
+                //
+                output += ((output !== '' ? '\n' : '') + (pad(l, 10) + list[l].size + ' ' + dim));
+            }
+        }
+        this._terminal.console.WriteLine(output);
     },
 
+    /**
+     * remove command handler. Creates 4 second waiting effect and calls App.DatabaseManager.remove() method after it.
+     * @param {Array} args Array of databases (files) to remove
+     * @private
+     */
+    _onRemoveCmd: function (args) {
+        this._addEffect('remove', {period: 4, timer: new THREE.Clock(true), files: args}, this._removeEffect);
+    },
+
+    /**
+     * sync command handler. Creates 7 second waiting effect and calls App.DatabaseManager.sync() method after it.
+     * @param {Array} args Array of satellite names
+     * @private
+     */
+    _onSyncCmd: function (args) {
+        this._addEffect('sync', {period: 7, sats: args}, this._syncEffect);
+    },
+/*
+        this._terminal.on('pack',       this._onPackCmd,       this);
+        this._terminal.on('unpack',     this._onUnpackCmd,     this);
+        this._terminal.on('encrypt',    this._onEncryptCmd,    this);
+        this._terminal.on('decrypt',    this._onDecryptCmd,    this);
+ */
     /**
      * Disconnects specified satellites from current
      * @param {Array|undefined} args List of satellites to disconnect or undefined for all satellites
@@ -237,7 +305,7 @@ App.Scenario = speculoos.Class({
      */
     _moveCameraLeftEffect: function (heap, effect) {
         if (this._continueDistanceEffect(heap, effect)) {
-            this._satellite.camera.rotation.y += this._satellite.delta * this._moveSpeed;
+            this._universe.camera.rotation.y += this._universe.delta * this._moveSpeed;
         }
     },
 
@@ -250,7 +318,7 @@ App.Scenario = speculoos.Class({
      */
     _moveCameraRightEffect: function (heap, effect) {
         if (this._continueDistanceEffect(heap, effect)) {
-            this._satellite.camera.rotation.y -= this._satellite.delta * this._moveSpeed;
+            this._universe.camera.rotation.y -= this._universe.delta * this._moveSpeed;
         }
     },
 
@@ -263,7 +331,7 @@ App.Scenario = speculoos.Class({
      */
     _moveCameraUpEffect: function (heap, effect) {
         if (this._continueDistanceEffect(heap, effect)) {
-            this._satellite.camera.rotation.x += this._satellite.delta * this._moveSpeed;
+            this._universe.camera.rotation.x += this._universe.delta * this._moveSpeed;
         }
     },
 
@@ -276,7 +344,7 @@ App.Scenario = speculoos.Class({
      */
     _moveCameraDownEffect: function (heap, effect) {
         if (this._continueDistanceEffect(heap, effect)) {
-            this._satellite.camera.rotation.x -= this._satellite.delta * this._moveSpeed;
+            this._universe.camera.rotation.x -= this._universe.delta * this._moveSpeed;
         }
     },
 
@@ -289,6 +357,30 @@ App.Scenario = speculoos.Class({
     _connectEffect: function (heap, effect) {
         if (!this._continueTimerEffect(heap, effect)) {
             this._terminal.connect(true, heap.sats);
+        }
+    },
+
+    /**
+     * Effect of the databases remove. It calls every time in onAnimate() method (on every frame).
+     * @param {Object} heap Local heap for this method. It contains period property.
+     * @param {String} effect Name of current effect
+     * @private
+     */
+    _removeEffect: function (heap, effect) {
+        if (!this._continueTimerEffect(heap, effect)) {
+            this._databaseManager.remove(heap.files);
+        }
+    },
+
+    /**
+     * Effect of the satellites sync. It calls every time in onAnimate() method (on every frame).
+     * @param {Object} heap Local heap for this method. It contains period property.
+     * @param {String} effect Name of current effect
+     * @private
+     */
+    _syncEffect: function (heap, effect) {
+        if (!this._continueTimerEffect(heap, effect)) {
+            this._databaseManager.sync(heap.sats);
         }
     },
 
@@ -313,7 +405,7 @@ App.Scenario = speculoos.Class({
      * @private
      */
     _checkConnectionEffect: function (heap, effect) {
-        if (!this._satellite.earthVisible() && this._terminal.hasConnections() && !this._disconnecting && !this._terminal.isBusy()) {
+        if (!this._universe.earthVisible() && this._terminal.hasConnections() && !this._disconnecting && !this._terminal.isBusy()) {
             this._disconnect();
             this._disconnecting = true;
         }
