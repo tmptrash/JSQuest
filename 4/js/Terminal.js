@@ -69,8 +69,6 @@ App.Terminal = speculoos.Class({
      * Prepares configuration. Adds commands supported by this terminal
      */
     initConfig: function () {
-        this.parent(arguments);
-
         /**
          * @conf
          * {Array} Only this class knows about it's commands
@@ -91,6 +89,16 @@ App.Terminal = speculoos.Class({
             ['decrypt',    'Info : Decrypts specified database with key, encrypted by encrypt command.\nUsage: decrypt db1-e 12345678'],
             ['info',       'Info : Shows general information.\nUsage: info']
         ];
+        /**
+         * @conf
+         * {String} Id of the terminal text area field
+         */
+        this.cfg.id = Lib.Helper.getId();
+
+        //
+        // Parent method should be called after our updates of configuration
+        //
+        this.parent(arguments);
     },
 
     /**
@@ -164,6 +172,8 @@ App.Terminal = speculoos.Class({
      * within class. For example logic initialization or creation of HTML nodes.
      */
     init: function () {
+        var isNumeric = Lib.Helper.isNumeric;
+
         this._createHtml();
 
         //
@@ -176,10 +186,10 @@ App.Terminal = speculoos.Class({
         // Here we create all simple command handlers. See this._createSimpleHandlers() for details.
         //
         this._createSimpleHandlers([
-            ['left',       1],
-            ['right',      1],
-            ['up',         1],
-            ['down',       1],
+            ['left',       1, isNumeric],
+            ['right',      1, isNumeric],
+            ['up',         1, isNumeric],
+            ['down',       1, isNumeric],
             ['connect',    null],
             ['disconnect', null],
             ['list',       0],
@@ -187,8 +197,8 @@ App.Terminal = speculoos.Class({
             ['sync',       0],
             ['pack',       null],
             ['unpack',     null],
-            ['encrypt',    2],
-            ['decrypt',    2],
+            ['encrypt',    2, this._encryptionValidator],
+            ['decrypt',    2, this._encryptionValidator],
             ['info',       0]
         ]);
 
@@ -320,9 +330,29 @@ App.Terminal = speculoos.Class({
     },
 
     /**
+     * Validator for encryption and decryption. Works with two parameters, database name and the key
+     * @param {Array} args Array of two elements: database name and the key
+     * @return {String|Boolean} Error message or true if arguments are correct
+     * @private
+     */
+    _encryptionValidator: function (args) {
+        if (args.length < 2) {
+            return 'Invalid amount of arguments. Should be: "fileName keyString", e.g.: file1 23de45fe4';
+        }
+        if (!Lib.Helper.isString(args[0])) {
+            return 'Invalid database (file) name. String required';
+        }
+        if (!Lib.Helper.isString(args[1])) {
+            return 'Invalid key. String required';
+        }
+
+        return true;
+    },
+
+    /**
      * Creates simple handlers for specified commands. Handler checks amount of arguments
      * of the command and throws an exception in case of wrong amount. Also, it fires an event.
-     * @param {Array} commands Array of commands in format [[cmd:String, amount:Number],...]
+     * @param {Array} commands Array of commands in format [[cmd:String, amount:Number, validator:Function],...]
      * @private
      */
     _createSimpleHandlers: function (commands) {
@@ -330,7 +360,7 @@ App.Terminal = speculoos.Class({
         var len = commands.length;
 
         for (i = 0; i < len; i++) {
-            this._createSimpleHandler(commands[i][0], commands[i][1]);
+            this._createSimpleHandler(commands[i][0], commands[i][1], commands[i][2]);
         }
     },
 
@@ -339,12 +369,13 @@ App.Terminal = speculoos.Class({
      * and throws an exception in case of wrong amount. Also, it fires an event.
      * @param {String} command Name of the command in console
      * @param {Number|null} args Amount of arguments for command or null if no need to check arguments
+     * @param {Function|undefined} validator Validator function. Optional.
      * @private
      */
-    _createSimpleHandler: function (command, args) {
+    _createSimpleHandler: function (command, args, validator) {
         this[Lib.Helper.createCmdHandlerName(command)] = function (cmdArgs) {
             if (args !== null) {
-                this.checkArguments(args, command);
+                this.checkArguments(args, command, validator);
             }
             this.fire(command, cmdArgs.slice(1));
         };

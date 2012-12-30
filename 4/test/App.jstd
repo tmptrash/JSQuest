@@ -2,9 +2,11 @@ load:
   - ../../lib/js/Core.js
   - ../../lib/js/external/speculoos.js
   - ../../lib/js/external/Helper.js
+  - ../../lib/js/external/console-min.js
   - ../../lib/js/Helper.js
   - ../../lib/js/Class.js
   - ../../lib/js/Observer.js
+  - ../../lib/js/Terminal.js
   - ../js/Core.js
   - Helper.js
   - ../js/DatabaseManager.js
