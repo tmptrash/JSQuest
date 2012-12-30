@@ -172,8 +172,6 @@ App.Terminal = speculoos.Class({
      * within class. For example logic initialization or creation of HTML nodes.
      */
     init: function () {
-        var isNumeric = Lib.Helper.isNumeric;
-
         this._createHtml();
 
         //
@@ -186,10 +184,10 @@ App.Terminal = speculoos.Class({
         // Here we create all simple command handlers. See this._createSimpleHandlers() for details.
         //
         this._createSimpleHandlers([
-            ['left',       1, isNumeric],
-            ['right',      1, isNumeric],
-            ['up',         1, isNumeric],
-            ['down',       1, isNumeric],
+            ['left',       1, this._moveValidator],
+            ['right',      1, this._moveValidator],
+            ['up',         1, this._moveValidator],
+            ['down',       1, this._moveValidator],
             ['connect',    null],
             ['disconnect', null],
             ['list',       0],
@@ -344,6 +342,26 @@ App.Terminal = speculoos.Class({
         }
         if (!Lib.Helper.isString(args[1])) {
             return 'Invalid key. String required';
+        }
+
+        return true;
+    },
+
+    /**
+     * Validator for all movements (left, right, up, down)
+     * @param {Array} args Array of two elements: database name and the key
+     * @return {String|Boolean} Error message or true if arguments are correct
+     * @private
+     */
+    _moveValidator: function (args) {
+        if (args.length < 1) {
+            return 'Invalid arguments amount. One numeric argument required.';
+        }
+        if (!Lib.Helper.isNumeric(args)) {
+            return 'Invalid argument format. Number required.';
+        }
+        if (parseInt(args, 10) < 0) {
+            return 'Invalid argument value. Positive value required.';
         }
 
         return true;

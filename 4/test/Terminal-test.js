@@ -75,6 +75,17 @@ var tc = new TestCase('App.Terminal', {
             assertFalse('Invalid argument', ok);
         });
 
+        assertNoException('Check left command with incorrect argument', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('left', function (args) {
+                ok = true;
+            });
+            me._emulateCmd(term, 'left -123');
+            assertFalse('Invalid argument', ok);
+        });
+
         assertNoException('Check left command with correct argument', function () {
             var term = new App.Terminal({parent: tc.container});
             var ok   = false;
@@ -83,6 +94,216 @@ var tc = new TestCase('App.Terminal', {
                 ok = args[0] === '123';
             });
             me._emulateCmd(term, 'left 123');
+            assertTrue('Invalid argument', ok);
+        });
+    },
+
+    testRightCmd: function () {
+        var me = this;
+
+        assertNoException('Check right command with incorrect argument', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('right', function (args) {
+                ok = true;
+            });
+            me._emulateCmd(term, 'right qwerty');
+            assertFalse('Invalid argument', ok);
+        });
+
+        assertNoException('Check right command with incorrect argument', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('right', function (args) {
+                ok = true;
+            });
+            me._emulateCmd(term, 'right 1q');
+            assertFalse('Invalid argument', ok);
+        });
+
+        assertNoException('Check right command with incorrect argument', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('right', function (args) {
+                ok = true;
+            });
+            me._emulateCmd(term, 'right --');
+            assertFalse('Invalid argument', ok);
+        });
+
+        assertNoException('Check right command with incorrect argument', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('right', function (args) {
+                ok = true;
+            });
+            me._emulateCmd(term, 'right @#$%^');
+            assertFalse('Invalid argument', ok);
+        });
+
+        assertNoException('Check right command with incorrect argument', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('right', function (args) {
+                ok = true;
+            });
+            me._emulateCmd(term, 'right -123');
+            assertFalse('Invalid argument', ok);
+        });
+
+        assertNoException('Check right command with correct argument', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('right', function (args) {
+                ok = args[0] === '123';
+            });
+            me._emulateCmd(term, 'right 123');
+            assertTrue('Invalid argument', ok);
+        });
+    },
+
+    testUpCmd: function () {
+        var me = this;
+
+        assertNoException('Check up command with incorrect argument', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('up', function (args) {
+                ok = true;
+            });
+            me._emulateCmd(term, 'up qwerty');
+            assertFalse('Invalid argument', ok);
+        });
+
+        assertNoException('Check up command with incorrect argument', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('up', function (args) {
+                ok = true;
+            });
+            me._emulateCmd(term, 'up 1q');
+            assertFalse('Invalid argument', ok);
+        });
+
+        assertNoException('Check up command with incorrect argument', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('up', function (args) {
+                ok = true;
+            });
+            me._emulateCmd(term, 'up --');
+            assertFalse('Invalid argument', ok);
+        });
+
+        assertNoException('Check up command with incorrect argument', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('up', function (args) {
+                ok = true;
+            });
+            me._emulateCmd(term, 'up @#$%^');
+            assertFalse('Invalid argument', ok);
+        });
+
+        assertNoException('Check up command with incorrect argument', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('up', function (args) {
+                ok = true;
+            });
+            me._emulateCmd(term, 'up -123');
+            assertFalse('Invalid argument', ok);
+        });
+
+        assertNoException('Check up command with correct argument', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('up', function (args) {
+                ok = args[0] === '123';
+            });
+            me._emulateCmd(term, 'up 123');
+            assertTrue('Invalid argument', ok);
+        });
+    },
+
+    testDownCmd: function () {
+        var me = this;
+
+        assertNoException('Check down command with incorrect argument', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('down', function (args) {
+                ok = true;
+            });
+            me._emulateCmd(term, 'down qwerty');
+            assertFalse('Invalid argument', ok);
+        });
+
+        assertNoException('Check down command with incorrect argument', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('down', function (args) {
+                ok = true;
+            });
+            me._emulateCmd(term, 'down 1q');
+            assertFalse('Invalid argument', ok);
+        });
+
+        assertNoException('Check down command with incorrect argument', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('down', function (args) {
+                ok = true;
+            });
+            me._emulateCmd(term, 'down --');
+            assertFalse('Invalid argument', ok);
+        });
+
+        assertNoException('Check down command with incorrect argument', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('down', function (args) {
+                ok = true;
+            });
+            me._emulateCmd(term, 'down @#$%^');
+            assertFalse('Invalid argument', ok);
+        });
+
+        assertNoException('Check down command with incorrect argument', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('down', function (args) {
+                ok = true;
+            });
+            me._emulateCmd(term, 'down -123');
+            assertFalse('Invalid argument', ok);
+        });
+
+        assertNoException('Check down command with correct argument', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('down', function (args) {
+                ok = args[0] === '123';
+            });
+            me._emulateCmd(term, 'down 123');
             assertTrue('Invalid argument', ok);
         });
     },
