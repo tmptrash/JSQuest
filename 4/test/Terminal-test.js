@@ -360,6 +360,32 @@ var tc = new TestCase('App.Terminal', {
         });
     },
 
+    testList: function () {
+        var me = this;
+
+        assertNoException('Check list command with extra arguments', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('list', function (args) {
+                ok = true;
+            });
+            me._emulateCmd(term, 'list a1 a4');
+            assertTrue('Valid argument', ok);
+        });
+
+        assertNoException('Check list command without arguments', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('list', function (args) {
+                ok = true;
+            });
+            me._emulateCmd(term, 'list');
+            assertTrue('Valid argument', ok);
+        });
+    },
+
     testRemove: function () {
         var me = this;
 
@@ -382,6 +408,184 @@ var tc = new TestCase('App.Terminal', {
                 ok = (args[0] === 'f1' && args[1] === 'f3');
             });
             me._emulateCmd(term, 'remove f1 f3');
+            assertTrue('Valid argument', ok);
+        });
+    },
+
+    testSync: function () {
+        var me = this;
+
+        assertNoException('Check sync command without arguments', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('sync', function (args) {
+                ok = true;
+            });
+            me._emulateCmd(term, 'sync');
+            assertFalse('Invalid arguments', ok);
+        });
+
+        assertNoException('Check sync command with correct arguments', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('sync', function (args) {
+                ok = (args[0] === 's1' && args[1] === 's3');
+            });
+            me._emulateCmd(term, 'sync s1 s3');
+            assertTrue('Valid argument', ok);
+        });
+    },
+
+    testPack: function () {
+        var me = this;
+
+        assertNoException('Check pack command with incorrect arguments', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('pack', function (args) {
+                ok = true;
+            });
+            me._emulateCmd(term, 'pack');
+            assertFalse('Invalid argument', ok);
+        });
+
+        assertNoException('Check pack command with correct arguments', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('pack', function (args) {
+                ok = (args[0] === 'f1' && args[1] === 'f3');
+            });
+            me._emulateCmd(term, 'pack f1 f3');
+            assertTrue('Valid argument', ok);
+        });
+    },
+
+    testUnpack: function () {
+        var me = this;
+
+        assertNoException('Check unpack command with incorrect arguments', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('unpack', function (args) {
+                ok = true;
+            });
+            me._emulateCmd(term, 'unpack');
+            assertFalse('Invalid argument', ok);
+        });
+
+        assertNoException('Check unpack command with correct arguments', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('unpack', function (args) {
+                ok = (args[0] === 'f1' && args[1] === 'f3');
+            });
+            me._emulateCmd(term, 'unpack f1 f3');
+            assertTrue('Valid argument', ok);
+        });
+    },
+
+    testEncrypt: function () {
+        var me = this;
+
+        assertNoException('Check encrypt command without arguments', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('encrypt', function (args) {
+                ok = true;
+            });
+            me._emulateCmd(term, 'encrypt');
+            assertFalse('Invalid argument', ok);
+        });
+
+        assertNoException('Check encrypt command with invalid arguments', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('encrypt', function (args) {
+                ok = true;
+            });
+            me._emulateCmd(term, 'encrypt f1');
+            assertFalse('Invalid argument', ok);
+        });
+
+        assertNoException('Check encrypt command with correct arguments', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('encrypt', function (args) {
+                ok = (args[0] === 'f1' && args[1] === '12345678');
+            });
+            me._emulateCmd(term, 'encrypt f1 12345678');
+            assertTrue('Valid argument', ok);
+        });
+    },
+
+    testDecrypt: function () {
+        var me = this;
+
+        assertNoException('Check decrypt command without arguments', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('decrypt', function (args) {
+                ok = true;
+            });
+            me._emulateCmd(term, 'decrypt');
+            assertFalse('Invalid argument', ok);
+        });
+
+        assertNoException('Check decrypt command with invalid arguments', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('decrypt', function (args) {
+                ok = true;
+            });
+            me._emulateCmd(term, 'decrypt f1');
+            assertFalse('Invalid argument', ok);
+        });
+
+        assertNoException('Check decrypt command with correct arguments', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('decrypt', function (args) {
+                ok = (args[0] === 'f1' && args[1] === '12345678');
+            });
+            me._emulateCmd(term, 'decrypt f1 12345678');
+            assertTrue('Valid argument', ok);
+        });
+    },
+
+    testInfo: function () {
+        var me = this;
+
+        assertNoException('Check info command with extra arguments', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('info', function (args) {
+                ok = true;
+            });
+            me._emulateCmd(term, 'info a1 a4');
+            assertTrue('Valid argument', ok);
+        });
+
+        assertNoException('Check info command without arguments', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('info', function (args) {
+                ok = true;
+            });
+            me._emulateCmd(term, 'info');
             assertTrue('Valid argument', ok);
         });
     },

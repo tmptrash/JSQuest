@@ -25,14 +25,14 @@
  *     down       x                 Move camera to the down to x points
  *     connect    s1...sx           Connects to specified list of satellites (s1...sx - satellites)
  *     disconnect s1...sx           Disconnects from the list of satellites (s1...sx - satellites)
+ *     list                         Lists all available databases with sizes
  *     remove     db1...dbx         Remove specified list of databases (db1...dbx - database names)
  *     sync       s1...sx           Synchronize databases of current satellite with specified satellites (sx - satellite name)
  *     pack       db1...dbx         Packs databases into db1p...dbxp, where "p" means packed (db1...dbx - database names)
  *     unpack     db1p...dbxp       Unpacks databases into db1...dbx (db1p...dbxp - packed database names)
- *     send       db1...dbx sx      Send databases to the satellite (db1...dbx - database names, sx - satellite name)
- *     list                         Lists all available databases with sizes
  *     encrypt    dbx key           Encrypts database by key (dbx - database name, key - string key for encryption)
  *     decrypt    dbxe key          Decrypts database by key (dbxe - encrypted database name, key - string key for encryption)
+ *     info                         Shows general information about the satellite and the system.
  *
  * Supported configuration:
  *     {Element} parent Reference to the HTML node of element, where we will add terminal container.
@@ -192,7 +192,7 @@ App.Terminal = speculoos.Class({
             ['disconnect', null],
             ['list',       0],
             ['remove',     null],
-            ['sync',       0],
+            ['sync',       null],
             ['pack',       null],
             ['unpack',     null],
             ['encrypt',    2, this._encryptionValidator],
