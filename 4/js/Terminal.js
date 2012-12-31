@@ -392,9 +392,7 @@ App.Terminal = speculoos.Class({
      */
     _createSimpleHandler: function (command, args, validator) {
         this[Lib.Helper.createCmdHandlerName(command)] = function (cmdArgs) {
-            if (args !== null) {
-                this.checkArguments(args, command, validator);
-            }
+            this.checkArguments(args, command, validator);
             this.fire(command, cmdArgs.slice(1));
         };
     }

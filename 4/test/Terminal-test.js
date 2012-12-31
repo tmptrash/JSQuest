@@ -94,7 +94,7 @@ var tc = new TestCase('App.Terminal', {
                 ok = args[0] === '123';
             });
             me._emulateCmd(term, 'left 123');
-            assertTrue('Invalid argument', ok);
+            assertTrue('Valid argument', ok);
         });
     },
 
@@ -164,7 +164,7 @@ var tc = new TestCase('App.Terminal', {
                 ok = args[0] === '123';
             });
             me._emulateCmd(term, 'right 123');
-            assertTrue('Invalid argument', ok);
+            assertTrue('Valid argument', ok);
         });
     },
 
@@ -234,7 +234,7 @@ var tc = new TestCase('App.Terminal', {
                 ok = args[0] === '123';
             });
             me._emulateCmd(term, 'up 123');
-            assertTrue('Invalid argument', ok);
+            assertTrue('Valid argument', ok);
         });
     },
 
@@ -304,7 +304,85 @@ var tc = new TestCase('App.Terminal', {
                 ok = args[0] === '123';
             });
             me._emulateCmd(term, 'down 123');
-            assertTrue('Invalid argument', ok);
+            assertTrue('Valid argument', ok);
+        });
+    },
+
+    testConnect: function () {
+        var me = this;
+
+        assertNoException('Check connect command with incorrect argument', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('connect', function (args) {
+                ok = true;
+            });
+            me._emulateCmd(term, 'connect');
+            assertFalse('Invalid argument', ok);
+        });
+
+        assertNoException('Check connect command with correct arguments', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('connect', function (args) {
+                ok = (args[0] === 's1' && args[1] === 's3');
+            });
+            me._emulateCmd(term, 'connect s1 s3');
+            assertTrue('Valid argument', ok);
+        });
+    },
+
+    testDisconnect: function () {
+        var me = this;
+
+        assertNoException('Check disconnect command with incorrect argument', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('disconnect', function (args) {
+                ok = true;
+            });
+            me._emulateCmd(term, 'disconnect');
+            assertFalse('Invalid argument', ok);
+        });
+
+        assertNoException('Check disconnect command with correct arguments', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('disconnect', function (args) {
+                ok = (args[0] === 's1' && args[1] === 's3');
+            });
+            me._emulateCmd(term, 'disconnect s1 s3');
+            assertTrue('Valid argument', ok);
+        });
+    },
+
+    testRemove: function () {
+        var me = this;
+
+        assertNoException('Check remove command with incorrect arguments', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('remove', function (args) {
+                ok = true;
+            });
+            me._emulateCmd(term, 'remove');
+            assertFalse('Invalid argument', ok);
+        });
+
+        assertNoException('Check remove command with correct arguments', function () {
+            var term = new App.Terminal({parent: tc.container});
+            var ok   = false;
+
+            term.on('remove', function (args) {
+                ok = (args[0] === 'f1' && args[1] === 'f3');
+            });
+            me._emulateCmd(term, 'remove f1 f3');
+            assertTrue('Valid argument', ok);
         });
     },
 
