@@ -400,29 +400,20 @@ App.DatabaseManager = speculoos.Class({
      * @private
      */
     _empty: function () {
-        var delDbs    = this._get(this._DATA_FILES_DEL);
-        var sats      = this._remoteDb;
-        var remoteDbs;
-        var db;
+        var sats = this._get(this._SATS_SYNC);
         var sat;
 
-        if (!this._hasLocalFiles()) {
-            for (sat in sats) {
-                if (sats.hasOwnProperty(sat)) {
-                    remoteDbs = sats[sat];
-                    for (db in remoteDbs) {
-                        if (remoteDbs.hasOwnProperty(db)) {
-                            if (!delDbs.hasOwnProperty(db)) {
-                                return false;
-                            }
-                        }
-                    }
-                }
-            }
-            return true;
+        if (this._hasLocalFiles()) {
+            return false;
         }
 
-        return false;
+        for (sat in sats) {
+            if (sats.hasOwnProperty(sat) && !sats[sat]) {
+                return false;
+            }
+        }
+
+        return true;
     },
 
     /**
