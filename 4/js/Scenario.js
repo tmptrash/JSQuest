@@ -140,6 +140,7 @@ App.Scenario = speculoos.Class({
         this._databaseManager = new App.DatabaseManager();
 
         this._databaseManager.on('empty', this._onFinishQuest, this);
+        this._databaseManager.on('log', this._onDatabaseManagerLog, this);
     },
 
     /**
@@ -163,6 +164,15 @@ App.Scenario = speculoos.Class({
     _onFinishQuest: function () {
         // TODO:
         alert('The quest has finished!!!');
+    },
+
+    /**
+     * Handles log event of the terminal
+     * @param {String} msg Log message
+     * @private
+     */
+    _onDatabaseManagerLog: function (msg) {
+        this._terminal.WriteLine(msg);
     },
 
     /**
@@ -285,6 +295,11 @@ App.Scenario = speculoos.Class({
             this._terminal.console.WriteLine('Synchronization is not available. Satellites hasn\'t connected.');
             return;
         }
+        if (!this._terminal.hasConnections(args)) {
+            this._terminal.console.WriteLine('Synchronization is not available. Some of the satellites hasn\'t connected.');
+            return;
+        }
+
         this._addEffect('sync', {period: 12, timer: new THREE.Clock(true), sats: args}, this._syncEffect, undefined, 'Synchronizing...');
     },
 

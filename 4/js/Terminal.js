@@ -238,19 +238,26 @@ App.Terminal = speculoos.Class({
 
     /**
      * Returns true if at least one connection was established
+     * @param {Array|undefined} sats2Check Array on satellite names or undefined for all satellites
      * @return {Boolean}
      */
-    hasConnections: function () {
+    hasConnections: function (sats2Check) {
         var sat;
         var sats = this._satellites;
 
-        for (sat in sats) {
-            if (sats.hasOwnProperty(sat) && sats[sat]) {
-                return true;
+        if (Lib.Helper.isArray(sats2Check)) {
+            sats2Check = this._arrayToObject(sats2Check);
+        } else if (!Lib.Helper.isObject(sats2Check)) {
+            sats2Check = this._satellites;
+        }
+
+        for (sat in sats2Check) {
+            if (sats2Check.hasOwnProperty(sat) && !sats[sat]) {
+                return false;
             }
         }
 
-        return false;
+        return true;
     },
 
     /**
@@ -395,5 +402,25 @@ App.Terminal = speculoos.Class({
             this.checkArguments(args, command, validator);
             this.fire(command, cmdArgs.slice(1));
         };
+    },
+
+    /**
+     * Converts Object to the Array. e.g.: ['a', 'b'] -> {a: val, b: val}
+     * @param {Array} arr Array to convert
+     * @param {*} val Value to fill. true by default
+     * @return {Object}
+     * @private
+     */
+    _arrayToObject: function (arr, val) {
+        var i;
+        var len = arr.length;
+        var obj = {};
+
+        val = val || true;
+        for (i = 0; i < len; i++) {
+            obj[arr[i]] = val;
+        }
+
+        return obj;
     }
 });

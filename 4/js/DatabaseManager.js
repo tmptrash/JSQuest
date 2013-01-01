@@ -168,6 +168,15 @@ App.DatabaseManager = speculoos.Class({
     },
 
     /**
+     * Checks if specified database (file) exists on the local satellite.
+     * @param {String} file Filename
+     * @return {Boolean}
+     */
+    hasFile: function (file) {
+        return this._get(this._DATA_FILES)[file] !== undefined;
+    },
+
+    /**
      * Removes specified databases (files) from a local satellite.
      * @param {Array} files Array of file names
      * @return {Boolean|String} true - ok, string message if error
@@ -181,8 +190,12 @@ App.DatabaseManager = speculoos.Class({
 
         delDbs = this._get(this._DATA_FILES_DEL);
         this._changeFiles(files, function (curDbs, files, file) {
-            delDbs[file] = curDbs[file];
-            delete curDbs[file];
+            if (this.hasFile(file)) {
+                delDbs[file] = curDbs[file];
+                delete curDbs[file];
+            } else {
+                this.fire('log', 'File "' + file + '" doesn\'t exist.');
+            }
         });
         this._set(this._DATA_FILES_DEL, delDbs);
 
@@ -214,6 +227,9 @@ App.DatabaseManager = speculoos.Class({
 
         for (i = 0, len = args.length; i < len; i++) {
             remoteFiles = remoteDb[args[i]];
+            if (remoteFiles === undefined) {
+                this._terminal.WriteLine('Satellite "' + args[i] + '" doesn\'t exist.');
+            }
             for (db in remoteFiles) {
                 if (remoteFiles.hasOwnProperty(db)) {
                     if (dbs[db] === undefined && delDbs[db] === undefined) {
