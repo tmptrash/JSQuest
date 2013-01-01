@@ -172,7 +172,7 @@ App.Scenario = speculoos.Class({
      * @private
      */
     _onDatabaseManagerLog: function (msg) {
-        this._terminal.WriteLine(msg);
+        this._terminal.console.WriteLine(msg);
     },
 
     /**
