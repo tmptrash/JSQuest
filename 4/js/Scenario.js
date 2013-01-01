@@ -281,6 +281,10 @@ App.Scenario = speculoos.Class({
      * @private
      */
     _onSyncCmd: function (args) {
+        if (!this._universe.earthVisible()) {
+            this._terminal.console.WriteLine('Synchronization is not available. Satellites hasn\'t connected.');
+            return;
+        }
         this._addEffect('sync', {period: 12, timer: new THREE.Clock(true), sats: args}, this._syncEffect, undefined, 'Synchronizing...');
     },
 
