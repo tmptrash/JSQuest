@@ -249,9 +249,16 @@ App.Scenario = speculoos.Class({
      * @private
      */
     _onDisconnectCmd: function (args) {
-        if (this._universe.earthVisible() && !this._disconnecting) {
-            this._disconnect(args);
+        if (!this._universe.earthVisible()) {
+            this._terminal.console.WriteLine('Connection impossible.');
+            return;
         }
+        if (this._disconnecting) {
+            this._terminal.console.WriteLine('Disconnecting is steel in progress. Please wait for some time.');
+            return;
+        }
+
+        this._disconnect(args);
     },
 
     /**

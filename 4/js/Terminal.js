@@ -275,7 +275,9 @@ App.Terminal = speculoos.Class({
         sats = Lib.Helper.isArray(sats) ? sats : ['s1', 's2', 's3', 's4', 's5'];
         len  = sats.length;
         for (i = 0; i < len; i++) {
-            if (this._satellites.hasOwnProperty(sats[i])) {
+            if (!this._satellites.hasOwnProperty(sats[i])) {
+                this.message('Invalid satellite: "' + sats[i] + '"');
+            } else {
                 this._satellites[sats[i]] = connect;
             }
         }
