@@ -20,6 +20,10 @@
  * stdout/stderr object.
  */
 var exec = require('exec-sync');
+/**
+ * {Function} Shortcut for translation function
+ */
+var _    = require('./../../lib/js/Language.js')._;
 
 
 /**
@@ -90,8 +94,8 @@ function execUnpacker(arr) {
     // This is how data file was compressed: 7z a -mx0 -mhe test *.*
     //
     stdout = exec(unpackerPath + ' e -y -p' + pwd + ' ' + packedFile, true).stdout;
-    if (stdout.indexOf('Everything is Ok') !== -1) {
-        console.log('Password was cracked: "' + pwd + '"');
+    if (stdout.indexOf(_('Everything is Ok')) !== -1) {
+        console.log(_('Password was cracked: "') + pwd + '"');
         return true;
     }
 
@@ -168,14 +172,14 @@ function main(argv) {
     var ret;
 
     if (argv.length < 5) {
-        console.log('Incorrect amount of arguments. Usage: C:\\>node.exe BruteForce.js 7z.exe packedFile 6');
+        console.log(_('Incorrect amount of arguments. Usage: C:\\>node.exe BruteForce.js 7z.exe packedFile 6'));
         return RETURN_ERR;
     }
-    console.log('Started at', formatTime(new Date()));
+    console.log(_('Started at'), formatTime(new Date()));
     packedFile   = argv[3];
     unpackerPath = argv[2];
     ret = bruteForce(parseInt(argv[4], 10));
-    console.log('Finished at', formatTime(new Date()));
+    console.log(_('Finished at'), formatTime(new Date()));
 
     return ret;
 }

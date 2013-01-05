@@ -40,7 +40,7 @@ var fs        = require('fs');
 var speculoos = require('./../../lib/js/external/speculoos.js');
 var Helper    = require('./../../lib/js/Helper.js').Helper;
 var Simple    = require('./Simple.js').Simple;
-
+var _         = require('./../../lib/js/Language.js')._;
 
 /**
  * @class
@@ -145,7 +145,7 @@ var Alan = speculoos.Class({
         // Unknown argument
         //
         } else {
-            throw new Error('Invalid set command arguments at line "' + scriptLine + '"');
+            throw new Error(_('Invalid set command arguments at line "') + scriptLine + '"');
         }
 
         return ++line;
@@ -166,7 +166,7 @@ var Alan = speculoos.Class({
         file = this.getVar(file);
 
         if (!fs.existsSync(file)) {
-            throw new Error('File doesn\'t exists "' + file + '"');
+            throw new Error(_('File "{0}" doesn\'t exist.', file);
         }
         this.setVar(v, fs.readFileSync(file, this._FILES_CHARSET));
 
@@ -189,13 +189,13 @@ var Alan = speculoos.Class({
         file = this.getVar(file);
 
         if (!Helper.isString(file)) {
-            throw new Error('Invalid file name in write command at line "' + scriptLine + '"');
+            throw new Error(_('Invalid file name in write command at line "{0}"', scriptLine));
         }
         if (file === '') {
-            throw new Error('Specified file name is empty');
+            throw new Error(_('Specified file name is empty'));
         }
         if (!Helper.isString(data)) {
-            throw new Error('Only string data supported in write command. Error at line: "' + scriptLine + '"');
+            throw new Error(_('Only string data supported in write command. Error at line: "{0}"', scriptLine));
         }
         fs.writeFileSync(file, data, this._FILES_CHARSET);
 
@@ -220,7 +220,7 @@ var Alan = speculoos.Class({
         index = this.getVar(index);
 
         if (index < 0 || index >= v.length) {
-            throw new Error('Invalid index within variable at line "' + scriptLine + '"');
+            throw new Error(_('Invalid index within variable at line "{0}"', scriptLine));
         }
 
         this.setVar(dest, v[index]);
@@ -243,7 +243,7 @@ var Alan = speculoos.Class({
         v = this.getVar(v);
 
         if (!Helper.isString(v) || v.length < 1) {
-            throw new Error('Invalid source variable length or type at line "' + scriptLine + '"');
+            throw new Error(_('Invalid source variable length or type at line "{0}"', scriptLine));
         }
 
         this.setVar(n, v.charCodeAt(0));
@@ -266,7 +266,7 @@ var Alan = speculoos.Class({
         n = this.getVar(n);
 
         if (!Helper.isNumber(n) || n < 0 || n > 255) {
-            throw new Error('Invalid source variable value or type at line "' + scriptLine + '"');
+            throw new Error(_('Invalid source variable value or type at line "{0}"', scriptLine));
         }
 
         this.setVar(v, String.fromCharCode(n));
@@ -283,7 +283,7 @@ var Alan = speculoos.Class({
      */
     onGoto: function (line, scriptLine, label) {
         if (!this.hasLabel(label)) {
-            throw new Error('Invalid label at line "' + scriptLine + '"');
+            throw new Error(_('Invalid label at line "{0}"', scriptLine));
         }
 
         return this.getLineByLabel(label);
@@ -304,7 +304,7 @@ var Alan = speculoos.Class({
         this._checkVar(right, scriptLine);
 
         if (!this.hasLabel(label)) {
-            throw new Error('Invalid label at line "' + scriptLine + '"');
+            throw new Error(_('Invalid label at line "{0}"', scriptLine));
         }
 
         if (this.getVar(left) > this.getVar(right)) {
@@ -334,7 +334,7 @@ var Alan = speculoos.Class({
         // Only Numbers are supported
         //
         if (!Helper.isNumber(src) || !Helper.isNumber(dst)) {
-            throw new Error('sub command supports only numbers. Error at line "' + scriptLine + '"');
+            throw new Error(_('sub command supports only numbers. Error at line "{0}"', scriptLine));
         }
 
         this.setVar(srcVar, src - dst);
@@ -362,7 +362,7 @@ var Alan = speculoos.Class({
         // Only Strings and Numbers are supported
         //
         if (!((Helper.isNumber(src) && Helper.isNumber(dst)) || (Helper.isString(src) && Helper.isString(dst)) || Helper.isArray(dst))) {
-            throw new Error('append command supports only numbers and strings. Error at line "' + scriptLine + '"');
+            throw new Error(_('append command supports only numbers and strings. Error at line "{0}"', scriptLine));
         }
 
         if (Helper.isArray(dst)) {
@@ -391,7 +391,7 @@ var Alan = speculoos.Class({
         // Only Numbers are supported
         //
         if (!Helper.isNumber(v)) {
-            throw new Error('inc command supports only numbers. Error at line "' + scriptLine + '"');
+            throw new Error(_('inc command supports only numbers. Error at line "{0}"', scriptLine));
         }
 
         this.setVar(variable, ++v);
@@ -416,7 +416,7 @@ var Alan = speculoos.Class({
         // Only Numbers are supported
         //
         if (!Helper.isNumber(v)) {
-            throw new Error('dec command supports only numbers. Error at line "' + scriptLine + '"');
+            throw new Error(_('dec command supports only numbers. Error at line "{0}"', scriptLine));
         }
 
         this.setVar(variable, --v);
@@ -442,7 +442,7 @@ var Alan = speculoos.Class({
         // Only Strings are supported
         //
         if (!Helper.isString(src) && !Helper.isArray(src)) {
-            throw new Error('len command supports only string and arrays. Error at line "' + scriptLine + '"');
+            throw new Error(_('len command supports only string and arrays. Error at line "{0}"', scriptLine));
         }
 
         this.setVar(dst, src.length);
@@ -471,7 +471,7 @@ var Alan = speculoos.Class({
         // Only Numbers are supported
         //
         if (!Helper.isNumber(left) || !Helper.isNumber(right)) {
-            throw new Error('xor command supports only numbers. Error at line "' + scriptLine + '"');
+            throw new Error(_('xor command supports only numbers. Error at line "{0}"', scriptLine));
         }
 
         this.setVar(dst, left ^ right);
@@ -499,10 +499,10 @@ var Alan = speculoos.Class({
         // Only Numbers are supported
         //
         if (!Helper.isNumber(n)) {
-            throw new Error('hex command supports only numbers. Error at line "' + scriptLine + '"');
+            throw new Error(_('hex command supports only numbers. Error at line "{0}"', scriptLine));
         }
         if (n > 255) {
-            throw new Error('hex command supports only numbers in range 0 - 255. Error at line "' + scriptLine + '"');
+            throw new Error(_('hex command supports only numbers in range 0 - 255. Error at line "{0}"', scriptLine));
         }
 
         h = n.toString(16);
@@ -544,7 +544,7 @@ var Alan = speculoos.Class({
      */
     _checkVar: function (v, line) {
         if (this.getVar(v) === false) {
-            throw new Error('Variable is not defined at line "' + line + '"');
+            throw new Error(_('Variable is not defined at line "{0}"', line));
         }
     },
 

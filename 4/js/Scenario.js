@@ -250,7 +250,7 @@ App.Scenario = speculoos.Class({
      */
     _onDisconnectCmd: function (args) {
         if (!this._universe.earthVisible()) {
-            this._terminal.console.WriteLine('Connection impossible.');
+            this._terminal.console.WriteLine('Nothing to disconnect.');
             return;
         }
         if (this._disconnecting) {
