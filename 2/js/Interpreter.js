@@ -15,6 +15,7 @@
 var Alan   = require('./Alan.js').Alan;
 var Helper = require('./../../lib/js/Helper.js').Helper;
 var fs     = require('fs');
+var _      = require('./../../lib/js/Language.js')._;
 
 var RETURN_OK  = 0;
 var RETURN_ERR = 1;
@@ -25,11 +26,11 @@ var RETURN_ERR = 1;
 var scriptFile = process.argv.length > 2 ? process.argv[2] : '';
 
 if (!Helper.isString(scriptFile)) {
-    console.log('Invalid script file: ' + scriptFile);
+    console.log(_('Invalid script file: {0}', scriptFile));
     process.exit(RETURN_ERR);
 }
 if (!fs.existsSync(scriptFile)) {
-    console.log('Script file doesn\'t exists: ' + scriptFile);
+    console.log(_('Script file doesn\'t exists: {0}', scriptFile));
     process.exit(RETURN_ERR);
 }
 

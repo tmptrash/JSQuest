@@ -51,6 +51,7 @@ var fs        = require('fs');
 var speculoos = require('./../../lib/js/external/speculoos.js');
 var Helper    = require('./../../lib/js/Helper.js').Helper;
 var Class     = require('./../../lib/js/Class.js').Class;
+var _         = require('./../../lib/js/Language.js')._;
 
 /**
  * Simple interpreter class
@@ -117,22 +118,22 @@ var Simple = speculoos.Class({
         Simple.base.initConfig.apply(this, arguments);
 
         if (this.cfg.fileExtension !== undefined && (!Helper.isString(this.cfg.fileExtension) || this.cfg.fileExtension.length < 1)) {
-            throw new Error('Invalid script file extension configuration');
+            throw new Error(_('Invalid script file extension configuration'));
         }
         if (this.cfg.charSet !== undefined && (!Helper.isString(this.cfg.charSet) || this.cfg.charSet.length < 1)) {
-            throw new Error('Invalid script charset configuration');
+            throw new Error(_('Invalid script charset configuration'));
         }
         if (this.cfg.separator !== undefined && (!Helper.isString(this.cfg.separator) || this.cfg.separator.length < 1)) {
-            throw new Error('Invalid script separator configuration');
+            throw new Error(_('Invalid script separator configuration'));
         }
         if (this.cfg.commentRe !== undefined && !Helper.isRegexp(this.cfg.commentRe)) {
-            throw new Error('Invalid comment configuration');
+            throw new Error(_('Invalid comment configuration'));
         }
         if (this.cfg.labelRe !== undefined && !Helper.isRegexp(this.cfg.labelRe)) {
-            throw new Error('Invalid label configuration');
+            throw new Error(_('Invalid label configuration'));
         }
         if (!Helper.isObject(this.cfg.commands)) {
-            throw new Error('Invalid script commands configuration');
+            throw new Error(_('Invalid script commands configuration'));
         }
     },
 
@@ -203,7 +204,7 @@ var Simple = speculoos.Class({
          * {String|Array} Reference to internal script representation. After run() method call
          * it contains array. During run(), it contains string.
          */
-         this.source = '';
+        this.source = '';
     },
 
     /**
@@ -219,7 +220,7 @@ var Simple = speculoos.Class({
          * Only string scripts are supported
          */
         if (!Helper.isString(script)) {
-            throw new Error('Invalid script parameter in run method. Should be a string.');
+            throw new Error(_('Invalid script parameter in run method. Should be a string.'));
         }
 
         /**
@@ -249,7 +250,7 @@ var Simple = speculoos.Class({
         this.reset();
 
         if (!Helper.isString(lines)) {
-            throw new Error('Invalid script parameter in preprocess() method.');
+            throw new Error(_('Invalid script parameter in preprocess() method.'));
         }
 
         /**
@@ -356,7 +357,7 @@ var Simple = speculoos.Class({
         var label = this.getLabel(line);
 
         if (this._labels[label]) {
-            throw new Error('Label "' + label + '" is already exists at line "' + line + '"');
+            throw new Error(_('Label "{0}" is already exists at line "{1}"', label, line));
         }
         this._labels[label] = index;
         lines[index] = '';
@@ -388,7 +389,7 @@ var Simple = speculoos.Class({
             return cmdFn.apply(this, [line, scriptLine].concat(args));
         }
 
-        throw new Error('Command was set, but it has no handler at line "' + line + '"');
+        throw new Error(_('Command was set, but it has no handler at line "{0}"', line));
     },
 
     /**
@@ -428,7 +429,7 @@ var Simple = speculoos.Class({
         var res = this._labelRe.exec(line);
 
         if (!res || res.length < 2) {
-            throw new Error('Invalid label operator at line "' + line + '"');
+            throw new Error(_('Invalid label operator at line "{0}"', line));
         }
 
         return res[1];
@@ -443,10 +444,10 @@ var Simple = speculoos.Class({
         var cmd = this._CMD_ONLY_RE.exec(line);
 
         if (!cmd || cmd.length < 2) {
-            throw new Error('Invalid or unknown command at line "' + line + '"');
+            throw new Error(_('Invalid or unknown command at line "{0}"', line));
         }
         if (!this._commands[cmd[1]]) {
-            throw new Error('Unknown command ' + cmd + ' at line "' + line + '"');
+            throw new Error(_('Unknown command ' + cmd + ' at line "{0}"', line));
         }
 
         return cmd[1];
@@ -469,7 +470,7 @@ var Simple = speculoos.Class({
         if (isFirst) {
             regexp = this._CMD_RE.exec(part);
             if (!regexp || regexp.length < 3) {
-                throw new Error('Invalid command or first argument at line "' + line + '"');
+                throw new Error(_('Invalid command or first argument at line "{0}"', line));
             }
             return regexp[2];
         }
@@ -479,7 +480,7 @@ var Simple = speculoos.Class({
          */
         regexp = this._VAR_RE.exec(part);
         if (!regexp || regexp.length < 2) {
-            throw new Error('Invalid second argument in command at line "' + line + '"');
+            throw new Error(_('Invalid second argument in command at line "{0}"', line));
         }
 
         return regexp[1];
@@ -502,7 +503,7 @@ var Simple = speculoos.Class({
         if (regexp && Helper.isRegexp(regexp)) {
             params = regexp.exec(line);
             if (!params) {
-                throw new Error('Invalid command format at line "' + line + '"');
+                throw new Error(_('Invalid command format at line "{0}"', line));
             }
             /**
              * Remove entire string and the operator at the beginning
@@ -536,7 +537,9 @@ var Simple = speculoos.Class({
      * @param {String} v Name of variable to set
      */
     setVar: function (v, val) {
-        return this._vars[v] = val;
+        this._vars[v] = val;
+
+        return val;
     },
 
     /**

@@ -93,7 +93,7 @@ function main(argv) {
     var srcData;
 
     if (!srcFile || !dstFile) {
-        console.log('Invalid parameters. Usage: node.exe Archiver.js InFile.js OutFile.js');
+        console.log(_('Invalid parameters. Usage: node.exe Archiver.js InFile.js OutFile.js'));
         return -1;
     }
 

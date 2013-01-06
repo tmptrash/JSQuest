@@ -166,7 +166,7 @@ var Alan = speculoos.Class({
         file = this.getVar(file);
 
         if (!fs.existsSync(file)) {
-            throw new Error(_('File "{0}" doesn\'t exist.', file);
+            throw new Error(_('File "{0}" doesn\'t exist.', file));
         }
         this.setVar(v, fs.readFileSync(file, this._FILES_CHARSET));
 
