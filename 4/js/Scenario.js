@@ -286,9 +286,13 @@ App.Scenario = speculoos.Class({
     /**
      * remove command handler. Creates 7 second waiting effect and calls App.DatabaseManager.remove() method after it.
      * @param {Array} args Array of databases (files) to remove
+     * @return {undefined}
      * @private
      */
     _onRemoveCmd: function (args) {
+        if (!this._checkFiles(args)) {
+            return undefined;
+        }
         this._addEffect('remove', {period: 7, timer: new THREE.Clock(true), files: args}, this._removeEffect);
     },
 
@@ -303,7 +307,7 @@ App.Scenario = speculoos.Class({
             return;
         }
         if (!this._terminal.hasConnections(args)) {
-            this._terminal.console.WriteLine(_('Synchronization is not available. Some of the satellites hasn\'t connected.'));
+            this._terminal.console.WriteLine(_('Synchronization is not available. Satellites hasn\'t connected.'));
             return;
         }
 
@@ -568,5 +572,28 @@ App.Scenario = speculoos.Class({
         }
 
         return true;
+    },
+
+    /**
+     * Check if specified files are exist. If at least one file doesn't exist, this method
+     * shows an error message in the terminal
+     * @param {Array} files Array of file names to check
+     * @return {Boolean}
+     * @private
+     */
+    _checkFiles: function (files) {
+        var i;
+        var len;
+        var dm = this._databaseManager;
+        var result = true;
+
+        for (i = 0, len = files.length; i < len; i++) {
+            if (!dm.hasFile(files[i])) {
+                this._terminal.console.WriteLine(_('File doesn\'t exist: "{0}"', files[i]));
+                result = false;
+            }
+        }
+
+        return result;
     }
 });

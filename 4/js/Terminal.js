@@ -252,12 +252,12 @@ App.Terminal = speculoos.Class({
         }
 
         for (sat in sats2Check) {
-            if (sats2Check.hasOwnProperty(sat) && !sats[sat]) {
-                return false;
+            if (sats2Check.hasOwnProperty(sat) && sats[sat]) {
+                return true;
             }
         }
 
-        return true;
+        return false;
     },
 
     /**
