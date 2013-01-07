@@ -235,7 +235,7 @@ App.Scenario = speculoos.Class({
      */
     _onConnectCmd: function (args) {
         if (!this._universe.earthVisible()) {
-            this._terminal.console.WriteLine('Connection is not available');
+            this._terminal.console.WriteLine(_('Connection is not available'));
             return;
         }
 
@@ -250,11 +250,11 @@ App.Scenario = speculoos.Class({
      */
     _onDisconnectCmd: function (args) {
         if (!this._universe.earthVisible()) {
-            this._terminal.console.WriteLine('Nothing to disconnect.');
+            this._terminal.console.WriteLine(_('Nothing to disconnect.'));
             return;
         }
         if (this._disconnecting) {
-            this._terminal.console.WriteLine('Disconnecting is steel in progress. Please wait for some time.');
+            this._terminal.console.WriteLine(_('Disconnecting is steel in progress. Please wait for some time.'));
             return;
         }
 
@@ -299,11 +299,11 @@ App.Scenario = speculoos.Class({
      */
     _onSyncCmd: function (args) {
         if (!this._universe.earthVisible()) {
-            this._terminal.console.WriteLine('Synchronization is not available. Satellites hasn\'t connected.');
+            this._terminal.console.WriteLine(_('Synchronization is not available. Satellites hasn\'t connected.'));
             return;
         }
         if (!this._terminal.hasConnections(args)) {
-            this._terminal.console.WriteLine('Synchronization is not available. Some of the satellites hasn\'t connected.');
+            this._terminal.console.WriteLine(_('Synchronization is not available. Some of the satellites hasn\'t connected.'));
             return;
         }
 
@@ -355,12 +355,12 @@ App.Scenario = speculoos.Class({
         // We use array only for readability
         //
         var msg = [
-            'Welcome to Kepler v1.0\n\nThis is satellite database management terminal. It manages databases placed on different satellites in real time. ',
-            'There are five available satellites for now and they are marked from s1 to s5. You can use these names in commands. ',
-            'For example: connect s2 - will connect this satellite and the s2. Every database is in the file. You can remove, pack, ',
-            'encrypt, list and synchronize these files manually in real time (see "help" command for details).\n\nAlso, this satellite has ',
-            'an analog camera and the signal transmitter. You can rotate this camera using simple interface (see "help" command for details) and use ',
-            'the transmitter to communicate with other satellites.'
+            _('Welcome to Kepler v1.0\n\nThis is satellite database management terminal. It manages databases placed on different satellites in real time. '),
+            _('There are five available satellites for now and they are marked from s1 to s5. You can use these names in commands. '),
+            _('For example: connect s2 - will connect this satellite and the s2. Every database is in the file. You can remove, pack, '),
+            _('encrypt, list and synchronize these files manually in real time (see "help" command for details).\n\nAlso, this satellite has '),
+            _('an analog camera and the signal transmitter. You can rotate this camera using simple interface (see "help" command for details) and use '),
+            _('the transmitter to communicate with other satellites.')
         ];
         this._terminal.console.WriteLine(msg.join(''));
     },
@@ -519,7 +519,7 @@ App.Scenario = speculoos.Class({
     _disconnectEffect: function (heap, effect) {
         if (!this._continueTimerEffect(heap, effect, true)) {
             this._terminal.connect(false, heap.sats);
-            this._terminal.message('Satellites have disconnected');
+            this._terminal.message(_('Satellites have disconnected'));
             this._disconnecting = false;
         }
     },

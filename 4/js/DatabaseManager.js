@@ -185,7 +185,7 @@ App.DatabaseManager = speculoos.Class({
         var delDbs;
 
         if (!Lib.Helper.isArray(files)) {
-            return 'Invalid parameter during removing databases. Array of database files required.';
+            return _('Invalid parameter during removing databases. Array of database files required.');
         }
 
         delDbs = this._get(this._DATA_FILES_DEL);
@@ -194,7 +194,7 @@ App.DatabaseManager = speculoos.Class({
                 delDbs[file] = curDbs[file];
                 delete curDbs[file];
             } else {
-                this.fire('log', 'File "' + file + '" doesn\'t exist.');
+                this.fire('log', _('File "{0}" doesn\'t exist.', file));
             }
         });
         this._set(this._DATA_FILES_DEL, delDbs);
@@ -219,16 +219,16 @@ App.DatabaseManager = speculoos.Class({
         var len;
 
         if (!Lib.Helper.isArray(args)) {
-            return 'Invalid arguments format for sync command. Array required. Should be: s1...sx';
+            return _('Invalid arguments format for sync command. Array required. Should be: s1...sx');
         }
         if (args.length < 1) {
-            return 'Invalid amount of arguments for sync command. Should be at least one.';
+            return _('Invalid amount of arguments for sync command. Should be at least one.');
         }
 
         for (i = 0, len = args.length; i < len; i++) {
             remoteFiles = remoteDb[args[i]];
             if (remoteFiles === undefined) {
-                this._terminal.WriteLine('Satellite "' + args[i] + '" doesn\'t exist.');
+                this._terminal.WriteLine(_('Satellite "{0}" doesn\'t exist.', args[i]));
             }
             for (db in remoteFiles) {
                 if (remoteFiles.hasOwnProperty(db)) {
@@ -262,7 +262,7 @@ App.DatabaseManager = speculoos.Class({
         var newDb;
 
         if (!Lib.Helper.isArray(files)) {
-            return 'Invalid parameter during packing databases. Array of database files required.';
+            return _('Invalid parameter during packing databases. Array of database files required.');
         }
 
         delDbs = this._get(this._DATA_FILES_DEL);
@@ -294,7 +294,7 @@ App.DatabaseManager = speculoos.Class({
         var newDb;
 
         if (!Lib.Helper.isArray(files)) {
-            return 'Invalid parameter during unpacking databases. Array of database files required.';
+            return _('Invalid parameter during unpacking databases. Array of database files required.');
         }
 
         delDbs = this._get(this._DATA_FILES_DEL);
@@ -338,10 +338,10 @@ App.DatabaseManager = speculoos.Class({
         var newDb;
 
         if (dbs[file] === undefined) {
-            return 'Database file does not exist';
+            return _('Database file does not exist');
         }
         if (!Lib.Helper.isString(key)) {
-            return 'Invalid key. String type required.';
+            return _('Invalid key. String type required.');
         }
 
         newDb = file + this._ENCRYPT_POSTFIX;
@@ -369,10 +369,10 @@ App.DatabaseManager = speculoos.Class({
         var newDb;
 
         if (dbs[file] === undefined) {
-            return 'Database file does not exist';
+            return _('Database file does not exist');
         }
         if (dbs[file].key !== key) {
-            return 'Selected database file was encrypted with another key';
+            return _('Selected database file was encrypted with another key');
         }
 
         newDb      = file.substr(0, file.length - this._ENCRYPT_POSTFIX.length);

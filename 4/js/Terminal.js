@@ -74,20 +74,20 @@ App.Terminal = speculoos.Class({
          * {Array} Only this class knows about it's commands
          */
         this.cfg.commands       = [
-            ['left',       'Info : Moves camera to the left on X points.\nUsage: left 152'],
-            ['right',      'Info : Moves camera to the right on X points.\nUsage: right 130'],
-            ['up',         'Info : Moves camera to the top on X points.\nUsage: up 42'],
-            ['down',       'Info : Moves camera to the down on X points.\nUsage: down 72'],
-            ['connect',    'Info : Connects to specified list of satellites.\nUsage: connect s1 s3'],
-            ['disconnect', 'Info : Disconnects specified list of satellites from the current.\nUsage: disconnect s1 s3'],
-            ['list',       'Info : Lists all available databases on the current satellite.\nUsage: list'],
-            ['remove',     'Info : Removes specified databases from the local satellite.\nUsage: remove db1 db2'],
-            ['sync',       'Info : Synchronizes databases between current and remote satellites. If you add new database on the local satellite and call sync command, new database will be uploaded to the remote satellites as well.\nUsage: sync s1 s4'],
-            ['pack',       'Info : Packs specified databases.\nUsage: pack db1 db3'],
-            ['unpack',     'Info : Unpacks specified databases, packed by pack command.\nUsage: unpack db1-p db3-p'],
-            ['encrypt',    'Info : Encrypts specified database with key.\nUsage: encrypt db1 12345678'],
-            ['decrypt',    'Info : Decrypts specified database with key, encrypted by encrypt command.\nUsage: decrypt db1-e 12345678'],
-            ['info',       'Info : Shows general information.\nUsage: info']
+            ['left',       _('Info : Moves camera to the left on X points.\nUsage: left 152')],
+            ['right',      _('Info : Moves camera to the right on X points.\nUsage: right 130')],
+            ['up',         _('Info : Moves camera to the top on X points.\nUsage: up 42')],
+            ['down',       _('Info : Moves camera to the down on X points.\nUsage: down 72')],
+            ['connect',    _('Info : Connects to specified list of satellites.\nUsage: connect s1 s3')],
+            ['disconnect', _('Info : Disconnects specified list of satellites from the current.\nUsage: disconnect s1 s3')],
+            ['list',       _('Info : Lists all available databases on the current satellite.\nUsage: list')],
+            ['remove',     _('Info : Removes specified databases from the local satellite.\nUsage: remove db1 db2')],
+            ['sync',       _('Info : Synchronizes databases between current and remote satellites. If you add new database on the local satellite and call sync command, new database will be uploaded to the remote satellites as well.\nUsage: sync s1 s4')],
+            ['pack',       _('Info : Packs specified databases.\nUsage: pack db1 db3')],
+            ['unpack',     _('Info : Unpacks specified databases, packed by pack command.\nUsage: unpack db1-p db3-p')],
+            ['encrypt',    _('Info : Encrypts specified database with key.\nUsage: encrypt db1 12345678')],
+            ['decrypt',    _('Info : Decrypts specified database with key, encrypted by encrypt command.\nUsage: decrypt db1-e 12345678')],
+            ['info',       _('Info : Shows general information.\nUsage: info')]
         ];
         /**
          * @conf
@@ -214,7 +214,7 @@ App.Terminal = speculoos.Class({
      * @param {String|Boolean} busy true to disable terminal, false to enable. String to set the busy message.
      */
     setBusy: function (busy) {
-        var msg    = Lib.Helper.isString(busy) ? busy : 'Working...';
+        var msg    = Lib.Helper.isString(busy) ? busy : _('Working...');
         var isBusy = Lib.Helper.isString(busy) || busy;
 
         this.parent([isBusy]);
@@ -276,7 +276,7 @@ App.Terminal = speculoos.Class({
         len  = sats.length;
         for (i = 0; i < len; i++) {
             if (!this._satellites.hasOwnProperty(sats[i])) {
-                this.message('Invalid satellite: "' + sats[i] + '"');
+                this.message(_('Invalid satellite: "{0}"', sats[i]));
             } else {
                 this._satellites[sats[i]] = connect;
             }
@@ -344,13 +344,13 @@ App.Terminal = speculoos.Class({
      */
     _encryptionValidator: function (args) {
         if (args.length < 2) {
-            return 'Invalid amount of arguments. Should be: "fileName keyString", e.g.: file1 23de45fe4';
+            return _('Invalid amount of arguments. Should be: "fileName keyString", e.g.: file1 23de45fe4');
         }
         if (!Lib.Helper.isString(args[0])) {
-            return 'Invalid database (file) name. String required';
+            return _('Invalid database (file) name. String required');
         }
         if (!Lib.Helper.isString(args[1])) {
-            return 'Invalid key. String required';
+            return _('Invalid key. String required');
         }
 
         return true;
@@ -364,13 +364,13 @@ App.Terminal = speculoos.Class({
      */
     _moveValidator: function (args) {
         if (args.length < 1) {
-            return 'Invalid arguments amount. One numeric argument required.';
+            return _('Invalid arguments amount. One numeric argument required.');
         }
         if (!Lib.Helper.isNumeric(args)) {
-            return 'Invalid argument format. Number required.';
+            return _('Invalid argument format. Number required.');
         }
         if (parseInt(args, 10) < 0) {
-            return 'Invalid argument value. Positive value required.';
+            return _('Invalid argument value. Positive value required.');
         }
 
         return true;
