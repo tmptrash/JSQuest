@@ -22,18 +22,18 @@ App.Terminal = speculoos.Class({
          * {Array} Supported commands
          */
         cfg.commands = [
-            ['list',    'Info : Lists all files\\folders within active folder\nUsage: list'],
-            ['saf',     'Info : Sets Active Folder to specified one. Only one folder per command is supported.\nUsage: saf folder'],
-            ['gaf',     'Info : Gets active folder.\nUsage: gaf'],
-            ['connect', 'Info : Connects to the orbital satellite and starts video streaming from it\'s camera. Only an administrator has a permissions for that.\nUsage: connect user password'],
-            ['read',    'Info : Reads specified file in active folder.\nUsage: read file'],
-            ['rf',      'Info : Removes specified file in active folder.\nUsage: rf file'],
-            ['uf',      'Info : Updates specified file in active folder with data block.\nUsage: uf file index data'],
-            ['login',   'Info : Changes active user of terminal.\nUsage: login user password'],
-            ['cef',     'Info : Creates empty file within active folder. Use uf command to create file\'s body.\nUsage: cef file'],
-            ['gfp',     'Info : Shows file permissions.\nUsage: gfp file'],
-            ['reboot',  'Info : Reboots the terminal and reconnects it with a satellite. This command will close the session and all history and local data will be lost.\nUsage: reboot'],
-            ['info',    'Info : Shows information about terminal.\nUsage: info']
+            ['list',    _('Info : Lists all files\\folders within active folder\nUsage: list')],
+            ['saf',     _('Info : Sets Active Folder to specified one. Only one folder per command is supported.\nUsage: saf folder')],
+            ['gaf',     _('Info : Gets active folder.\nUsage: gaf')],
+            ['connect', _('Info : Connects to the orbital satellite and starts video streaming from it\'s camera. Only an administrator has a permissions for that.\nUsage: connect user password')],
+            ['read',    _('Info : Reads specified file in active folder.\nUsage: read file')],
+            ['rf',      _('Info : Removes specified file in active folder.\nUsage: rf file')],
+            ['uf',      _('Info : Updates specified file in active folder with data block.\nUsage: uf file index data')],
+            ['login',   _('Info : Changes active user of terminal.\nUsage: login user password')],
+            ['cef',     _('Info : Creates empty file within active folder. Use uf command to create file\'s body.\nUsage: cef file')],
+            ['gfp',     _('Info : Shows file permissions.\nUsage: gfp file')],
+            ['reboot',  _('Info : Reboots the terminal and reconnects it with a satellite. This command will close the session and all history and local data will be lost.\nUsage: reboot')],
+            ['info',    _('Info : Shows information about terminal.\nUsage: info')]
         ];
 
         this.parent(arguments);
@@ -142,7 +142,7 @@ App.Terminal = speculoos.Class({
             //
             this.console.init(this.textAreaId, user, this.host, this.commands, true);
         } else {
-            this.console.WriteLine('Invalid login or password');
+            this.console.WriteLine(_('Invalid login or password'));
         }
     },
 
@@ -198,15 +198,15 @@ App.Terminal = speculoos.Class({
      */
     _onInfoCmd: function () {
         this.console.WriteLine(
-            '[ Description ]\n' +
-            'Welcome to the remote terminal application. This software works in similar way as FTP protocol. ' +
-            'It connects to the remote orbital satellite using special remote procedure call API. Every terminal works within ' +
-            'it\'s session. The session clears every time when user reboots the terminal. It means, that file system and ' +
-            'command\'s history will be also reset.\n\n' +
-            '[ Permissions ]\n' +
-            'Remote server has special permissions logic. Every folder contains permission file called - perm. It contains a list ' +
-            'of all files within current folder with it\'s permissions. Every record of this file is equal to 8 bytes. Also, first two ' +
-            'header lines of this file are similar to other permission files.'
+            _('[ Description ]\n') +
+            _('Welcome to the remote terminal application. This software works in similar way as FTP protocol. ') +
+            _('It connects to the remote orbital satellite using special remote procedure call API. Every terminal works within ') +
+            _('it\'s session. The session clears every time when user reboots the terminal. It means, that file system and ') +
+            _('command\'s history will be also reset.\n\n') +
+            _('[ Permissions ]\n') +
+            _('Remote server has special permissions logic. Every folder contains permission file called - perm. It contains a list ') +
+            _('of all files within current folder with it\'s permissions. Every record of this file is equal to 8 bytes. Also, first two ') +
+            _('header lines of this file are similar to other permission files.')
         );
     }
 });

@@ -121,10 +121,10 @@ App.Fs = speculoos.Class({
         // Logical error check
         //
         if (this.fileExists(parent, file)) {
-            throw new Error('File already exists');
+            throw new Error(_('File already exists'));
         }
         if (Lib.Helper.isObject(parent[file])) {
-            throw new Error('Folder with the same name is already exists');
+            throw new Error(_('Folder with the same name is already exists'));
         }
 
         parent[file] = '';
@@ -187,10 +187,10 @@ App.Fs = speculoos.Class({
         //
         this._checkFile(parent, file);
         if (!Lib.Helper.isNumber(index) || index < 0 || index > parent[file].length) {
-            throw new Error('Invalid index');
+            throw new Error(_('Invalid index'));
         }
         if (!Lib.Helper.isString(data)) {
-            throw new Error('Invalid file body specified');
+            throw new Error(_('Invalid file body specified'));
         }
 
         parent[file] = parent[file].substr(0, index) + data + parent[file].substr(index + data.length);
@@ -277,7 +277,7 @@ App.Fs = speculoos.Class({
         // Check child folder
         //
         if (!Lib.Helper.isString(child) || child === '' || !Lib.Helper.isObject(folder[child])) {
-            throw new Error('Invalid child folder');
+            throw new Error(_('Invalid child folder'));
         }
 
         return folder[child];
@@ -316,7 +316,7 @@ App.Fs = speculoos.Class({
         // Parameters check
         //
         if (!Lib.Helper.isString(xpath) || xpath === '') {
-            throw new Error('Invalid XPATH for the folder');
+            throw new Error(_('Invalid XPATH for the folder'));
         }
 
         var path = xpath.split(this._XPATH_FOLDER_SPLITTER);
@@ -348,10 +348,10 @@ App.Fs = speculoos.Class({
         // Logical error check
         //
         if (!this.fileExists(parent, file)) {
-            throw new Error('File not found');
+            throw new Error(_('File not found'));
         }
         if (!Lib.Helper.isString(data)) {
-            throw new Error('Invalid data. String required');
+            throw new Error(_('Invalid data. String required'));
         }
 
         parent[file] += data;
@@ -367,10 +367,10 @@ App.Fs = speculoos.Class({
      */
     _checkParameters: function (parent, file) {
         if (!Lib.Helper.isObject(parent) || !this._validFolderObject(this._fs, parent)) {
-            throw new Error('Invalid parent object');
+            throw new Error(_('Invalid parent object'));
         }
         if (arguments.length > 1 && (!Lib.Helper.isString(file) || file === '' || this._FILENAME_RE.test(file))) {
-            throw new Error('Invalid file name. Use letters, digits and symbols: _-');
+            throw new Error(_('Invalid file name. Use letters, digits and symbols: _-'));
         }
     },
 
@@ -417,7 +417,7 @@ App.Fs = speculoos.Class({
      */
     _checkFile: function (parent, file) {
         if (!this.fileExists(parent, file)) {
-            throw new Error('File not found');
+            throw new Error(_('File not found'));
         }
     },
 
@@ -458,7 +458,7 @@ App.Fs = speculoos.Class({
         // Check type
         //
         if (!Lib.Helper.isObject(fs)) {
-            throw new Error('Invalid file system tree configuration');
+            throw new Error(_('Invalid file system tree configuration'));
         }
 
         this._checkFSRecursive(fs);
@@ -487,7 +487,7 @@ App.Fs = speculoos.Class({
                 // This is a file
                 //
                 } else if (!Lib.Helper.isString(child)) {
-                    throw new Error('File structure id incorrect. One item doesn\'t look like a file. Name: ' + folder + ', Body: ' + child);
+                    throw new Error(_('File structure id incorrect. One item doesn\'t look like a file. Name: {0}, Body: {1}', folder, child));
                 }
             }
         }
