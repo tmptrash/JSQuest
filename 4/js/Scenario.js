@@ -277,7 +277,7 @@ App.Scenario = speculoos.Class({
                 //
                 // e.g.: facebook - 12356774 Gb
                 //
-                output += ((output !== '' ? '\n' : '') + (pad(l, 12) + list[l].size + ' ' + dim));
+                output += ((output !== '' ? '\n' : '') + (pad(l, 14) + list[l].size + ' ' + dim));
             }
         }
         this._terminal.console.WriteLine(output);
@@ -317,36 +317,52 @@ App.Scenario = speculoos.Class({
     /**
      * pack command handler. Creates 8 second waiting effect and calls App.DatabaseManager.pack() method after it.
      * @param {Array} args Array of databases to pack
+     * @return {undefined}
      * @private
      */
     _onPackCmd: function (args) {
+        if (!this._checkFiles(args)) {
+            return undefined;
+        }
         this._addEffect('pack', {period: 8, timer: new THREE.Clock(true), files: args}, this._packEffect);
     },
 
     /**
      * unpack command handler. Creates 4 second waiting effect and calls App.DatabaseManager.unpack() method after it.
      * @param {Array} args Array of databases to unpack
+     * @return {undefined}
      * @private
      */
     _onUnpackCmd: function (args) {
+        if (!this._checkFiles(args)) {
+            return undefined;
+        }
         this._addEffect('unpack', {period: 4, timer: new THREE.Clock(true), files: args}, this._unpackEffect);
     },
 
     /**
      * encrypt command handler. Creates 9 second waiting effect and calls App.DatabaseManager.encrypt() method after it.
      * @param {Array} args Array of two elements: database (files) name and the key
+     * @return {undefined}
      * @private
      */
     _onEncryptCmd: function (args) {
+        if (!this._checkFiles(args)) {
+            return undefined;
+        }
         this._addEffect('encrypt', {period: 9, timer: new THREE.Clock(true), file: args[0], key: args[1]}, this._encryptEffect);
     },
 
     /**
      * decrypt command handler. Creates 6 second waiting effect and calls App.DatabaseManager.encrypt() method after it.
      * @param {Array} args Array of two elements: database (files) name and the key
+     * @return {undefined}
      * @private
      */
     _onDecryptCmd: function (args) {
+        if (!this._checkFiles(args)) {
+            return undefined;
+        }
         this._addEffect('decrypt', {period: 6, timer: new THREE.Clock(true), file: args[0], key: args[1]}, this._decryptEffect);
     },
 

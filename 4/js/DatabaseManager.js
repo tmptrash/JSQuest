@@ -277,6 +277,8 @@ App.DatabaseManager = speculoos.Class({
                 // If we add file with similar name as deleted, then we must unset it from deleted files map.
                 //
                 delete delDbs[newDb];
+            } else {
+                this.fire('log', _('File "{0}" is already packed.', file));
             }
         });
         this._set(this._DATA_FILES_DEL, delDbs);
@@ -305,6 +307,8 @@ App.DatabaseManager = speculoos.Class({
             //
             if (curDbs[file] && file.indexOf(this._PACK_POSTFIX) !== -1) {
                 curDbs[newDb] = {size: curDbs[file].prevSize};
+            } else {
+                this.fire('log', _('File "{0}" was not packed.', file));
             }
             //
             // If we add file with similar name as deleted, then we must unset it from deleted files map.
