@@ -280,7 +280,7 @@ App.Scenario = speculoos.Class({
                 output += ((output !== '' ? '\n' : '') + (pad(l, 14) + list[l].size + ' ' + dim));
             }
         }
-        this._terminal.console.WriteLine(output);
+        this._terminal.console.WriteLine(output === '' ? _('There are no files on the local satellite.') : output);
     },
 
     /**
@@ -347,7 +347,7 @@ App.Scenario = speculoos.Class({
      * @private
      */
     _onEncryptCmd: function (args) {
-        if (!this._checkFiles(args)) {
+        if (!this._checkFiles([args[0]])) {
             return undefined;
         }
         this._addEffect('encrypt', {period: 9, timer: new THREE.Clock(true), file: args[0], key: args[1]}, this._encryptEffect);
@@ -360,7 +360,7 @@ App.Scenario = speculoos.Class({
      * @private
      */
     _onDecryptCmd: function (args) {
-        if (!this._checkFiles(args)) {
+        if (!this._checkFiles([args[0]])) {
             return undefined;
         }
         this._addEffect('decrypt', {period: 6, timer: new THREE.Clock(true), file: args[0], key: args[1]}, this._decryptEffect);
