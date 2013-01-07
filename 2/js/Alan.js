@@ -145,7 +145,7 @@ var Alan = speculoos.Class({
         // Unknown argument
         //
         } else {
-            throw new Error(_('Invalid set command arguments at line "') + scriptLine + '"');
+            throw new Error(_('Invalid set command arguments at line "{0}"', scriptLine));
         }
 
         return ++line;

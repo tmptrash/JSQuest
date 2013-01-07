@@ -95,7 +95,7 @@ function execUnpacker(arr) {
     //
     stdout = exec(unpackerPath + ' e -y -p' + pwd + ' ' + packedFile, true).stdout;
     if (stdout.indexOf(_('Everything is Ok')) !== -1) {
-        console.log(_('Password was cracked: "') + pwd + '"');
+        console.log(_('Password was cracked: "{0}"', pwd));
         return true;
     }
 
