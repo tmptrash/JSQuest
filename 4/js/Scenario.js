@@ -52,6 +52,12 @@ App.Scenario = speculoos.Class({
          * @private
          */
         this._databaseManager = null;
+        /**
+         * @prop
+         * {App.RemotePlaylistAudioPlayer} Reference to the audio player which, plays specified remote playlist
+         * @private
+         */
+        this._audioPlayer     = null;
     },
 
     /**
@@ -64,6 +70,7 @@ App.Scenario = speculoos.Class({
         this._createUniverse();
         this._createTerminal();
         this._createDatabaseManager();
+        this._createAudioPlayer();
 
         //
         // Make demon effect. It works every time
@@ -101,6 +108,19 @@ App.Scenario = speculoos.Class({
     _delEffect: function (effect) {
         this._universe.delEffect(effect);
         this._terminal.setBusy(false);
+    },
+
+    /**
+     * Creates Universe class instance and stores it in this._universe property.
+     * @private
+     */
+    _createUniverse: function () {
+        //
+        // Create singleton instance of application class
+        //
+        this._universe = new App.Universe({
+            moveSpeed: this._moveSpeed
+        });
     },
 
     /**
@@ -144,15 +164,15 @@ App.Scenario = speculoos.Class({
     },
 
     /**
-     * Creates Universe class instance and stores it in this._universe property.
+     * Creates audio player based on remote playlist
      * @private
      */
-    _createUniverse: function () {
-        //
-        // Create singleton instance of application class
-        //
-        this._universe = new App.Universe({
-            moveSpeed: this._moveSpeed
+    _createAudioPlayer: function () {
+        this._audioPlayer = new Lib.PlaylistAudioPlayer({
+            playlist: [
+                'http://ololo.fm/download/55d5289de8845931cc7abf7aa229631050ee028b/313233313937383832/2d3133363237373136/mp3/4%27k_-_Intro_%5B%D0%92%D0%B0%D1%80%D0%B8%D0%B0%D0%BD%D1%82%D1%8B%5D_%D1%81_%D1%81%D0%B0%D0%B9%D1%82%D0%B0_ololo%28fm%29.mp3',
+                'http://ololo.fm/download/7a6ee15535a8e21276a70253fc69f3e950ee02ad/3333303331313931/2d32323938343031/mp3/Intro_-_Futurama_Theme_%28Ost_%D0%9A_%D0%9C_%2F_%D0%A4_%D0%A4%D1%83%D1%82%D1%83%D1%80%D0%B0%D0%BC%D0%B0%29_%D1%81_%D1%81%D0%B0%D0%B9%D1%82%D0%B0_ololo%28fm%29.mp3'
+            ]
         });
     },
 
