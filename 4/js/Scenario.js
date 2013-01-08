@@ -170,8 +170,9 @@ App.Scenario = speculoos.Class({
     _createAudioPlayer: function () {
         this._audioPlayer = new Lib.PlaylistAudioPlayer({
             playlist: [
-                'http://ololo.fm/download/55d5289de8845931cc7abf7aa229631050ee028b/313233313937383832/2d3133363237373136/mp3/4%27k_-_Intro_%5B%D0%92%D0%B0%D1%80%D0%B8%D0%B0%D0%BD%D1%82%D1%8B%5D_%D1%81_%D1%81%D0%B0%D0%B9%D1%82%D0%B0_ololo%28fm%29.mp3',
-                'http://ololo.fm/download/7a6ee15535a8e21276a70253fc69f3e950ee02ad/3333303331313931/2d32323938343031/mp3/Intro_-_Futurama_Theme_%28Ost_%D0%9A_%D0%9C_%2F_%D0%A4_%D0%A4%D1%83%D1%82%D1%83%D1%80%D0%B0%D0%BC%D0%B0%29_%D1%81_%D1%81%D0%B0%D0%B9%D1%82%D0%B0_ololo%28fm%29.mp3'
+                'http://dl.dropbox.com/u/45900723/music/02-trinity-gem.mp3',
+                'http://ololo.fm/download/5bc5faae3a9b19a026950931d54d295a50eeebe9/313133383738343633/35363432303130/mp3/Dnn_-_Things_Which_Stay_%D1%81_%D1%81%D0%B0%D0%B9%D1%82%D0%B0_ololo%28fm%29.mp3',
+                'http://ololo.fm/download/c314acdd2786fee26af1dfbf2df4e92450eeec90/3739333339323337/37323837383330/mp3/Recue_-_Korento_%D1%81_%D1%81%D0%B0%D0%B9%D1%82%D0%B0_ololo%28fm%29.mp3'
             ]
         });
     },
