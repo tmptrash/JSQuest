@@ -143,7 +143,7 @@ App.SatelliteFs = speculoos.Class({
      * Constructs File System class
      */
     constructor: function () {
-        this.parent(this, [{
+        this.parent([{
             bin  : {
                 //
                 // Here is an emulation of system binaries - commands we can use in terminal

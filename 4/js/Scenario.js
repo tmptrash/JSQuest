@@ -318,11 +318,11 @@ App.Scenario = speculoos.Class({
      */
     _onSyncCmd: function (args) {
         if (!this._universe.earthVisible()) {
-            this._terminal.console.WriteLine(_('Synchronization is not available. Satellites hasn\'t connected.'));
+            this._terminal.console.WriteLine(_('Synchronization is not available. Satellites haven\'t connected.'));
             return;
         }
         if (!this._terminal.hasConnections(args)) {
-            this._terminal.console.WriteLine(_('Synchronization is not available. Satellites hasn\'t connected.'));
+            this._terminal.console.WriteLine(_('Synchronization is not available. Satellites haven\'t connected.'));
             return;
         }
 

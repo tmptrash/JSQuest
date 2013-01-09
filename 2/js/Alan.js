@@ -67,7 +67,7 @@ var Alan = speculoos.Class({
      * of Alan commands and file extension into the Simple interpreter class.
      */
     constructor: function () {
-        this.parent(this, [{
+        this.parent([{
             /**
              * @conf
              * {String} Script files extension

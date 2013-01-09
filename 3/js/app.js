@@ -8,8 +8,8 @@ function main() {
     // Create singleton instance of application class
     //
     App.app = new App.Terminal({
-        id  : '_terminal',
+        id  : 'terminal',
         user: 'guest',
-        host: '_terminal'
+        host: 'terminal'
     });
 }
