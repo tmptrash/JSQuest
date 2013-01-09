@@ -56,21 +56,14 @@
 /**
  * Style for Terminal console
  */
-.terminal {
+.satellite-ct .terminal {
     position        : relative;
     width           : 474px;
     height          : 300px;
 
-    font            : 14px monospace;
     right           : 5px;
     top             : 50%;
     margin-top      : -223px;
-    font-weight     : bold;
-    background-color: #000;
-    color           : #AAA;
-    outline         : none;
-    resize          : none;
     border-color    : #222222;
     border-radius   : 7px;
-    padding         : 7px;
 }

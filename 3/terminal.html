@@ -3,10 +3,16 @@
     <head>
         <title>Orbital terminal</title>
         <meta http-equiv="content-type" content="text/html;charset=utf-8" />
-        <link rel="stylesheet" href="css/style.css">
+
+        <!-- Styles -->
+        <link rel="stylesheet" href="../lib/css/style.css"/>
+        <link rel="stylesheet" href="../lib/css/Terminal1.css"/>
+        <link rel="stylesheet" href="css/terminal.css">
+
         <!-- Libraries section -->
         <script src="../lib/js/external/console-min.js"></script>
         <script src="../lib/js/external/speculoos.js"></script>
+        <script src="../lib/js/external/jsonp.js"></script>
         <script src="../lib/js/Core.js"></script>
         <script src="../lib/js/external/Helper.js"></script>
 
@@ -16,6 +22,8 @@
         <script src="../lib/js/Class.js"></script>
         <script src="../lib/js/Observer.js"></script>
         <script src="../lib/js/Terminal.js"></script>
+        <script src="../lib/js/PlaylistAudioPlayer.js"></script>
+        <script src="../lib/js/RemotePlaylistAudioPlayer.js"></script>
         <script src="js/Core.js"></script>
         <script src="js/Fs.js"></script>
         <script src="js/SatelliteFs.js"></script>
@@ -24,8 +32,5 @@
         <script src="js/app.js"></script>
     </head>
     <body onload="main()">
-        <div id="container">
-            <textarea id="terminal" cols="10" rows="5"></textarea>
-        </div>
     </body>
 </html>

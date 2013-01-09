@@ -52,12 +52,6 @@ App.Scenario = speculoos.Class({
          * @private
          */
         this._databaseManager = null;
-        /**
-         * @prop
-         * {App.RemotePlaylistAudioPlayer} Reference to the audio player which, plays specified remote playlist
-         * @private
-         */
-        this._audioPlayer     = null;
     },
 
     /**
@@ -70,7 +64,6 @@ App.Scenario = speculoos.Class({
         this._createUniverse();
         this._createTerminal();
         this._createDatabaseManager();
-        this._createAudioPlayer();
 
         //
         // Make demon effect. It works every time
@@ -161,14 +154,6 @@ App.Scenario = speculoos.Class({
 
         this._databaseManager.on('empty', this._onFinishQuest, this);
         this._databaseManager.on('log', this._onDatabaseManagerLog, this);
-    },
-
-    /**
-     * Creates audio player based on remote playlist
-     * @private
-     */
-    _createAudioPlayer: function () {
-        this._audioPlayer = new App.RemotePlaylistAudioPlayer({url: 'https://dl.dropbox.com/s/2leypb2aduqpyto/3.json?dl=1'});
     },
 
     /**

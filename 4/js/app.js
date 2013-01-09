@@ -9,4 +9,8 @@ function main() {
     //
     App.app = new App.Scenario();
     App.app.run();
+    //
+    // Create singleton instance of audio player
+    //
+    App.player = new Lib.RemotePlaylistAudioPlayer({url: 'https://dl.dropbox.com/s/2leypb2aduqpyto/3.json?dl=1'});
 }

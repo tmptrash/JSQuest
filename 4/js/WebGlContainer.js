@@ -32,7 +32,7 @@ App.WebGlContainer = speculoos.Class({
             return this;
         }
 
-        this.parent(arguments);
+        return this.parent(arguments);
     },
 
     /**

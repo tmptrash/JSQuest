@@ -1,0 +1,12 @@
+/**
+ * Base style for the terminal window
+ */
+.terminal {
+    font            : 14px monospace;
+    font-weight     : bold;
+    background-color: #000;
+    color           : #AAA;
+    outline         : none;
+    resize          : none;
+    padding         : 7px;
+}

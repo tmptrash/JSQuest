@@ -56,6 +56,43 @@ App.Terminal = speculoos.Class({
     },
 
     /**
+     * Main initializer of the class
+     */
+    init: function () {
+        this._createHtml();
+
+        this.parent(arguments);
+    },
+
+    /**
+     * Analog of the destructor in C++. Removes terminal from DOM. This
+     * method should be called manually before call delete operator.
+     */
+    destroy: function () {
+        document.body.removeChild(document.getElementById('container'));
+    },
+
+    /**
+     * Creates html container for the terminal.
+     * @private
+     */
+    _createHtml: function () {
+        //
+        // Final html will be like this:
+        //
+        // <div id="container">
+        //     <textarea id="terminal" cols="10" rows="5"></textarea>
+        // </div>
+        //
+        var container = document.createElement('div');
+
+        container.id        = 'container';
+        container.innerHTML = '<textarea id="' + this.cfg.id + '" class="terminal" rows="5" cols="10"></textarea>';
+
+        document.body.appendChild(container);
+    },
+
+    /**
      * list command handler. It has no arguments. Shows all supported commands in separate lines.
      * @private
      */
@@ -87,12 +124,18 @@ App.Terminal = speculoos.Class({
     /**
      * connect command handler. Connects to the remote orbital satellite.
      * @param {Array} args Array of command arguments.
+     * @return {undefined}
      * @private
      */
     _onConnectCmd: function (args) {
         this.checkArguments(2, 'connect');
 
-        // TODO: Here is the demo will begin
+        if (Lib.Helper.md5(this.prepareString(args[2])) !== this._fs.getHashByUser(args[1])) {
+            this.console.WriteLine(_('Incorrect password'));
+            return undefined;
+        }
+
+        this.fire('finish');
     },
 
     /**
