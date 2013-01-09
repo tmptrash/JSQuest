@@ -267,11 +267,13 @@ App.Universe = speculoos.Class({
      * @private
      */
     _createPlanetMesh: function () {
-        // TODO: move textures to the dropbox
-        // TODO: set textures size
-        var planetTexture   = THREE.ImageUtils.loadTexture("textures/planets/earth_atmos_2048.jpg");
-        var normalTexture   = THREE.ImageUtils.loadTexture("textures/planets/earth_normal_2048.jpg");
-        var specularTexture = THREE.ImageUtils.loadTexture("textures/planets/earth_specular_2048.jpg");
+        // TODO:
+        var image = document.createElement('img');
+        image.src = 'http://dl.dropbox.com/u/45900723/JSQuest/img/textures/earth_atmos_2048.jpg';
+
+        var planetTexture   = new THREE.Texture(image);
+        var normalTexture   = THREE.ImageUtils.loadTexture("http://dl.dropbox.com/u/45900723/JSQuest/img/textures/earth_normal_2048.jpg");
+        var specularTexture = THREE.ImageUtils.loadTexture("http://dl.dropbox.com/u/45900723/JSQuest/img/textures/earth_specular_2048.jpg");
         var shader          = THREE.ShaderUtils.lib.normal;
         var uniforms        = THREE.UniformsUtils.clone(shader.uniforms);
         var parameters;
@@ -309,8 +311,7 @@ App.Universe = speculoos.Class({
      * @private
      */
     _createCloudsMesh: function () {
-        // TODO: move textures to the dropbox
-        var cloudsTexture  = THREE.ImageUtils.loadTexture("textures/planets/earth_clouds_1024.png");
+        var cloudsTexture  = THREE.ImageUtils.loadTexture("http://dl.dropbox.com/u/45900723/JSQuest/img/textures/earth_clouds_1024.png");
         var materialClouds = new THREE.MeshLambertMaterial({color: 0xffffff, map: cloudsTexture, transparent: true});
 
         this.meshClouds = new THREE.Mesh(this.sphereGeometry, materialClouds);
@@ -324,7 +325,7 @@ App.Universe = speculoos.Class({
      * @private
      */
     _createMoonMesh: function () {
-        var moonTexture  = THREE.ImageUtils.loadTexture("textures/planets/moon_1024.jpg");
+        var moonTexture  = THREE.ImageUtils.loadTexture("http://dl.dropbox.com/u/45900723/JSQuest/img/textures/moon_1024.jpg");
         var materialMoon = new THREE.MeshPhongMaterial({color: 0xffffff, map: moonTexture});
 
         this.meshMoon = new THREE.Mesh(this.sphereGeometry, materialMoon);

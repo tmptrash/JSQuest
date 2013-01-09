@@ -40,20 +40,26 @@
  * @author DeadbraiN
  * @email deadbrainman@gmail.com
  */
-App.Terminal = speculoos.Class({
+App.SatelliteTerminal = speculoos.Class({
     extend: Lib.Terminal,
     /**
      * @const
      * {String} Selector for CSS class of one satellite icon
      * @private
      */
-    _SATELLITE_SELECTOR: '.satellite',
+    _SATELLITE_SELECTOR    : '.satellite',
     /**
      * @const
-     * {String} Path to images
+     * {String} Path to satellite image
      * @private
      */
-    _SATELLITE_IMG     : './img/',
+    _SATELLITE_IMG         : 'http://dl.dropbox.com/u/45900723/JSQuest/img/satellite.png',
+    /**
+     * @const
+     * {String} Path to the disabled satellite image
+     * @private
+     */
+    _SATELLITE_IMG_DISABLED: 'http://dl.dropbox.com/u/45900723/JSQuest/img/satellite-disabled.png',
 
     /**
      * @constructor
@@ -298,7 +304,7 @@ App.Terminal = speculoos.Class({
             if (satellites.hasOwnProperty(sat)) {
                 satIndex = parseInt(sat[1], 10);
                 if (Lib.Helper.isNumber(satIndex)) {
-                    this.satelliteEls[satIndex - 1].style['background-image'] = satellites[sat] ? 'url(' + this._SATELLITE_IMG + 'satellite.png)' : 'url(' + this._SATELLITE_IMG + 'satellite-disabled.png)';
+                    this.satelliteEls[satIndex - 1].style['background-image'] = satellites[sat] ? 'url(' + this._SATELLITE_IMG + ')' : 'url(' + this._SATELLITE_IMG_DISABLED + ')';
                 }
             }
         }

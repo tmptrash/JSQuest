@@ -21,7 +21,7 @@
     position        : relative;
     margin          : 15px;
     float           : left;
-    background-image: url(./../img/satellite.png);
+    background-image: url("http://dl.dropbox.com/u/45900723/JSQuest/img/satellite.png");
 }
 
 /**
@@ -35,7 +35,7 @@
     height          : 32px;
     float           : left;
     visibility      : hidden;
-    background-image: url(./../img/loader.gif);
+    background-image: url("http://dl.dropbox.com/u/45900723/JSQuest/img/loader.gif");
 }
 /**
  * Style for loader label

@@ -26,7 +26,7 @@ function main() {
     //
     // Audio player will be shared between two levels
     //
-    App.player = new Lib.RemotePlaylistAudioPlayer({url: 'https://dl.dropbox.com/s/2leypb2aduqpyto/3.json?dl=1'});
+    App.player = new Lib.RemotePlaylistAudioPlayer({url: 'http://dl.dropbox.com/u/45900723/JSQuest/music/3.json'});
 
     //
     // Create singleton instance of application class

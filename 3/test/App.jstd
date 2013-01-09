@@ -4,7 +4,7 @@ load:
   - ../app/Core.js
   - ../app/Fs.js
   - ../app/SatelliteFs.js
-  - ../app/Terminal.js
+  - ../app/SatelliteTerminal.js
 
 test:
   - Helper-test.js

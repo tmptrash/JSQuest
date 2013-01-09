@@ -122,7 +122,7 @@ App.Scenario = speculoos.Class({
      * @private
      */
     _createTerminal: function () {
-        this._terminal = new App.Terminal({
+        this._terminal = new App.SatelliteTerminal({
             user: 'root',
             host: 'kepler',
             id  : Lib.Helper.getId()

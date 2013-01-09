@@ -10,8 +10,7 @@ load:
   - ../js/Core.js
   - Helper.js
   - ../js/DatabaseManager.js
-  - ../js/Terminal.js
-
+  - ../js/SatelliteTerminal.js
 test:
   - DatabaseManager-test.js
   - Terminal-test.js
