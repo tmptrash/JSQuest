@@ -168,13 +168,7 @@ App.Scenario = speculoos.Class({
      * @private
      */
     _createAudioPlayer: function () {
-        this._audioPlayer = new Lib.PlaylistAudioPlayer({
-            playlist: [
-                'http://dl.dropbox.com/u/45900723/music/02-trinity-gem.mp3',
-                'http://ololo.fm/download/5bc5faae3a9b19a026950931d54d295a50eeebe9/313133383738343633/35363432303130/mp3/Dnn_-_Things_Which_Stay_%D1%81_%D1%81%D0%B0%D0%B9%D1%82%D0%B0_ololo%28fm%29.mp3',
-                'http://ololo.fm/download/c314acdd2786fee26af1dfbf2df4e92450eeec90/3739333339323337/37323837383330/mp3/Recue_-_Korento_%D1%81_%D1%81%D0%B0%D0%B9%D1%82%D0%B0_ololo%28fm%29.mp3'
-            ]
-        });
+        this._audioPlayer = new App.RemotePlaylistAudioPlayer({url: 'https://dl.dropbox.com/s/2leypb2aduqpyto/3.json?dl=1'});
     },
 
     /**
