@@ -19,20 +19,6 @@ App.RemotePlaylistAudioPlayer = speculoos.Class({
     },
 
     /**
-     * Prepares configuration
-     * @param {Object} cfg Configuration passed to the constructor
-     */
-    initConfig: function (cfg) {
-        this.parent(arguments);
-
-        /**
-         * @conf
-         * {String|null} URL of the playlist
-         */
-        this.cfg.url = this.cfg.url || null;
-    },
-
-    /**
      * Initializer of the class.
      */
     init: function () {
