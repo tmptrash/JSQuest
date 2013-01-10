@@ -11,16 +11,28 @@ function main() {
      */
     function _on3LevelFinish() {
         //
-        // Removes 3 level
+        // Emulate connection
         //
-        App.app.destroy();
-        delete App.app;
+        App.loader = new Lib.FullScreenLoader({msg: _('connecting'), loaderUrl: Config.url.images.loaderImg});
+        App.loader.show();
 
-        //
-        // creates 4 level
-        //
-        App.app = new App.Scenario();
-        App.app.run();
+        setTimeout(function () {
+            //
+            // Removes 3 level
+            //
+            App.app.destroy();
+            delete App.app;
+
+            //
+            // creates 4 level
+            //
+            App.app = new App.Scenario();
+            App.app.run();
+
+            App.loader.hide();
+            App.loader.destroy();
+            delete App.loader;
+        }, 9000);
     }
 
     //

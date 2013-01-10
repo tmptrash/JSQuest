@@ -11,7 +11,7 @@ var Config = {
     url: {
         /**
          * Remote images. Server, which contains these images must support
-         * cross domain requests policy . See http://en.wikipedia.org/wiki/Cross-origin_resource_sharing
+         * cross domain requests policy. See http://en.wikipedia.org/wiki/Cross-origin_resource_sharing
          * for details.
          */
         images: {
