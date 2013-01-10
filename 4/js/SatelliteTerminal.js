@@ -53,13 +53,13 @@ App.SatelliteTerminal = speculoos.Class({
      * {String} Path to satellite image
      * @private
      */
-    _SATELLITE_IMG         : 'https://lh6.googleusercontent.com/-eY6PaEXOB2E/UO77-QzOWjI/AAAAAAAAABM/R1vAvMWVH2c/s0/satellite.png',
+    _SATELLITE_IMG         : Config.url.images.satelliteImg,
     /**
      * @const
      * {String} Path to the disabled satellite image
      * @private
      */
-    _SATELLITE_IMG_DISABLED: 'https://lh3.googleusercontent.com/-g9tdQCx_G7Q/UO77-bETDdI/AAAAAAAAABI/faktnyHMch8/s0/satellite-disabled.png',
+    _SATELLITE_IMG_DISABLED: Config.url.images.satelliteDisabledImg,
 
     /**
      * @constructor
@@ -315,7 +315,7 @@ App.SatelliteTerminal = speculoos.Class({
      * @private
      */
     _createHtml: function () {
-        var container = document.createElement('div');
+        var container   = document.createElement('div');
 
         //
         // Creates html nodes like this:
@@ -336,7 +336,7 @@ App.SatelliteTerminal = speculoos.Class({
             '<div class="satellite"></div>' +
             '<div class="satellite"></div>' +
             '<textarea id="' + this.cfg.id + '" class="terminal" rows="6" cols="10"></textarea>' +
-            '<div id="' + this._loaderId + '" class="loader"></div>'    +
+            '<div id="' + this._loaderId + '" class="loader" style="background-image: ' + Config.url.images.loaderImg + '"></div>'    +
             '<div id="' + this._loaderLabelId + '"class="loader-label"></div>';
 
         this._parent.appendChild(container);

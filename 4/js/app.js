@@ -12,6 +12,6 @@ function main() {
     //
     // Create singleton instance of audio player
     //
-    App.player = new Lib.RemotePlaylistAudioPlayer({url: 'http://dl.dropbox.com/u/45900723/JSQuest/music/3.json'});
+    App.player = new Lib.RemotePlaylistAudioPlayer({url: Config.url.music.playlist});
 
 }
