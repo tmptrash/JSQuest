@@ -21,7 +21,7 @@
     position        : relative;
     margin          : 15px;
     float           : left;
-    background-image: url("http://dl.dropbox.com/u/45900723/JSQuest/img/satellite.png");
+    background-image: url("https://lh6.googleusercontent.com/-eY6PaEXOB2E/UO77-QzOWjI/AAAAAAAAABM/R1vAvMWVH2c/s0/satellite.png");
 }
 
 /**
@@ -35,7 +35,7 @@
     height          : 32px;
     float           : left;
     visibility      : hidden;
-    background-image: url("http://dl.dropbox.com/u/45900723/JSQuest/img/loader.gif");
+    background-image: url("https://lh5.googleusercontent.com/-9emJJWmZCAA/UO77-U0VvYI/AAAAAAAAABQ/w-x0XYnwFiI/s0/loader.gif");
 }
 /**
  * Style for loader label

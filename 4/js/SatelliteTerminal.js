@@ -53,13 +53,13 @@ App.SatelliteTerminal = speculoos.Class({
      * {String} Path to satellite image
      * @private
      */
-    _SATELLITE_IMG         : 'http://dl.dropbox.com/u/45900723/JSQuest/img/satellite.png',
+    _SATELLITE_IMG         : 'https://lh6.googleusercontent.com/-eY6PaEXOB2E/UO77-QzOWjI/AAAAAAAAABM/R1vAvMWVH2c/s0/satellite.png',
     /**
      * @const
      * {String} Path to the disabled satellite image
      * @private
      */
-    _SATELLITE_IMG_DISABLED: 'http://dl.dropbox.com/u/45900723/JSQuest/img/satellite-disabled.png',
+    _SATELLITE_IMG_DISABLED: 'https://lh3.googleusercontent.com/-g9tdQCx_G7Q/UO77-bETDdI/AAAAAAAAABI/faktnyHMch8/s0/satellite-disabled.png',
 
     /**
      * @constructor
