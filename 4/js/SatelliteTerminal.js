@@ -53,13 +53,13 @@ App.SatelliteTerminal = speculoos.Class({
      * {String} Path to satellite image
      * @private
      */
-    _SATELLITE_IMG         : Config.url.images.satelliteImg,
+    _SATELLITE_IMG         : Config.url.images.satellite,
     /**
      * @const
      * {String} Path to the disabled satellite image
      * @private
      */
-    _SATELLITE_IMG_DISABLED: Config.url.images.satelliteDisabledImg,
+    _SATELLITE_IMG_DISABLED: Config.url.images.satelliteDisabled,
 
     /**
      * @constructor
@@ -336,7 +336,7 @@ App.SatelliteTerminal = speculoos.Class({
             '<div class="satellite"></div>' +
             '<div class="satellite"></div>' +
             '<textarea id="' + this.cfg.id + '" class="terminal" rows="6" cols="10"></textarea>' +
-            '<div id="' + this._loaderId + '" class="loader" style="background-image: ' + Config.url.images.loaderImg + '"></div>'    +
+            '<div id="' + this._loaderId + '" class="loader" style="background-image: ' + Config.url.images.loader + '"></div>'    +
             '<div id="' + this._loaderLabelId + '"class="loader-label"></div>';
 
         this._parent.appendChild(container);

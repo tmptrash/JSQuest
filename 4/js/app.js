@@ -10,8 +10,12 @@ function main() {
     App.app = new App.Scenario();
     App.app.run();
     //
-    // Create singleton instance of audio player
+    // Creates singleton instance of audio player
     //
-    App.player = new Lib.RemotePlaylistAudioPlayer({url: Config.url.music.playlist});
+    App.player     = new Lib.RemotePlaylistAudioPlayer({url: Config.url.music.playlist});
+    //
+    // Creates singleton instance of full screen mode widget
+    //
+    App.fullscreen = new Lib.FullScreenView();
 
 }

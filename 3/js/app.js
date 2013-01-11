@@ -13,8 +13,8 @@ function main() {
         //
         // Emulate connection
         //
-        App.loader = new Lib.FullScreenLoader({msg: _('connecting'), loaderUrl: Config.url.images.loaderImg});
-        App.loader.show();
+        var loader = new Lib.FullScreenLoader({msg: _('connecting'), loaderUrl: Config.url.images.loader});
+        loader.show();
 
         setTimeout(function () {
             //
@@ -29,25 +29,26 @@ function main() {
             App.app = new App.Scenario();
             App.app.run();
 
-            App.loader.hide();
-            App.loader.destroy();
-            delete App.loader;
+            loader.hide();
+            loader.destroy();
         }, 9000);
     }
 
     //
     // Audio player will be shared between two levels
     //
-    App.player = new Lib.RemotePlaylistAudioPlayer({url: Config.url.music.playlist});
-
+    App.player     = new Lib.RemotePlaylistAudioPlayer({url: Config.url.music.playlist});
+    //
+    // Creates singleton instance of full screen mode widget
+    //
+    App.fullscreen = new Lib.FullScreenView();
     //
     // Create singleton instance of application class
     //
-    App.app = new App.Terminal({
+    App.app        = new App.Terminal({
         id  : 'terminal',
         user: 'guest',
         host: 'terminal'
     });
-
     App.app.on('finish', _on3LevelFinish, null);
 }
