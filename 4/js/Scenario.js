@@ -1,5 +1,8 @@
 /**
- * This is level 4 scenario class. It controls 3d objects, user input and effects. So all logic is here.
+ * This is level 4 scenario class. It controls 3d objects, user input and effects. So all logic is here. In this
+ * level user should find the earth and then connect all available satellites to the current. After that, he
+ * should synchronize current satellite and all connected and remove all databases. After that, he should synchronize
+ * satellites again.
  *
  * @author DeadbraiN
  * @email deadbrainman@gmail.com

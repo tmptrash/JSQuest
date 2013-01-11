@@ -5,6 +5,7 @@
  */
 function main() {
     var nasa;
+    var err;
 
     /**
      * finish event handler. It destroys the terminal from third level and creates
@@ -34,6 +35,15 @@ function main() {
             loader.hide();
             loader.destroy();
         }, 9000);
+    }
+
+    //
+    // Chrome detection
+    //
+    if (navigator.userAgent.toLowerCase().indexOf('chrome') === -1) {
+        err = new Lib.FullScreenLoader({msg: _('This application works only in Chrome.'), loaderUrl: Config.url.images.loader});
+        err.show();
+        return;
     }
 
     //
