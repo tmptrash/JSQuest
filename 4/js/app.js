@@ -5,11 +5,6 @@
  */
 function main() {
     //
-    // Create singleton instance of scenario (application) class
-    //
-    App.app = new App.Scenario();
-    App.app.run();
-    //
     // Creates singleton instance of audio player
     //
     App.player     = new Lib.RemotePlaylistAudioPlayer({url: Config.url.music.playlist});
@@ -17,5 +12,9 @@ function main() {
     // Creates singleton instance of full screen mode widget
     //
     App.fullscreen = new Lib.FullScreenView();
-
+    //
+    // Create singleton instance of scenario (application) class
+    //
+    App.app        = new App.Scenario();
+    App.app.run();
 }
