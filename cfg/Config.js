@@ -23,7 +23,8 @@ var Config = {
             earthClouds      : 'https://lh4.googleusercontent.com/-kcSnt0XNzT0/UO777h0bkpI/AAAAAAAAAAo/a4cLvMKceX4/s0/earth_clouds_1024.png',
             earthNormal      : 'https://lh5.googleusercontent.com/-tvRnDPu7iag/UO777t-U15I/AAAAAAAAAAg/SgrULDGevJU/s0/earth_normal_2048.jpg',
             earthSpecular    : 'https://lh4.googleusercontent.com/-TwOIwh3D1A8/UO778CAxPPI/AAAAAAAAAAs/OCCMIc4x15Q/s0/earth_specular_2048.jpg',
-            moon             : 'https://lh5.googleusercontent.com/-aNQMfL_vk0Y/UO778cyNi4I/AAAAAAAAAAw/PH7n7x9bXd0/s0/moon_1024.jpg'
+            moon             : 'https://lh5.googleusercontent.com/-aNQMfL_vk0Y/UO778cyNi4I/AAAAAAAAAAw/PH7n7x9bXd0/s0/moon_1024.jpg',
+            nasa             : 'https://lh5.googleusercontent.com/-CbIm_4bIcvk/UPBJxjE2tvI/AAAAAAAAACA/-O2F95sT67o/s0/nasa.jpg'
         },
         /**
          * Remote music

@@ -33,7 +33,7 @@ App.Universe = speculoos.Class({
     initPrivates: function () {
         this.parent(arguments);
 
-        var isNumber        = Lib.Helper.isNumber;
+        var isNumber         = Lib.Helper.isNumber;
 
         /**
          * @prop
@@ -41,26 +41,37 @@ App.Universe = speculoos.Class({
          * TODO: remove this. We use camera.fov for zooming.
          * @private
          */
-        this._zoom          = 3;
+        this._zoom           = 3;
         /**
          * @prop
          * {Object} Map of custom effect objects in format: {effect: {fn:Function, obj:Object},...}.
          * Effect examples: smooth camera moving of zooming. Functions should be from this class.
          * @private
          */
-        this._effects       = {};
+        this._effects        = {};
         /**
          * @prop
          * {THREE.Frustum} View zone of the camera
          * @private
          */
-        this._frustum       = new THREE.Frustum();
+        this._frustum        = new THREE.Frustum();
         /**
          * @prop
          * {THREE.Matrix4} Helper matrix for checks if object is in visible zone
          * @private
          */
-        this._frustumMat    = new THREE.Matrix4();
+        this._frustumMat     = new THREE.Matrix4();
+        /**
+         * @prop
+         * {HTMLElement} Top center information bar
+         */
+        this._topInfoEl      = null;
+        /**
+         * @prop
+         * {Number} Local counter, which resets every 1 second (1000 ms)
+         * @private
+         */
+        this._oneSecondDelta = 0;
 
         //
         // Parameters, created from configuration
@@ -153,6 +164,7 @@ App.Universe = speculoos.Class({
         this._createCloudsMesh();                           // Clouds
         this._createMoonMesh();                             // Moon
         this._createStars();                                // Stars
+        this._createInfo();                                 // Different information for profi :)
         this._postprocess();                                // Analog camera effect
     },
 
@@ -164,9 +176,11 @@ App.Universe = speculoos.Class({
     onAnimate: function () {
         this.parent(arguments);
 
+        this._updateOneSecondDelta();
         this._moveObjects();
         this._moveCamera();
         this._runEffects();
+        this._updateInfo();
 
         //
         // Updates current frame
@@ -211,6 +225,16 @@ App.Universe = speculoos.Class({
     },
 
     /**
+     * Updates this._oneSecondDelta property
+     */
+    _updateOneSecondDelta: function () {
+        this._oneSecondDelta += this.delta;
+        if (this._oneSecondDelta > 0.4) {
+            this._oneSecondDelta = 0;
+        }
+    },
+
+    /**
      * Rotates main objects on the scene
      * @private
      */
@@ -250,6 +274,18 @@ App.Universe = speculoos.Class({
             if (effects.hasOwnProperty(i)) {
                 effects[i].fn.call(effects[i].scope || this, effects[i].heap, i);
             }
+        }
+    },
+
+    /**
+     * Updates different information on the screen
+     * @private
+     */
+    _updateInfo: function () {
+        if (this._oneSecondDelta === 0) {
+            var pos = this.camera.position;
+            var rot = this.camera.rotation;
+            this._topInfoEl.firstChild.innerText = _('[ Position: {0} : {1} : {2} ]------------------[ Rotation: {3} : {4} ]', pos.x.toFixed(), pos.y.toFixed(), pos.z.toFixed(), rot.y.toFixed(3), rot.x.toFixed(3));
         }
     },
 
@@ -381,6 +417,19 @@ App.Universe = speculoos.Class({
             stars.updateMatrix();
             this.scene.add(stars);
         }
+    },
+
+    /**
+     * Creates information boards on the screen
+     * @private
+     */
+    _createInfo: function () {
+        var container = document.createElement('div');
+
+        container.style.cssText = 'position: absolute; width: 100%; height: 30px; left: 0px; top: 4px;';
+        container.innerHTML     = '<div style="color: #AAA;  font-family: Verdana; font-size: 17px; left: 50%; width: 800px; text-align: center; position: absolute; margin-left: -400px;"></div>';
+
+        this._topInfoEl = document.body.appendChild(container);
     },
 
     /**

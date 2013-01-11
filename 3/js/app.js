@@ -4,6 +4,8 @@
  * @email deadbrainman@gmail.com
  */
 function main() {
+    var nasa;
+
     /**
      * finish event handler. It destroys the terminal from third level and creates
      * 3D canvas from fourth level.
@@ -51,4 +53,11 @@ function main() {
         host: 'terminal'
     });
     App.app.on('finish', _on3LevelFinish, null);
+
+    //
+    // Adds NASA logo at the left bottom corner
+    //
+    nasa = document.createElement('div');
+    nasa.style.cssText = 'background-image: url(' + Config.url.images.nasa + '); width: 120px; height: 40px; position: absolute; top: 100%; margin-top: -40px; left: 3px;';
+    document.body.appendChild(nasa);
 }
