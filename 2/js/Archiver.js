@@ -15,6 +15,7 @@
  * Require section
  */
 var Helper = require('./../../lib/js/Helper.js').Helper;
+var _      = require('./../../lib/js/Language.js').Language._;
 var fs     = require('fs');
 
 /**
