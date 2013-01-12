@@ -23,7 +23,7 @@ var exec = require('exec-sync');
 /**
  * {Function} Shortcut for translation function
  */
-var _    = require('./../../lib/js/Language.js')._;
+var _    = require('./../../lib/js/Language.js').Language._;
 
 
 /**
@@ -91,7 +91,7 @@ function execUnpacker(arr) {
     var stdout;
 
     //
-    // This is how data file was compressed: 7z a -mx0 -mhe test *.*
+    // This is how data file was compressed: 7z a -mx0 -mhe outFile inFiles -pPASSWORD
     //
     stdout = exec(unpackerPath + ' e -y -p' + pwd + ' ' + packedFile, true).stdout;
     if (stdout.indexOf(_('Everything is Ok')) !== -1) {

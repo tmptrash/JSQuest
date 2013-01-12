@@ -40,7 +40,7 @@ var fs        = require('fs');
 var speculoos = require('./../../lib/js/external/speculoos.js');
 var Helper    = require('./../../lib/js/Helper.js').Helper;
 var Simple    = require('./Simple.js').Simple;
-var _         = require('./../../lib/js/Language.js')._;
+var _         = require('./../../lib/js/Language.js').Language._;
 
 /**
  * @class
