@@ -4,13 +4,16 @@ load:
   - ../../lib/js/external/Helper.js
   - ../../lib/js/external/console-min.js
   - ../../lib/js/Helper.js
+  - ../../lib/js/Language.js
   - ../../lib/js/Class.js
   - ../../lib/js/Observer.js
   - ../../lib/js/Terminal.js
   - ../js/Core.js
   - Helper.js
+  - ../../cfg/Config.js
   - ../js/DatabaseManager.js
   - ../js/SatelliteTerminal.js
+
 test:
   - DatabaseManager-test.js
-  - Terminal-test.js
+  - SatelliteTerminal-test.js

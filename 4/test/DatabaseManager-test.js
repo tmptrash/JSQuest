@@ -20,8 +20,7 @@ var tc = new TestCase('App.DatabaseManager', {
             localStorage.removeItem('jsql4synchronized');
             localStorage.removeItem('jsql4files');
             localStorage.removeItem('jsql4files-d');
-            localStorage.removeItem('jsql4files-2');
-            localStorage.removeItem('jsql4synchronized');
+            localStorage.removeItem('jsql4sats-s');
 
             var ct  = new App.DatabaseManager();
             var dbs = ct.list();
@@ -34,8 +33,7 @@ var tc = new TestCase('App.DatabaseManager', {
         localStorage.removeItem('jsql4synchronized');
         localStorage.removeItem('jsql4files');
         localStorage.removeItem('jsql4files-d');
-        localStorage.removeItem('jsql4files-2');
-        localStorage.removeItem('jsql4synchronized');
+        localStorage.removeItem('jsql4sats-s');
 
         var ct = new App.DatabaseManager();
 
@@ -54,8 +52,7 @@ var tc = new TestCase('App.DatabaseManager', {
                 localStorage.removeItem('jsql4synchronized');
                 localStorage.removeItem('jsql4files');
                 localStorage.removeItem('jsql4files-d');
-                localStorage.removeItem('jsql4files-2');
-                localStorage.removeItem('jsql4synchronized');
+                localStorage.removeItem('jsql4sats-s');
 
                 var dm  = new App.DatabaseManager();
                 var msg = dm.remove(arg);
@@ -70,8 +67,7 @@ var tc = new TestCase('App.DatabaseManager', {
             localStorage.removeItem('jsql4synchronized');
             localStorage.removeItem('jsql4files');
             localStorage.removeItem('jsql4files-d');
-            localStorage.removeItem('jsql4files-2');
-            localStorage.removeItem('jsql4synchronized');
+            localStorage.removeItem('jsql4sats-s');
 
             var dm = new App.DatabaseManager();
             var dbs;
@@ -84,8 +80,7 @@ var tc = new TestCase('App.DatabaseManager', {
             localStorage.removeItem('jsql4synchronized');
             localStorage.removeItem('jsql4files');
             localStorage.removeItem('jsql4files-d');
-            localStorage.removeItem('jsql4files-2');
-            localStorage.removeItem('jsql4synchronized');
+            localStorage.removeItem('jsql4sats-s');
 
             var dm  = new App.DatabaseManager();
 
@@ -96,8 +91,7 @@ var tc = new TestCase('App.DatabaseManager', {
             localStorage.removeItem('jsql4synchronized');
             localStorage.removeItem('jsql4files');
             localStorage.removeItem('jsql4files-d');
-            localStorage.removeItem('jsql4files-2');
-            localStorage.removeItem('jsql4synchronized');
+            localStorage.removeItem('jsql4sats-s');
 
             var dm  = new App.DatabaseManager();
 
@@ -118,8 +112,7 @@ var tc = new TestCase('App.DatabaseManager', {
                 localStorage.removeItem('jsql4synchronized');
                 localStorage.removeItem('jsql4files');
                 localStorage.removeItem('jsql4files-d');
-                localStorage.removeItem('jsql4files-2');
-                localStorage.removeItem('jsql4synchronized');
+                localStorage.removeItem('jsql4sats-s');
 
                 var dm  = new App.DatabaseManager();
 
@@ -133,8 +126,7 @@ var tc = new TestCase('App.DatabaseManager', {
             localStorage.removeItem('jsql4synchronized');
             localStorage.removeItem('jsql4files');
             localStorage.removeItem('jsql4files-d');
-            localStorage.removeItem('jsql4files-2');
-            localStorage.removeItem('jsql4synchronized');
+            localStorage.removeItem('jsql4sats-s');
 
             var dm  = new App.DatabaseManager();
             var dbs;
@@ -168,8 +160,7 @@ var tc = new TestCase('App.DatabaseManager', {
             localStorage.removeItem('jsql4synchronized');
             localStorage.removeItem('jsql4files');
             localStorage.removeItem('jsql4files-d');
-            localStorage.removeItem('jsql4files-2');
-            localStorage.removeItem('jsql4synchronized');
+            localStorage.removeItem('jsql4sats-s');
 
             var dm  = new App.DatabaseManager();
             var dbs;
@@ -206,8 +197,7 @@ var tc = new TestCase('App.DatabaseManager', {
             localStorage.removeItem('jsql4synchronized');
             localStorage.removeItem('jsql4files');
             localStorage.removeItem('jsql4files-d');
-            localStorage.removeItem('jsql4files-2');
-            localStorage.removeItem('jsql4synchronized');
+            localStorage.removeItem('jsql4sats-s');
 
             var dm = new App.DatabaseManager();
 
@@ -222,8 +212,7 @@ var tc = new TestCase('App.DatabaseManager', {
             localStorage.removeItem('jsql4synchronized');
             localStorage.removeItem('jsql4files');
             localStorage.removeItem('jsql4files-d');
-            localStorage.removeItem('jsql4files-2');
-            localStorage.removeItem('jsql4synchronized');
+            localStorage.removeItem('jsql4sats-s');
 
             var dm = new App.DatabaseManager();
             var dbs;
@@ -244,8 +233,7 @@ var tc = new TestCase('App.DatabaseManager', {
             localStorage.removeItem('jsql4synchronized');
             localStorage.removeItem('jsql4files');
             localStorage.removeItem('jsql4files-d');
-            localStorage.removeItem('jsql4files-2');
-            localStorage.removeItem('jsql4synchronized');
+            localStorage.removeItem('jsql4sats-s');
 
             var dm = new App.DatabaseManager();
             var dbs;
@@ -279,8 +267,7 @@ var tc = new TestCase('App.DatabaseManager', {
                 localStorage.removeItem('jsql4synchronized');
                 localStorage.removeItem('jsql4files');
                 localStorage.removeItem('jsql4files-d');
-                localStorage.removeItem('jsql4files-2');
-                localStorage.removeItem('jsql4synchronized');
+                localStorage.removeItem('jsql4sats-s');
 
                 var dm  = new App.DatabaseManager();
 
@@ -294,8 +281,7 @@ var tc = new TestCase('App.DatabaseManager', {
             localStorage.removeItem('jsql4synchronized');
             localStorage.removeItem('jsql4files');
             localStorage.removeItem('jsql4files-d');
-            localStorage.removeItem('jsql4files-2');
-            localStorage.removeItem('jsql4synchronized');
+            localStorage.removeItem('jsql4sats-s');
 
             var dm  = new App.DatabaseManager();
             var packedName = 'facebook-p';
@@ -320,8 +306,7 @@ var tc = new TestCase('App.DatabaseManager', {
             localStorage.removeItem('jsql4synchronized');
             localStorage.removeItem('jsql4files');
             localStorage.removeItem('jsql4files-d');
-            localStorage.removeItem('jsql4files-2');
-            localStorage.removeItem('jsql4synchronized');
+            localStorage.removeItem('jsql4sats-s');
 
             var dm  = new App.DatabaseManager();
             var dbs;
@@ -345,8 +330,7 @@ var tc = new TestCase('App.DatabaseManager', {
                 localStorage.removeItem('jsql4synchronized');
                 localStorage.removeItem('jsql4files');
                 localStorage.removeItem('jsql4files-d');
-                localStorage.removeItem('jsql4files-2');
-                localStorage.removeItem('jsql4synchronized');
+                localStorage.removeItem('jsql4sats-s');
 
                 var dm  = new App.DatabaseManager();
 
@@ -360,8 +344,7 @@ var tc = new TestCase('App.DatabaseManager', {
             localStorage.removeItem('jsql4synchronized');
             localStorage.removeItem('jsql4files');
             localStorage.removeItem('jsql4files-d');
-            localStorage.removeItem('jsql4files-2');
-            localStorage.removeItem('jsql4synchronized');
+            localStorage.removeItem('jsql4sats-s');
 
             var dm  = new App.DatabaseManager();
             var dbs;
@@ -389,8 +372,7 @@ var tc = new TestCase('App.DatabaseManager', {
             localStorage.removeItem('jsql4synchronized');
             localStorage.removeItem('jsql4files');
             localStorage.removeItem('jsql4files-d');
-            localStorage.removeItem('jsql4files-2');
-            localStorage.removeItem('jsql4synchronized');
+            localStorage.removeItem('jsql4sats-s');
 
             var dm  = new App.DatabaseManager();
             var dbs;
@@ -404,8 +386,7 @@ var tc = new TestCase('App.DatabaseManager', {
             localStorage.removeItem('jsql4synchronized');
             localStorage.removeItem('jsql4files');
             localStorage.removeItem('jsql4files-d');
-            localStorage.removeItem('jsql4files-2');
-            localStorage.removeItem('jsql4synchronized');
+            localStorage.removeItem('jsql4sats-s');
 
             var dm  = new App.DatabaseManager();
             var dbs;
@@ -428,8 +409,7 @@ var tc = new TestCase('App.DatabaseManager', {
                 localStorage.removeItem('jsql4synchronized');
                 localStorage.removeItem('jsql4files');
                 localStorage.removeItem('jsql4files-d');
-                localStorage.removeItem('jsql4files-2');
-                localStorage.removeItem('jsql4synchronized');
+                localStorage.removeItem('jsql4sats-s');
 
                 var dm  = new App.DatabaseManager();
 
@@ -448,8 +428,7 @@ var tc = new TestCase('App.DatabaseManager', {
                 localStorage.removeItem('jsql4synchronized');
                 localStorage.removeItem('jsql4files');
                 localStorage.removeItem('jsql4files-d');
-                localStorage.removeItem('jsql4files-2');
-                localStorage.removeItem('jsql4synchronized');
+                localStorage.removeItem('jsql4sats-s');
 
                 var dm  = new App.DatabaseManager();
 
@@ -463,8 +442,7 @@ var tc = new TestCase('App.DatabaseManager', {
             localStorage.removeItem('jsql4synchronized');
             localStorage.removeItem('jsql4files');
             localStorage.removeItem('jsql4files-d');
-            localStorage.removeItem('jsql4files-2');
-            localStorage.removeItem('jsql4synchronized');
+            localStorage.removeItem('jsql4sats-s');
 
             var dm = new App.DatabaseManager();
 
@@ -475,8 +453,7 @@ var tc = new TestCase('App.DatabaseManager', {
             localStorage.removeItem('jsql4synchronized');
             localStorage.removeItem('jsql4files');
             localStorage.removeItem('jsql4files-d');
-            localStorage.removeItem('jsql4files-2');
-            localStorage.removeItem('jsql4synchronized');
+            localStorage.removeItem('jsql4sats-s');
 
             var dm = new App.DatabaseManager();
             var dbs;
@@ -500,8 +477,7 @@ var tc = new TestCase('App.DatabaseManager', {
                 localStorage.removeItem('jsql4synchronized');
                 localStorage.removeItem('jsql4files');
                 localStorage.removeItem('jsql4files-d');
-                localStorage.removeItem('jsql4files-2');
-                localStorage.removeItem('jsql4synchronized');
+                localStorage.removeItem('jsql4sats-s');
 
                 var dm  = new App.DatabaseManager();
 
@@ -515,8 +491,7 @@ var tc = new TestCase('App.DatabaseManager', {
             localStorage.removeItem('jsql4synchronized');
             localStorage.removeItem('jsql4files');
             localStorage.removeItem('jsql4files-d');
-            localStorage.removeItem('jsql4files-2');
-            localStorage.removeItem('jsql4synchronized');
+            localStorage.removeItem('jsql4sats-s');
 
             var dm = new App.DatabaseManager();
             var dbs;
@@ -536,8 +511,7 @@ var tc = new TestCase('App.DatabaseManager', {
             localStorage.removeItem('jsql4synchronized');
             localStorage.removeItem('jsql4files');
             localStorage.removeItem('jsql4files-d');
-            localStorage.removeItem('jsql4files-2');
-            localStorage.removeItem('jsql4synchronized');
+            localStorage.removeItem('jsql4sats-s');
 
             var dm  = new App.DatabaseManager();
             var dbs;

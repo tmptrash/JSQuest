@@ -15,7 +15,7 @@ TestCase('App.Fs', {
                 new App.Fs(arg);
             }
         });
-        assertException('Construct App.Fs with wrong configuration - no parameters', function() {
+        assertNoException('Construct App.Fs with wrong configuration - no parameters', function() {
             new App.Fs();
         });
         assertNoException('Construct App.Fs with empty file system', function() {
@@ -181,7 +181,7 @@ TestCase('App.Fs', {
         assertNoException('Delete normal file', function() {
             var fs = App.test.createSimpleFs();
             fs.fs.deleteFile(fs.data.folder, 'file');
-            assertTrue('Delete normal file', fs.data.folder.file === udef);
+            assertTrue('Delete normal file', fs.data.folder.file === undefined);
         });
     },
 
@@ -385,8 +385,8 @@ TestCase('App.Fs', {
         var fs = new App.Fs({f1: {f2: {}}});
 
         assertTrue('Get root folder', Lib.Helper.isObject(fs.getRootFolder()));
-        assertTrue('Get root folder', fs.getRootFolder().f1 !== udef && Lib.Helper.isObject(fs.getRootFolder().f1));
-        assertTrue('Get root folder', fs.getRootFolder().f1.f2 !== udef && Lib.Helper.isObject(fs.getRootFolder().f1.f2));
+        assertTrue('Get root folder', fs.getRootFolder().f1 !== undefined && Lib.Helper.isObject(fs.getRootFolder().f1));
+        assertTrue('Get root folder', fs.getRootFolder().f1.f2 !== undefined && Lib.Helper.isObject(fs.getRootFolder().f1.f2));
     },
 
     testGetFolder: function () {

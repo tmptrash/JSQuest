@@ -343,7 +343,6 @@ TestCase('App.SatelliteFs', {
             var fs = new App.SatelliteFs();
             var body;
 
-            debugger;
             fs.create('test');
             fs.update('test', 0, 'new');
             body = fs.read('test');

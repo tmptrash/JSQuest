@@ -2,7 +2,7 @@
  * @author DeadbraiN
  * @email deadbrainman@gmail.com
  */
-var tc = new TestCase('App.Terminal', {
+var tc = new TestCase('App.SatelliteTerminal', {
     setUp: function () {
         //
         // Temporary container for the terminal
@@ -19,12 +19,12 @@ var tc = new TestCase('App.Terminal', {
     },
 
     testConstructor: function () {
-        assertNoException('Construct App.Terminal without arguments', function () {
-            var term = new App.Terminal({parent: tc.container});
+        assertNoException('Construct App.SatelliteTerminal without arguments', function () {
+            var term = new App.SatelliteTerminal({parent: tc.container});
         });
 
-        assertNoException('Construct App.Terminal without arguments', function () {
-            var term = new App.Terminal();
+        assertNoException('Construct App.SatelliteTerminal without arguments', function () {
+            var term = new App.SatelliteTerminal();
         });
     },
 
@@ -32,7 +32,7 @@ var tc = new TestCase('App.Terminal', {
         var me = this;
 
         assertNoException('Check left command with incorrect argument', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('left', function (args) {
@@ -43,7 +43,7 @@ var tc = new TestCase('App.Terminal', {
         });
 
         assertNoException('Check left command with incorrect argument', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('left', function (args) {
@@ -54,7 +54,7 @@ var tc = new TestCase('App.Terminal', {
         });
 
         assertNoException('Check left command with incorrect argument', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('left', function (args) {
@@ -65,7 +65,7 @@ var tc = new TestCase('App.Terminal', {
         });
 
         assertNoException('Check left command with incorrect argument', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('left', function (args) {
@@ -76,7 +76,7 @@ var tc = new TestCase('App.Terminal', {
         });
 
         assertNoException('Check left command with incorrect argument', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('left', function (args) {
@@ -87,7 +87,7 @@ var tc = new TestCase('App.Terminal', {
         });
 
         assertNoException('Check left command with correct argument', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('left', function (args) {
@@ -102,7 +102,7 @@ var tc = new TestCase('App.Terminal', {
         var me = this;
 
         assertNoException('Check right command with incorrect argument', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('right', function (args) {
@@ -113,7 +113,7 @@ var tc = new TestCase('App.Terminal', {
         });
 
         assertNoException('Check right command with incorrect argument', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('right', function (args) {
@@ -124,7 +124,7 @@ var tc = new TestCase('App.Terminal', {
         });
 
         assertNoException('Check right command with incorrect argument', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('right', function (args) {
@@ -135,7 +135,7 @@ var tc = new TestCase('App.Terminal', {
         });
 
         assertNoException('Check right command with incorrect argument', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('right', function (args) {
@@ -146,7 +146,7 @@ var tc = new TestCase('App.Terminal', {
         });
 
         assertNoException('Check right command with incorrect argument', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('right', function (args) {
@@ -157,7 +157,7 @@ var tc = new TestCase('App.Terminal', {
         });
 
         assertNoException('Check right command with correct argument', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('right', function (args) {
@@ -172,7 +172,7 @@ var tc = new TestCase('App.Terminal', {
         var me = this;
 
         assertNoException('Check up command with incorrect argument', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('up', function (args) {
@@ -183,7 +183,7 @@ var tc = new TestCase('App.Terminal', {
         });
 
         assertNoException('Check up command with incorrect argument', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('up', function (args) {
@@ -194,7 +194,7 @@ var tc = new TestCase('App.Terminal', {
         });
 
         assertNoException('Check up command with incorrect argument', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('up', function (args) {
@@ -205,7 +205,7 @@ var tc = new TestCase('App.Terminal', {
         });
 
         assertNoException('Check up command with incorrect argument', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('up', function (args) {
@@ -216,7 +216,7 @@ var tc = new TestCase('App.Terminal', {
         });
 
         assertNoException('Check up command with incorrect argument', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('up', function (args) {
@@ -227,7 +227,7 @@ var tc = new TestCase('App.Terminal', {
         });
 
         assertNoException('Check up command with correct argument', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('up', function (args) {
@@ -242,7 +242,7 @@ var tc = new TestCase('App.Terminal', {
         var me = this;
 
         assertNoException('Check down command with incorrect argument', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('down', function (args) {
@@ -253,7 +253,7 @@ var tc = new TestCase('App.Terminal', {
         });
 
         assertNoException('Check down command with incorrect argument', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('down', function (args) {
@@ -264,7 +264,7 @@ var tc = new TestCase('App.Terminal', {
         });
 
         assertNoException('Check down command with incorrect argument', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('down', function (args) {
@@ -275,7 +275,7 @@ var tc = new TestCase('App.Terminal', {
         });
 
         assertNoException('Check down command with incorrect argument', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('down', function (args) {
@@ -286,7 +286,7 @@ var tc = new TestCase('App.Terminal', {
         });
 
         assertNoException('Check down command with incorrect argument', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('down', function (args) {
@@ -297,7 +297,7 @@ var tc = new TestCase('App.Terminal', {
         });
 
         assertNoException('Check down command with correct argument', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('down', function (args) {
@@ -312,7 +312,7 @@ var tc = new TestCase('App.Terminal', {
         var me = this;
 
         assertNoException('Check connect command with incorrect argument', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('connect', function (args) {
@@ -323,7 +323,7 @@ var tc = new TestCase('App.Terminal', {
         });
 
         assertNoException('Check connect command with correct arguments', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('connect', function (args) {
@@ -338,7 +338,7 @@ var tc = new TestCase('App.Terminal', {
         var me = this;
 
         assertNoException('Check disconnect command with incorrect argument', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('disconnect', function (args) {
@@ -349,7 +349,7 @@ var tc = new TestCase('App.Terminal', {
         });
 
         assertNoException('Check disconnect command with correct arguments', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('disconnect', function (args) {
@@ -364,7 +364,7 @@ var tc = new TestCase('App.Terminal', {
         var me = this;
 
         assertNoException('Check list command with extra arguments', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('list', function (args) {
@@ -375,7 +375,7 @@ var tc = new TestCase('App.Terminal', {
         });
 
         assertNoException('Check list command without arguments', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('list', function (args) {
@@ -390,7 +390,7 @@ var tc = new TestCase('App.Terminal', {
         var me = this;
 
         assertNoException('Check remove command with incorrect arguments', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('remove', function (args) {
@@ -401,7 +401,7 @@ var tc = new TestCase('App.Terminal', {
         });
 
         assertNoException('Check remove command with correct arguments', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('remove', function (args) {
@@ -416,7 +416,7 @@ var tc = new TestCase('App.Terminal', {
         var me = this;
 
         assertNoException('Check sync command without arguments', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('sync', function (args) {
@@ -427,7 +427,7 @@ var tc = new TestCase('App.Terminal', {
         });
 
         assertNoException('Check sync command with correct arguments', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('sync', function (args) {
@@ -442,7 +442,7 @@ var tc = new TestCase('App.Terminal', {
         var me = this;
 
         assertNoException('Check pack command with incorrect arguments', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('pack', function (args) {
@@ -453,7 +453,7 @@ var tc = new TestCase('App.Terminal', {
         });
 
         assertNoException('Check pack command with correct arguments', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('pack', function (args) {
@@ -468,7 +468,7 @@ var tc = new TestCase('App.Terminal', {
         var me = this;
 
         assertNoException('Check unpack command with incorrect arguments', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('unpack', function (args) {
@@ -479,7 +479,7 @@ var tc = new TestCase('App.Terminal', {
         });
 
         assertNoException('Check unpack command with correct arguments', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('unpack', function (args) {
@@ -494,7 +494,7 @@ var tc = new TestCase('App.Terminal', {
         var me = this;
 
         assertNoException('Check encrypt command without arguments', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('encrypt', function (args) {
@@ -505,7 +505,7 @@ var tc = new TestCase('App.Terminal', {
         });
 
         assertNoException('Check encrypt command with invalid arguments', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('encrypt', function (args) {
@@ -516,7 +516,7 @@ var tc = new TestCase('App.Terminal', {
         });
 
         assertNoException('Check encrypt command with correct arguments', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('encrypt', function (args) {
@@ -531,7 +531,7 @@ var tc = new TestCase('App.Terminal', {
         var me = this;
 
         assertNoException('Check decrypt command without arguments', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('decrypt', function (args) {
@@ -542,7 +542,7 @@ var tc = new TestCase('App.Terminal', {
         });
 
         assertNoException('Check decrypt command with invalid arguments', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('decrypt', function (args) {
@@ -553,7 +553,7 @@ var tc = new TestCase('App.Terminal', {
         });
 
         assertNoException('Check decrypt command with correct arguments', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('decrypt', function (args) {
@@ -568,7 +568,7 @@ var tc = new TestCase('App.Terminal', {
         var me = this;
 
         assertNoException('Check info command with extra arguments', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('info', function (args) {
@@ -579,7 +579,7 @@ var tc = new TestCase('App.Terminal', {
         });
 
         assertNoException('Check info command without arguments', function () {
-            var term = new App.Terminal({parent: tc.container});
+            var term = new App.SatelliteTerminal({parent: tc.container});
             var ok   = false;
 
             term.on('info', function (args) {
@@ -592,7 +592,7 @@ var tc = new TestCase('App.Terminal', {
 
     /**
      * Run command string in terminal. It emulates user input.
-     * @param {App.Terminal} term
+     * @param {App.SatelliteTerminal} term
      * @param {String} cmd
      * @private
      */

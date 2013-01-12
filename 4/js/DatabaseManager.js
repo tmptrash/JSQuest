@@ -228,7 +228,7 @@ App.DatabaseManager = speculoos.Class({
         for (i = 0, len = args.length; i < len; i++) {
             remoteFiles = remoteDb[args[i]];
             if (remoteFiles === undefined) {
-                this._terminal.WriteLine(_('Satellite "{0}" doesn\'t exist.', args[i]));
+                this.fire('log', _('Satellite "{0}" doesn\'t exist.', args[i]));
             }
             for (db in remoteFiles) {
                 if (remoteFiles.hasOwnProperty(db)) {
