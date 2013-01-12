@@ -155,7 +155,7 @@ App.Terminal = speculoos.Class({
      */
     _onRfCmd: function (args) {
         this.checkArguments(1, 'rf');
-        this.console.WriteLine(this._fs.remove(args[1]));
+        this._fs.remove(args[1]);
     },
 
     /**
@@ -165,7 +165,7 @@ App.Terminal = speculoos.Class({
      */
     _onUfCmd: function (args) {
         this.checkArguments(3, 'uf');
-        this._fs.updateFile(args[1], parseInt(args[2], 10), this.prepareString(args[3]));
+        this._fs.update(args[1], parseInt(args[2], 10), this.prepareString(args[3]));
     },
 
     /**
@@ -183,7 +183,7 @@ App.Terminal = speculoos.Class({
             //
             // Initialize Console library for new user
             //
-            this.console.init(this.textAreaId, user, this.host, this.commands, true);
+            this.console.init(this.textAreaId, user, this.host, this.bindCommands(), true);
         } else {
             this.console.WriteLine(_('Invalid login or password'));
         }
@@ -243,8 +243,8 @@ App.Terminal = speculoos.Class({
     _onInfoCmd: function () {
         this.console.WriteLine(
             _('[ Description ]\n') +
-            _('Welcome to the remote terminal application. This software works in similar way as FTP protocol. ') +
-            _('It connects to the remote orbital satellite using special remote procedure call API. Every terminal works within ') +
+            _('Welcome to the NASA terminal application. It uses for managing remote file system, located on the satellite. ') +
+            _('Every terminal works within ') +
             _('it\'s session. The session clears every time when user reboots the terminal. It means, that file system and ') +
             _('command\'s history will be also reset.\n\n') +
             _('[ Permissions ]\n') +

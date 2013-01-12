@@ -19,11 +19,11 @@
  * application binary and returns it's stdout string. We should call this function with second argument in true to obtain
  * stdout/stderr object.
  */
-var exec = require('exec-sync');
+var exec   = require('exec-sync');
 /**
  * {Function} Shortcut for translation function
  */
-var _    = require('./../../lib/js/Language.js').Language._;
+var _      = require('./../../lib/js/Language.js').Language._;
 
 
 /**
