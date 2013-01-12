@@ -214,6 +214,7 @@ App.Terminal = speculoos.Class({
      * @private
      */
     _onRebootCmd: function () {
+        var me      = this;
         var seconds = 5;
         var tick    = seconds;
         var timeout = 1000;
@@ -222,9 +223,9 @@ App.Terminal = speculoos.Class({
             if (tick > 0) {
                 setTimeout(interval, timeout);
                 if (tick === seconds) {
-                    this.console.Write('Rebooting');
+                    me.console.Write('Rebooting');
                 } else {
-                    this.console.Write('.');
+                    me.console.Write('.');
                 }
                 tick--;
             } else {

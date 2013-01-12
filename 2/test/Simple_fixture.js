@@ -4,7 +4,7 @@
  * @email deadbrainman@gmail.com
  */
 var assert      = require("assert");
-var Simple      = require("./Simple").Simple;
+var Simple      = require("./../js/Simple.js").Simple;
 var NUnitHelper = require("./Helper").NUnitHelper;
 var Helper      = require("./../../lib/js/Helper.js").Helper;
 
@@ -42,7 +42,7 @@ exports.testRun = function (test) {
             commands     : {}
         });
 
-        NUnitHelper.callWithAllTypes('Check rin() method', function (arg) {
+        NUnitHelper.callWithAllTypes('Check run() method', function (arg) {
             if (Lib.Helper.isString(arg)) {
                 throw new Error('String');
             }
@@ -56,7 +56,7 @@ exports.testRun = function (test) {
             commands     : {}
         });
 
-        s.run('../2/scripts/empty.alan123');
+        s.run('./JSQuest/2/test/scripts/empty.alan123');
     }, undefined, 'Check wrong fileExtension config property');
 
     assert.doesNotThrow(function () {
@@ -65,7 +65,7 @@ exports.testRun = function (test) {
             commands     : {}
         });
 
-        s.run('../2/test/scripts/Simple/empty.alan');
+        s.run('./JSQuest/2/test/scripts/Simple/empty.alan');
         assert.strictEqual(s.source.length, 1, 'Check empty script');
         assert.strictEqual(s.source[0], '', 'Check empty script');
     }, undefined, 'Check fileExtension config property');
@@ -116,7 +116,7 @@ exports.testRun = function (test) {
         });
 
         s.run('#\n:l\n#\n\n');
-        s.run('../2/test/scripts/Simple/runTest.simple');
+        s.run('./JSQuest/2/test/scripts/Simple/runTest.simple');
         s.run('');
         s.run('#');
         s.run(':l');
@@ -188,7 +188,7 @@ exports.testScripts = function (test) {
         });
 
         assert.doesNotThrow(function () {
-            s.run('../2/test/scripts/Simple/comments.simple');
+            s.run('./JSQuest/2/test/scripts/Simple/comments.simple');
             assert.strictEqual(s.source.length, 13, 'Checks parsed script length');
             for (var i = 0; i < 13; i++) {
                 assert.strictEqual(s.source[i], '', 'check empty line after parsing');
@@ -196,7 +196,7 @@ exports.testScripts = function (test) {
         }, undefined, 'Check comments');
 
         assert.doesNotThrow(function () {
-            s.run('../2/test/scripts/Simple/labels.simple');
+            s.run('./JSQuest/2/test/scripts/Simple/labels.simple');
             assert.strictEqual(s.source.length, 9, 'Checks parsed script length');
             assert.strictEqual(s.hasLabel('simple'), true, 'Checks label');
             assert.strictEqual(s.hasLabel('space'), true, 'Checks label');

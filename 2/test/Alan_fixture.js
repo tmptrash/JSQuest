@@ -4,14 +4,14 @@
  * @email deadbrainman@gmail.com
  */
 var assert      = require("assert");
-var Simple      = require("./Alan").Alan;
+var Simple      = require("./../js/Alan.js").Alan;
 var NUnitHelper = require("./Helper").NUnitHelper;
 var Helper      = require("./../../lib/js/Helper.js").Helper;
 var fs          = require("fs");
 
 
 exports.testScripts = function (test) {
-    var path = './../2/test/scripts/Alan/';
+    var path = './JSQuest/2/test/scripts/Alan/';
 
     NUnitHelper.runScript(path + 'set.alan', false, {v1: 0, v2: 'str', v4: 12, v5: 'qwerty', n1: 2});
     NUnitHelper.runScript(path + 'set-empty-arr.alan', true);
