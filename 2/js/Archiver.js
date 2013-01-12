@@ -14,9 +14,9 @@
 /**
  * Require section
  */
+var fs     = require('fs');
 var Helper = require('./../../lib/js/Helper.js').Helper;
 var _      = require('./../../lib/js/Language.js').Language._;
-var fs     = require('fs');
 
 /**
  * @const
@@ -28,7 +28,7 @@ var FILE_CHARSET  = 'utf-8';
  * {Number} The index of last alphabetical character in character map. We will add this
  * value to the index of keywords from keywords variable.
  */
-var KEYWORD_LIMIT = 126;
+var KEYWORD_LIMIT = 127;
 /**
  * @const
  * {Number} Start key for xor encryption. It uses as first xor argument during xor operation. e.g.
@@ -39,10 +39,10 @@ var KEYWORD_LIMIT = 126;
 var START_KEY     = 119;
 /**
  * {Array} Map of keywords, which will be replaced in script file by it's index + limit. For example 'case' will be replaced by
- * character with code 1 + 126 === '\u007F'.
+ * character with code 1 + 127 === '\u007F'.
  * It will be used in RegExps, so it should be in special format. e.g.: '++' should be written as '\\+\\+'
  */
-var KEYWORDS      = ['break', 'case ', 'continue', 'default', 'delete ', 'do', 'else', 'for', 'function', 'if', ' in ', 'new ', 'return', 'switch', 'this.', 'this', 'typeof ', 'typeof', 'var ', 'while', 'with', 'false', 'true', 'instanceOf ', 'null', 'true', 'undefined', 'hasOwnProperty', 'Object', 'Boolean', 'Number', 'Function', 'alert', 'arguments', 'Array', 'callee', 'caller', 'clearInterval', 'clearTimeout', 'confirm', 'constructor', 'Date', 'document', 'eval', 'Infinity', 'isFinite', 'isNan', 'length', 'Math', 'NaN', 'parseFloat', 'parseInt', 'prompt', 'prototype', 'RegExp', 'setInterval', 'setTimeout', 'toString', 'valueOf', 'window', 'parent', 'super', 'call', 'apply', 'try', 'catch', 'throw', 'isString', 'isObject', 'isFunction', 'isArray', 'isNumber', 'isBoolean', 'trim', 'exec', 'test', 'file', 'folder', 'get', 'set', 'can', 'Class', 'split', 'join', 'srcData', 'slice', 'splice', '===', '!==', '==', '!=', '\\[\\]', '\\{\\}', '\\|\\|', '\\&\\&', 'is', '\\"\\"', '\\(\\)', '\\+\\+', '--', 'String', 'push', 'replace'];
+var KEYWORDS      = ['break', 'case', 'continue', 'default', 'delete ', 'do', 'else', 'for', 'function', 'if', ' in ', 'new', 'return', 'switch', 'this', 'typeof', 'while', 'with', 'false', 'true', 'instanceOf', 'null', 'true', 'undefined', 'hasOwnProperty', 'Object', 'Boolean', 'Number', 'Function', 'alert', 'arguments', 'Array', 'callee', 'caller', 'clearInterval', 'clearTimeout', 'confirm', 'constructor', 'Date', 'document', 'eval', 'Infinity', 'isFinite', 'isNan', 'length', 'Math', 'NaN', 'parseFloat', 'parseInt', 'prompt', 'prototype', 'RegExp', 'setInterval', 'setTimeout', 'toString', 'valueOf', 'window', 'parent', 'super', 'call', 'apply', 'try', 'catch', 'throw', 'isString', 'isObject', 'isFunction', 'isArray', 'isNumber', 'isBoolean', 'trim', 'exec', 'test', 'file', 'folder', 'get', 'set', 'can', 'Class', 'split', 'join', 'srcData', 'slice', 'splice', '===', '!==', '==', '!=', '--', 'String', 'push', 'replace'];
 
 
 /**

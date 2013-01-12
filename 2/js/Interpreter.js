@@ -14,8 +14,8 @@
  */
 var Alan   = require('./Alan.js').Alan;
 var Helper = require('./../../lib/js/Helper.js').Helper;
+var _      = require('./../../lib/js/Language.js').Language._;
 var fs     = require('fs');
-var _      = require('./../../lib/js/Language.js')._;
 
 var RETURN_OK  = 0;
 var RETURN_ERR = 1;
