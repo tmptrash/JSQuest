@@ -206,7 +206,7 @@ App.SatelliteFs = speculoos.Class({
                             '2.1 1.6 7.4 4.4 2.5 6.4 3.8',
                         perm : _('Permission file. It contains permissions for all files within current folder.') + '\nFILE    USER1   USER2   PERM1   PERM2   \nperm    jack    guest   111     000     \n01      jack    guest   111     101     \n02      jack    guest   111     101     '
                     },
-                    users: _('This file contains information about users and it\'s password hashes.') + '\nUSER    MD5                             \njack    ad23e6cd35a85ecb451dd956946601e2\nguest   084e0343a0486ff05530df6c705c8bb4',
+                    users: _('This file contains information about users and it\'s password hashes.') + '\nUSER    MD5                             \njack    b34e7acf7bae9b7526982baed3cbe564\nguest   084e0343a0486ff05530df6c705c8bb4',
                     perm : _('Permission file. It contains permissions for all files within current folder.') + '\nFILE    USER1   USER2   PERM1   PERM2   \nperm    jack    guest   111     001     \nusers   jack    guest   111     000     '
                 },
                 sbin : {
