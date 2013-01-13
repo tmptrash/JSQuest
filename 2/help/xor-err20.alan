@@ -1,0 +1,4 @@
+set v1, 10
+set v2, ['12']
+set v3, ''
+xor v1, v2, v3

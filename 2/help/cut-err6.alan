@@ -1,0 +1,4 @@
+set i1, 2
+set d1, ''
+
+cut i1, d1

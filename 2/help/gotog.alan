@@ -1,0 +1,7 @@
+set a, 1
+set b, 0
+
+gotog a, b, test
+set a, 2
+:test
+set b, 3

@@ -1,0 +1,9 @@
+set v1, 'qwerty'
+set v2, ['q', 'w']
+set d1, ''
+set d2, ''
+set i1, 0
+set i2, 0
+
+cut v1, i1, d1
+cut v2, i2, d2

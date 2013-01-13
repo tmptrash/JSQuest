@@ -1,0 +1,4 @@
+set v1, 65
+set v2, ''
+
+char v1, v2

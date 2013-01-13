@@ -1,0 +1,4 @@
+set d1, ''
+set i1, 2
+
+cut undefined, i1, d1

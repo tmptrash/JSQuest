@@ -1,0 +1,7 @@
+set s, 'Abc'
+set l1, 0
+set a, ['1', '2', '3']
+set l2, 0
+
+len s, l1
+len a, l2

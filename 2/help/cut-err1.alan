@@ -1,0 +1,4 @@
+set v1, 'qwerty'
+set d1, ''
+set i1, 6
+cut v1, i1, d1

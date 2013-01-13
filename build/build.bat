@@ -7,5 +7,5 @@ rm -f term.css
 rm -f term.js
 node ..\2\js\Archiver.js term.html ..\build\data.bin
 rm -f term.html
-7z a -mx0 -mhe n. data.bin -pN83
+7z a -mx0 -mhe n12. data.bin -pN83
 rm -f data.bin

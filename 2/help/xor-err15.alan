@@ -1,0 +1,5 @@
+set v1, 123
+set v2, 223
+set v3, 0
+
+xor v,
