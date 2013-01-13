@@ -1,5 +1,3 @@
 - Fix all warnings
 - http://www.freedomscripts.org/js-invis.html
 - Add description for all levels
-- Remove all comments from unpacker.alan
-- Create tests, which help user create interpreter
