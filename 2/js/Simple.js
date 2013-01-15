@@ -227,6 +227,7 @@ var Simple = speculoos.Class({
          * If it is a file, load it from file system
          */
         if (script.substr(script.length - extLen) === ext) {
+            /*jslint stupid: true */
             this.source = fs.readFileSync(script, this._charSet);
         } else {
             this.source = script;

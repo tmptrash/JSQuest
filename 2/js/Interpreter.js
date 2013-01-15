@@ -29,6 +29,7 @@ if (!Helper.isString(scriptFile)) {
     console.log(_('Invalid script file: {0}', scriptFile));
     process.exit(RETURN_ERR);
 }
+/*jslint stupid: true */
 if (!fs.existsSync(scriptFile)) {
     console.log(_('Script file doesn\'t exists: {0}', scriptFile));
     process.exit(RETURN_ERR);

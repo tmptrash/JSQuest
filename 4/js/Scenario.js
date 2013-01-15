@@ -166,7 +166,9 @@ App.Scenario = speculoos.Class({
      */
     _onFinishQuest: function () {
         // TODO:
-        alert('The quest has finished!!!');
+        // TODO:
+        // TODO:
+        window.alert('The quest has finished!!!');
     },
 
     /**

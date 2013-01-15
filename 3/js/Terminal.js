@@ -241,16 +241,15 @@ App.Terminal = speculoos.Class({
      * @private
      */
     _onInfoCmd: function () {
-        this.console.WriteLine(
-            _('[ Description ]\n') +
-            _('Welcome to the NASA terminal application. It uses for managing remote file system, located on the satellite. ') +
-            _('Every terminal works within ') +
-            _('it\'s session. The session clears every time when user reboots the terminal. It means, that file system and ') +
-            _('command\'s history will be also reset.\n\n') +
-            _('[ Permissions ]\n') +
-            _('Remote server has special permissions logic. Every folder contains permission file called - perm. It contains a list ') +
-            _('of all files within current folder with it\'s permissions. Every record of this file is equal to 8 bytes. Also, first two ') +
-            _('header lines of this file are similar to other permission files.')
-        );
+        this.console.WriteLine(_('[ Description ]\n') +
+                _('Welcome to the NASA terminal application. It uses for managing remote file system, located on the satellite. ') +
+                _('Every terminal works within ') +
+                _('it\'s session. The session clears every time when user reboots the terminal. It means, that file system and ') +
+                _('command\'s history will be also reset.\n\n') +
+                _('[ Permissions ]\n') +
+                _('Remote server has special permissions logic. Every folder contains permission file called - perm. It contains a list ') +
+                _('of all files within current folder with it\'s permissions. Every record of this file is equal to 8 bytes. Also, first two ') +
+                _('header lines of this file are similar to other permission files.')
+            );
     }
 });

@@ -165,6 +165,7 @@ var Alan = speculoos.Class({
 
         file = this.getVar(file);
 
+        /*jslint stupid: true */
         if (!fs.existsSync(file)) {
             throw new Error(_('File "{0}" doesn\'t exist.', file));
         }
@@ -197,6 +198,7 @@ var Alan = speculoos.Class({
         if (!Helper.isString(data)) {
             throw new Error(_('Only string data supported in write command. Error at line: "{0}"', scriptLine));
         }
+        /*jslint stupid: true */
         fs.writeFileSync(file, data, this._FILES_CHARSET);
 
         return ++line;

@@ -51,6 +51,7 @@ var KEYWORDS      = ['break', 'case', 'continue', 'default', 'delete ', 'do', 'e
  * @return {String} Packed string
  */
 function pack(file) {
+    /*jslint stupid: true */
     var data = fs.readFileSync(file, FILE_CHARSET);
     var i;
     var len;
@@ -100,6 +101,7 @@ function main(argv) {
 
     srcData = pack(srcFile);
     dstData = encrypt(srcData);
+    /*jslint stupid: true */
     fs.writeFileSync(dstFile, dstData, FILE_CHARSET);
 
     return 0;

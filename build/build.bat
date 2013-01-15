@@ -1,4 +1,12 @@
 rem
+rem This is JSQuest build script. It assembles all css and js files in one html file
+rem encodes(Compressor.js) it and compress (7zip).
+rem
+rem @author DeadbraiN
+rem @email deadbrainman@gmail.com
+rem
+
+rem
 rem Assemble all css style files in one and compress it with YUICompressor
 rem
 copy /b ..\lib\css\style.css+..\lib\css\terminal.css+..\3\css\terminal.css+..\4\css\terminal.css term-in.css
@@ -11,7 +19,7 @@ rem
 java -jar compiler.jar --compilation_level=SIMPLE_OPTIMIZATIONS --js=../lib/js/external/console-min.js --js=../lib/js/external/speculoos.js --js=../lib/js/Core.js --js=../lib/js/external/Helper.js --js=../lib/js/external/jsonp.js --js=../4/js/libs/three.js --js=../4/js/libs/shaders/CopyShader.js --js=../4/js/libs/shaders/FilmShader.js --js=../4/js/libs/postprocessing/EffectComposer.js --js=../4/js/libs/postprocessing/ShaderPass.js --js=../4/js/libs/postprocessing/MaskPass.js --js=../4/js/libs/postprocessing/RenderPass.js --js=../4/js/libs/postprocessing/FilmPass.js --js=../4/js/libs/Detector.js --js=../lib/js/Helper.js --js=../lib/js/Language.js --js=../lib/js/Class.js --js=../lib/js/Observer.js --js=../lib/js/Terminal.js --js=../lib/js/PlaylistAudioPlayer.js --js=../lib/js/RemotePlaylistAudioPlayer.js --js=../lib/js/FullScreenLoader.js --js=../lib/js/FullScreenView.js --js=../cfg/Config.js --js=../3/js/Core.js --js=../3/js/Fs.js --js=../3/js/SatelliteFs.js --js=../3/js/Terminal.js --js=../4/js/WebGlContainer.js --js=../4/js/Universe.js --js=../4/js/SatelliteTerminal.js --js=../4/js/DatabaseManager.js --js=../4/js/Scenario.js --js=../3/js/app.js --js_output_file=term.js
 
 rem
-rem Encode js content to prevent cheeting. See http://utf-8.jp/public/aaencode.html for details
+rem Encode js content to prevent cheating. See http://utf-8.jp/public/aaencode.html for details
 rem
 node Compressor.js term.js term-encoded.js
 
@@ -37,6 +45,9 @@ rem     }
 rem 
 rem     return result.substr(0, result.length - 1);
 rem }
+rem //
+rem // Because of eval(), we should create global variable window and call mail() menually
+rem //
 rem eval('window = this;' + decode(document.getElementById('script').innerText)+';main();');
 rem 
 copy /b index-1.html+term.css+index-2.html+term-encoded.js+index-21.html+index-22.html+index-3.html term.html

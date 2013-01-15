@@ -129,14 +129,15 @@ App.SatelliteFs = speculoos.Class({
      * @const
      * {RegExp} Regular expression for parsing users file data
      * @private
+     *
      */
-    _USERS_REC_RE     : /([^]{8})([0-9abcdefABCDEF]{32})\n*/g,
+    _USERS_REC_RE     : /(.{8})([0-9abcdefABCDEF]{32})\n*/g,
     /**
      * @const
      * {RegExp} Regular expression for parsing permission file data
      * @private
      */
-    _PERM_REC_RE      : /([^]{8})([^]{8})([^]{8})([^]{8})([^]{8})\n*/g,
+    _PERM_REC_RE      : /(.{8})(.{8})(.{8})(.{8})(.{8})\n*/g,
 
     /**
      * @constructor
@@ -379,8 +380,7 @@ App.SatelliteFs = speculoos.Class({
             this._activeFolderName = this.getParentName(activeFolder);
             this._activeFolder     = this.getParent(activeFolder);
             this._parsePermissionFile();
-        }
-        else if (activeFolder && Lib.Helper.isObject(activeFolder[folder])) {
+        } else if (activeFolder && Lib.Helper.isObject(activeFolder[folder])) {
             this._activeFolder     = this.getChild(activeFolder, folder);
             this._activeFolderName = folder;
             this._parsePermissionFile();
@@ -623,13 +623,13 @@ App.SatelliteFs = speculoos.Class({
         var pad          = Lib.Helper.pad;
 
         if (this.appendToFile(activeFolder, this._PERM_FILENAME,
-            '\n' +
-            pad(file,           me._PERM_REC_LEN) +
-            pad(me._USER_ROOT,  me._PERM_REC_LEN) +
-            pad(me._USER_GUEST, me._PERM_REC_LEN) +
-            pad('111',          me._PERM_REC_LEN) + // jack always has all permissions
-            pad(me._activeUser === me._USER_GUEST ? '111' : '000', me._PERM_REC_LEN)
-        )) {
+                '\n' +
+                pad(file,           me._PERM_REC_LEN) +
+                pad(me._USER_ROOT,  me._PERM_REC_LEN) +
+                pad(me._USER_GUEST, me._PERM_REC_LEN) +
+                pad('111',          me._PERM_REC_LEN) + // jack always has all permissions
+                pad(me._activeUser === me._USER_GUEST ? '111' : '000', me._PERM_REC_LEN)
+                )) {
             me._parsePermissionFile();
         }
     }
