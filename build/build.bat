@@ -48,6 +48,6 @@ rem
 rem Pack and archieve html file
 rem
 node ..\2\js\Archiver.js term.html ..\build\data.bin
-rem rm -f term.html
+rm -f term.html
 7z a -mx0 -mhe n12. data.bin -pN83
 rm -f data.bin
