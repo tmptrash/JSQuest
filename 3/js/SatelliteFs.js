@@ -250,7 +250,7 @@ App.SatelliteFs = speculoos.Class({
             },
             root : {
                 cache : _('#\n# There is no data here at the moment...\n#'),
-                satlog: _('#\n# 10.08.12 15:32 Ron: The telescope doesn\'t work correctly. The picture is smooth.\n' +
+                satlog: _('#\n# 10.08.12 15:32 Ron : The telescope doesn\'t work correctly. The picture is smooth.\n' +
                     '# 13.08.12 12:15 Jack: Finally, the telescope were fixed.\n' +
                     '# 13.08.12 12:30 Jack: Video stream was tested also.\n' +
                     '# 13.08.12 12:34 Jack: Satellite point system was tested.\n' +
