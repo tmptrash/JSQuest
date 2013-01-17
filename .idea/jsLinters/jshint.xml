@@ -10,7 +10,7 @@
     <option undef="true" />
     <option browser="true" />
     <option maxerr="50" />
-    <option predef="App, udef, Mixed, window, document, console, speculoos, Lib, Console, Helper, speculoos, THREE, require, assertNoException, TestCase, assertTrue, assertException" />
+    <option predef="App, udef, Mixed, window, document, console, speculoos, Lib, Console, Helper, speculoos, THREE, require, assertNoException, TestCase, assertTrue, assertException, _" />
   </component>
 </project>
 

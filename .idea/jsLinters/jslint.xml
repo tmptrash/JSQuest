@@ -6,7 +6,7 @@
     <option maxerr="50" />
     <option nomen="true" />
     <option plusplus="true" />
-    <option predef="App, udef, Mixed, window, document, console, speculoos, Lib, Console, Helper, speculoos, THREE, require, assertNoException, TestCase, assertTrue, assertException" />
+    <option predef="App, udef, Mixed, window, document, console, speculoos, Lib, Console, Helper, speculoos, THREE, require, assertNoException, TestCase, assertTrue, assertException, _" />
     <option regexp="true" />
     <option sloppy="true" />
     <option todo="true" />
