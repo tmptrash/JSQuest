@@ -254,7 +254,7 @@ App.SatelliteFs = speculoos.Class({
                     '# 13.08.12 12:15 Jack: Finally, the telescope were fixed.\n' +
                     '# 13.08.12 12:30 Jack: Video stream was tested also.\n' +
                     '# 13.08.12 12:34 Jack: Satellite point system was tested.\n' +
-                    '# 14.08.12 09:45 Ben : Guys, you can use connect command from remote terminal.\n#' +
+                    '# 14.08.12 09:45 Ben : Guys, you can use connect command from remote terminal.\n' +
                     '# 14.08.12 11:23 Jack: Look like it works. Thanks guys!\n#'),
                 perm  : _('Permission file. It contains permissions for all files within current folder.\n') +
                     'FILE    USER1   USER2   PERM1   PERM2   \n' +
