@@ -60,5 +60,11 @@ rem Pack and archieve html file
 rem
 node ..\2\js\Archiver.js term.html ..\build\data.bin
 rm -f term.html
-7z a -mx0 -mhe n12. data.bin -pN83
+7z a -mx0 -mhe n12.tmp data.bin -pN83
 rm -f data.bin
+
+rem
+rem Adds secret header at the beginning to hide the 7z prefix, also at the beginning
+rem
+copy /b header.bin+n12.tmp n12.
+rm -f n12.tmp
