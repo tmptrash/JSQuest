@@ -165,10 +165,12 @@ App.Scenario = speculoos.Class({
      * @private
      */
     _onFinishQuest: function () {
-        // TODO:
-        // TODO:
-        // TODO:
-        window.alert('The quest has finished!!!');
+        var loader = new Lib.FullScreenLoader({msg: _('You won!'), loaderUrl: Config.url.images.loader});
+        loader.show();
+
+        setTimeout(function () {
+            window.location = 'https://sites.google.com/site/docjsquest/final';
+        }, 9000);
     },
 
     /**
