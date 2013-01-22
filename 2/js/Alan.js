@@ -109,6 +109,7 @@ var Alan = speculoos.Class({
         this._checkVar(v, scriptLine);
 
         console.log(this.getVar(v));
+        //process.stdout.write(this.getVar(v));
         return ++line;
     },
 
@@ -268,7 +269,7 @@ var Alan = speculoos.Class({
         n = this.getVar(n);
 
         if (!Helper.isNumber(n) || n < 0 || n > 255) {
-            throw new Error(_('Invalid source variable value or type at line "{0}"', scriptLine));
+            throw new Error(_('Invalid source variable value or type at line "{0}". Character value: "{1}"', scriptLine, n));
         }
 
         this.setVar(v, String.fromCharCode(n));
