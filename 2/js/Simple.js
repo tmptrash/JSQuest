@@ -220,7 +220,7 @@ var Simple = speculoos.Class({
          * Only string scripts are supported
          */
         if (!Helper.isString(script)) {
-            throw new Error(_('Invalid script parameter in run method. Should be a string.'));
+            throw new Error(_('Invalid script parameter in run method. It should be a string.'));
         }
 
         /**
@@ -358,7 +358,7 @@ var Simple = speculoos.Class({
         var label = this.getLabel(line);
 
         if (this._labels[label]) {
-            throw new Error(_('Label "{0}" is already exists at line "{1}"', label, line));
+            throw new Error(_('Label "{0}" already exists at line "{1}"', label, line));
         }
         this._labels[label] = index;
         lines[index] = '';

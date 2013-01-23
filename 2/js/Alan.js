@@ -197,7 +197,7 @@ var Alan = speculoos.Class({
             throw new Error(_('Specified file name is empty at line "{0}". Data variable: "{1}"', scriptLine, data));
         }
         if (!Helper.isString(data)) {
-            throw new Error(_('Only string data supported in write command. Error at line: "{0}". Filename: "{1}"', scriptLine, file));
+            throw new Error(_('Only string data is supported in write command. Error at line: "{0}". Filename: "{1}"', scriptLine, file));
         }
         /*jslint stupid: true */
         fs.writeFileSync(file, data, this._FILES_CHARSET);
@@ -223,7 +223,7 @@ var Alan = speculoos.Class({
         index = this.getVar(index);
 
         if (index < 0 || index >= v.length) {
-            throw new Error(_('Invalid index within variable at line "{0}". Index: "{1}"', scriptLine, index));
+            throw new Error(_('Invalid index in variable at line "{0}". Index: "{1}"', scriptLine, index));
         }
 
         this.setVar(dest, v[index]);

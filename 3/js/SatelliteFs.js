@@ -220,7 +220,7 @@ App.SatelliteFs = speculoos.Class({
                             '01      jack    guest   111     101     \n' +
                             '02      jack    guest   111     101     '
                     },
-                    users: _('This file contains information about users and it\'s password hashes.') + '\nUSER    MD5                             \njack    b34e7acf7bae9b7526982baed3cbe564\nguest   084e0343a0486ff05530df6c705c8bb4',
+                    users: _('This file contains information about users and their password hashes.') + '\nUSER    MD5                             \njack    b34e7acf7bae9b7526982baed3cbe564\nguest   084e0343a0486ff05530df6c705c8bb4',
                     perm : _('Permission file. It contains permissions for all files within current folder.') + '\nFILE    USER1   USER2   PERM1   PERM2   \nperm    jack    guest   111     001     \nusers   jack    guest   111     000     '
                 },
                 lib  : {
@@ -342,7 +342,7 @@ App.SatelliteFs = speculoos.Class({
         data         = re.exec(usersContent);
         while (data) {
             if (!Lib.Helper.isArray(data) || data.length !== this._USERS_REC_LEN) {
-                throw new Error(_('Invalid format of users file'));
+                throw new Error(_('Invalid format of users\' file'));
             }
             data.shift();
 
@@ -394,7 +394,7 @@ App.SatelliteFs = speculoos.Class({
             this._activeFolderName = folder;
             this._parsePermissionFile();
         } else {
-            throw new Error(_('Folder not found'));
+            throw new Error(_('Folder is not found'));
         }
     },
 
@@ -409,7 +409,7 @@ App.SatelliteFs = speculoos.Class({
         var me = this;
 
         if (!this.exists(file)) {
-            throw new Error(_('File not found.'));
+            throw new Error(_('File is not found.'));
         }
 
         return [me.canRead(file) ? '1' : '0', me.canDelete(file) ? '1' : '0', me.canUpdate(file) ? '1' : '0'];
@@ -532,7 +532,7 @@ App.SatelliteFs = speculoos.Class({
     _checkFilePermission: function (file, perm) {
         if (this.exists(file)) {
             if (!this._permCache[file] || !this._permCache[file][this._activeUser] || !this._permCache[file][this._activeUser][perm]) {
-                throw new Error(_('Looks like permission file has broken. Use reboot command to reset the session and reboot terminal.'));
+                throw new Error(_('Looks like file of permissions has been broken. Use reboot command to reset the session and reboot the terminal.'));
             }
 
             return this._permCache[file][this._activeUser][perm] === '1';
@@ -565,7 +565,7 @@ App.SatelliteFs = speculoos.Class({
             data = re.exec(fileContent);
             while (data) {
                 if (!Lib.Helper.isArray(data) || data.length !== this._PERM_REC_PER_LINE) {
-                    throw new Error(_('Invalid format of permission file'));
+                    throw new Error(_('Invalid format of file of permissions'));
                 }
                 data.shift();
 

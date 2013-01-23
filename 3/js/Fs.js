@@ -124,7 +124,7 @@ App.Fs = speculoos.Class({
             throw new Error(_('File already exists'));
         }
         if (Lib.Helper.isObject(parent[file])) {
-            throw new Error(_('Folder with the same name is already exists'));
+            throw new Error(_('Folder with the same name already exists'));
         }
 
         parent[file] = '';
@@ -348,10 +348,10 @@ App.Fs = speculoos.Class({
         // Logical error check
         //
         if (!this.fileExists(parent, file)) {
-            throw new Error(_('File not found'));
+            throw new Error(_('File is not found'));
         }
         if (!Lib.Helper.isString(data)) {
-            throw new Error(_('Invalid data. String required'));
+            throw new Error(_('Invalid data. String is required'));
         }
 
         parent[file] += data;
@@ -417,7 +417,7 @@ App.Fs = speculoos.Class({
      */
     _checkFile: function (parent, file) {
         if (!this.fileExists(parent, file)) {
-            throw new Error(_('File not found'));
+            throw new Error(_('File is not found'));
         }
     },
 
@@ -487,7 +487,7 @@ App.Fs = speculoos.Class({
                 // This is a file
                 //
                 } else if (!Lib.Helper.isString(child)) {
-                    throw new Error(_('File structure id incorrect. One item doesn\'t look like a file. Name: {0}, Body: {1}', folder, child));
+                    throw new Error(_('File structure is incorrect. One item doesn\'t look like a file. Name: {0}, Body: {1}', folder, child));
                 }
             }
         }

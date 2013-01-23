@@ -25,7 +25,7 @@ App.Terminal = speculoos.Class({
             ['list',    _('Info : Lists all files\\folders within active folder\nUsage: list')],
             ['saf',     _('Info : Sets Active Folder to specified one. Only one folder per command is supported.\nUsage: saf folder')],
             ['gaf',     _('Info : Gets active folder.\nUsage: gaf')],
-            ['connect', _('Info : Connects to the orbital satellite and starts video streaming from it\'s camera. Only an administrator has a permissions for that.\nUsage: connect user password')],
+            ['connect', _('Info : Connects to the orbital satellite and starts video streaming from its camera. Only an administrator has permission for that.\nUsage: connect user password')],
             ['read',    _('Info : Reads specified file in active folder.\nUsage: read file')],
             ['rf',      _('Info : Removes specified file in active folder.\nUsage: rf file')],
             ['uf',      _('Info : Updates specified file in active folder with data block.\nUsage: uf file index data')],
@@ -242,14 +242,14 @@ App.Terminal = speculoos.Class({
      */
     _onInfoCmd: function () {
         this.console.WriteLine(_('[ Description ]\n') +
-                _('Welcome to the NASA terminal application. It uses for managing remote file system, located on the satellite. ') +
+                _('Welcome to the NASA terminal application. It\'s used for managing remote file system, located on the satellite. ') +
                 _('Every terminal works within ') +
-                _('it\'s session. The session clears every time when user reboots the terminal. It means, that file system and ') +
-                _('command\'s history will be also reset.\n\n') +
+                _('its session. The session is cleared every time when user reboots the terminal. It means, that file system and ') +
+                _('commands\' history will be also reset.\n\n') +
                 _('[ Permissions ]\n') +
-                _('Remote server has special permissions logic. Every folder contains permission file called - perm. It contains a list ') +
-                _('of all files within current folder with it\'s permissions. Every record of this file is equal to 8 bytes. Also, first two ') +
-                _('header lines of this file are similar to other permission files.')
+                _('Remote server has special logic of permissions work. Every folder contains file of permissions called - perm. It contains a list ') +
+                _('of all files within current folder with its permissions. Every record of this file is equal to 8 bytes. Also, first two ') +
+                _('header lines of this file are similar to other files of permissions.')
             );
     }
 });

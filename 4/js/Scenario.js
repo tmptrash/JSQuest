@@ -261,7 +261,7 @@ App.Scenario = speculoos.Class({
             return;
         }
         if (this._disconnecting) {
-            this._terminal.console.WriteLine(_('Disconnecting is steel in progress. Please wait for some time.'));
+            this._terminal.console.WriteLine(_('Disconnecting is still in progress. Please wait for some time.'));
             return;
         }
 
@@ -310,11 +310,11 @@ App.Scenario = speculoos.Class({
      */
     _onSyncCmd: function (args) {
         if (!this._universe.earthVisible()) {
-            this._terminal.console.WriteLine(_('Synchronization is not available. Satellites haven\'t connected.'));
+            this._terminal.console.WriteLine(_('Synchronization is not available. Satellites haven\'t been connected.'));
             return;
         }
         if (!this._terminal.hasConnections(args)) {
-            this._terminal.console.WriteLine(_('Synchronization is not available. Satellites haven\'t connected.'));
+            this._terminal.console.WriteLine(_('Synchronization is not available. Satellites haven\'t been connected.'));
             return;
         }
 
@@ -382,11 +382,11 @@ App.Scenario = speculoos.Class({
         // We use array only for readability
         //
         var msg = [
-            _('Welcome to Kepler v1.0\n\nThis is satellite database management terminal. It manages databases placed on different satellites in real time. '),
+            _('Welcome to Kepler v1.0\n\nThis is a satellite database management terminal. It manages databases placed on different satellites in real time. '),
             _('There are five available satellites for now and they are marked from s1 to s5. You can use these names in commands. '),
-            _('For example: connect s2 - will connect this satellite and the s2. Every database is in the file. You can remove, pack, '),
+            _('For example: connect s2 - will connect this satellite with s2. Every database is in the file. You can remove, pack, '),
             _('encrypt, list and synchronize these files manually in real time (see "help" command for details).\n\nAlso, this satellite has '),
-            _('an analog camera and the signal transmitter. You can rotate this camera using simple interface (see "help" command for details) and use '),
+            _('an analogue camera and the signal transmitter. You can rotate this camera using simple interface (see "help" command for details) and use '),
             _('the transmitter to communicate with other satellites.')
         ];
         this._terminal.console.WriteLine(msg.join(''));
@@ -546,7 +546,7 @@ App.Scenario = speculoos.Class({
     _disconnectEffect: function (heap, effect) {
         if (!this._continueTimerEffect(heap, effect, true)) {
             this._terminal.connect(false, heap.sats);
-            this._terminal.message(_('Satellites have disconnected'));
+            this._terminal.message(_('Satellites have been disconnected'));
             this._disconnecting = false;
         }
     },
