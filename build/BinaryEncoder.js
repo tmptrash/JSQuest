@@ -72,7 +72,7 @@ var inFile  = process.argv[2];
 var outFile = process.argv[3];
 
 if (!fs.existsSync(inFile)) {
-    console.log(_('Input script file doesn\'t exists: {0}', inFile));
+    console.log(_('Input script file doesn\'t exist: {0}', inFile));
     process.exit(RETURN_ERR);
 }
 

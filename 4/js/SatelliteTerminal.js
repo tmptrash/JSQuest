@@ -85,7 +85,7 @@ App.SatelliteTerminal = speculoos.Class({
             ['up',         _('Info : Moves camera to the top on X points.\nUsage: up 42')],
             ['down',       _('Info : Moves camera to the down on X points.\nUsage: down 72')],
             ['connect',    _('Info : Connects to specified list of satellites.\nUsage: connect s1 s3')],
-            ['disconnect', _('Info : Disconnects specified list of satellites from the current.\nUsage: disconnect s1 s3')],
+            ['disconnect', _('Info : Disconnects specified list of satellites from the current one.\nUsage: disconnect s1 s3')],
             ['list',       _('Info : Lists all available databases on the current satellite.\nUsage: list')],
             ['remove',     _('Info : Removes specified databases from the local satellite.\nUsage: remove db1 db2')],
             ['sync',       _('Info : Synchronizes databases between current and remote satellites. If you add new database on the local satellite and call sync command, new database will be uploaded to the remote satellites as well.\nUsage: sync s1 s4')],

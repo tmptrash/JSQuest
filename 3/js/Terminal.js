@@ -248,7 +248,7 @@ App.Terminal = speculoos.Class({
                 _('commands\' history will be also reset.\n\n') +
                 _('[ Permissions ]\n') +
                 _('Remote server has special logic of permissions work. Every folder contains file of permissions called - perm. It contains a list ') +
-                _('of all files within current folder with its permissions. Every record of this file is equal to 8 bytes. Also, first two ') +
+                _('of all the files within current folder with its permissions. Every record of this file is equal to 8 bytes. Also, first two ') +
                 _('header lines of this file are similar to other files of permissions.')
             );
     }

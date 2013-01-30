@@ -185,7 +185,7 @@ App.DatabaseManager = speculoos.Class({
         var delDbs;
 
         if (!Lib.Helper.isArray(files)) {
-            return _('Invalid parameter during removing databases. Array of database files required.');
+            return _('Invalid parameter while removing databases. Array of database files required.');
         }
 
         delDbs = this._get(this._DATA_FILES_DEL);
@@ -262,7 +262,7 @@ App.DatabaseManager = speculoos.Class({
         var newDb;
 
         if (!Lib.Helper.isArray(files)) {
-            return _('Invalid parameter during packing databases. Array of database files required.');
+            return _('Invalid parameter while packing databases. Array of database files required.');
         }
 
         delDbs = this._get(this._DATA_FILES_DEL);
@@ -296,7 +296,7 @@ App.DatabaseManager = speculoos.Class({
         var newDb;
 
         if (!Lib.Helper.isArray(files)) {
-            return _('Invalid parameter during unpacking databases. Array of database files required.');
+            return _('Invalid parameter while unpacking databases. Array of database files required.');
         }
 
         delDbs = this._get(this._DATA_FILES_DEL);

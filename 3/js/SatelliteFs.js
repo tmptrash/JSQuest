@@ -2,7 +2,7 @@
  * This is a Satellite File System class. It contains folders/files and special permissions files (perm).
  * This file system is special. User can only surf throught one folder down and one folder up using
  * setActiveFolder method call. You can use xpath for that in method getFolder(). Every folder must contains permission file
- * (perm). It contains permissions for all files within active folder. Every time you add or delere some files
+ * (perm). It contains permissions for all the files within active folder. Every time you add or delere some files
  * permission file will be updated. It contains permissions for himself also. Permission file consists of
  * 8 symbol records in format:
  * "FILE    USER1   USER2   PERM1   PERM2"
@@ -161,7 +161,7 @@ App.SatelliteFs = speculoos.Class({
                 gfp    : '',
                 reboot : '',
                 info   : '',
-                perm   : _('Permission file. It contains permissions for all files within current folder.\n') +
+                perm   : _('Permission file. It contains permissions for all the files within current folder.\n') +
                     'FILE    USER1   USER2   PERM1   PERM2   \n' +
                     'list    jack    guest   000     000     \n' +
                     'saf     jack    guest   000     000     \n' +
@@ -183,7 +183,7 @@ App.SatelliteFs = speculoos.Class({
                 boot  : '',
                 grub  : '',
                 init  : '',
-                perm  : _('Permission file. It contains permissions for all files within current folder.\n') +
+                perm  : _('Permission file. It contains permissions for all the files within current folder.\n') +
                     'FILE    USER1   USER2   PERM1   PERM2   \n' +
                     'kernel  jack    guest   000     000     \n' +
                     'system  jack    guest   000     000     \n' +
@@ -194,13 +194,13 @@ App.SatelliteFs = speculoos.Class({
             },
             usr  : {
                 sbin : {
-                    perm : _('Permission file. It contains permissions for all files within current folder.') + '\nFILE    USER1   USER2   PERM1   PERM2   \nperm    jack    guest   111     000     '
+                    perm : _('Permission file. It contains permissions for all the files within current folder.') + '\nFILE    USER1   USER2   PERM1   PERM2   \nperm    jack    guest   111     000     '
                 },
                 inc  : {
-                    perm : _('Permission file. It contains permissions for all files within current folder.') + '\nFILE    USER1   USER2   PERM1   PERM2   \nperm    jack    guest   111     000     '
+                    perm : _('Permission file. It contains permissions for all the files within current folder.') + '\nFILE    USER1   USER2   PERM1   PERM2   \nperm    jack    guest   111     000     '
                 },
                 share: {
-                    perm : _('Permission file. It contains permissions for all files within current folder.') + '\nFILE    USER1   USER2   PERM1   PERM2   \nperm    jack    guest   111     000     '
+                    perm : _('Permission file. It contains permissions for all the files within current folder.') + '\nFILE    USER1   USER2   PERM1   PERM2   \nperm    jack    guest   111     000     '
                 },
                 bin  : {
                     rep  : {
@@ -214,14 +214,14 @@ App.SatelliteFs = speculoos.Class({
                             '1.5 3.4 3.5 4.3 2.7 8.4 4.4\n' +
                             '3.4 3.6 4.2 3.7 4.6 7.8 7.3\n' +
                             '2.1 1.6 7.4 4.4 2.5 6.4 3.8',
-                        perm : _('Permission file. It contains permissions for all files within current folder.') + '\n' +
+                        perm : _('Permission file. It contains permissions for all the files within current folder.') + '\n' +
                             'FILE    USER1   USER2   PERM1   PERM2   \n' +
                             'perm    jack    guest   111     000     \n' +
                             '01      jack    guest   111     101     \n' +
                             '02      jack    guest   111     101     '
                     },
                     users: _('This file contains information about users and their password hashes.') + '\nUSER    MD5                             \njack    b34e7acf7bae9b7526982baed3cbe564\nguest   084e0343a0486ff05530df6c705c8bb4',
-                    perm : _('Permission file. It contains permissions for all files within current folder.') + '\nFILE    USER1   USER2   PERM1   PERM2   \nperm    jack    guest   111     001     \nusers   jack    guest   111     000     '
+                    perm : _('Permission file. It contains permissions for all the files within current folder.') + '\nFILE    USER1   USER2   PERM1   PERM2   \nperm    jack    guest   111     001     \nusers   jack    guest   111     000     '
                 },
                 lib  : {
                     obj   : '',
@@ -231,7 +231,7 @@ App.SatelliteFs = speculoos.Class({
                     fs    : '',
                     term  : '',
                     link  : '',
-                    perm  : _('Permission file. It contains permissions for all files within current folder.\n') +
+                    perm  : _('Permission file. It contains permissions for all the files within current folder.\n') +
                         'FILE    USER1   USER2   PERM1   PERM2   \n' +
                         'obj     jack    guest   000     000     \n' +
                         'bin     jack    guest   000     000     \n' +
@@ -242,37 +242,37 @@ App.SatelliteFs = speculoos.Class({
                         'link    jack    guest   000     000     \n' +
                         'perm    jack    guest   000     100     '
                 },
-                perm: _('Permission file. It contains permissions for all files within current folder.') + '\nFILE    USER1   USER2   PERM1   PERM2   \nperm    jack    guest   111     001     '
+                perm: _('Permission file. It contains permissions for all the files within current folder.') + '\nFILE    USER1   USER2   PERM1   PERM2   \nperm    jack    guest   111     001     '
             },
             guest: {
                 tmp  : _('Satellite s0 data file\ns0 1034.34 s1 2345.34 s3 s4 s5 1253.13'),
-                perm : _('Permission file. It contains permissions for all files within current folder.') + '\nFILE    USER1   USER2   PERM1   PERM2   \nperm    jack    guest   111     101     \ntmp     jack    guest   111     111     '
+                perm : _('Permission file. It contains permissions for all the files within current folder.') + '\nFILE    USER1   USER2   PERM1   PERM2   \nperm    jack    guest   111     101     \ntmp     jack    guest   111     111     '
             },
             root : {
                 cache : _('#\n# There is no data here at the moment...\n#'),
                 satlog: _('#\n# 10.08.12 15:32 Ron : The telescope doesn\'t work correctly. The picture is smooth.\n' +
-                    '# 13.08.12 12:15 Jack: Finally, the telescope were fixed.\n' +
-                    '# 13.08.12 12:30 Jack: Video stream was tested also.\n' +
+                    '# 13.08.12 12:15 Jack: Finally, the telescope was fixed.\n' +
+                    '# 13.08.12 12:30 Jack: Video stream was also tested.\n' +
                     '# 13.08.12 12:34 Jack: Satellite point system was tested.\n' +
                     '# 14.08.12 09:45 Ben : Guys, you can use connect command from remote terminal.\n' +
                     '# 14.08.12 11:23 Ron : Look like it works. Thanks guys!\n#'),
-                perm  : _('Permission file. It contains permissions for all files within current folder.\n') +
+                perm  : _('Permission file. It contains permissions for all the files within current folder.\n') +
                     'FILE    USER1   USER2   PERM1   PERM2   \n' +
                     'perm    jack    guest   111     000     \n' +
                     'cache   jack    guest   111     000     \n' +
                     'satlog  jack    guest   111     100     '
             },
             tmp  : {
-                perm  : _('Permission file. It contains permissions for all files within current folder.\n') +
+                perm  : _('Permission file. It contains permissions for all the files within current folder.\n') +
                     'FILE    USER1   USER2   PERM1   PERM2   \n' +
                     'perm    jack    guest   111     100     '
             },
             home : {
-                perm: _('Permission file. It contains permissions for all files within current folder.\n') +
+                perm: _('Permission file. It contains permissions for all the files within current folder.\n') +
                     'FILE    USER1   USER2   PERM1   PERM2   \n' +
                     'perm    jack    guest   111     111     '
             },
-            perm : _('Permission file. It contains permissions for all files within current folder.') + '\nFILE    USER1   USER2   PERM1   PERM2   \nperm    jack    guest   111     000     '
+            perm : _('Permission file. It contains permissions for all the files within current folder.') + '\nFILE    USER1   USER2   PERM1   PERM2   \nperm    jack    guest   111     000     '
         }]);
     },
 
