@@ -169,7 +169,7 @@ App.Scenario = speculoos.Class({
         loader.show();
 
         setTimeout(function () {
-            window.location = 'https://sites.google.com/site/docjsquest/final';
+            window.location = 'https://sites.google.com/site/docjsquestfinal/';
         }, 9000);
     },
 
