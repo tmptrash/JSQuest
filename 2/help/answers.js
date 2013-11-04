@@ -1,5 +1,5 @@
 {
-	set   : {v1: 0, v2: 'str', v4: 12, v5: 'qwerty', n1: 2},
+    set   : {v1: 0, v2: 'str', v4: 12, v5: 'qwerty', n1: 2},
     cut   : {d1: 'q', d2: 'q'},
     asc   : {n1: 65, n2: 65},
     goto  : {a: 2},
