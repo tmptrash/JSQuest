@@ -8,7 +8,7 @@ var Config = {
     /**
      * URLs to the remote resources
      */
-    url: {
+    url : {
         /**
          * Remote images. Server, which contains these images must support
          * cross domain requests policy. See http://en.wikipedia.org/wiki/Cross-origin_resource_sharing
@@ -24,7 +24,8 @@ var Config = {
             earthNormal      : 'https://lh5.googleusercontent.com/-tvRnDPu7iag/UO777t-U15I/AAAAAAAAAAg/SgrULDGevJU/s0/earth_normal_2048.jpg',
             earthSpecular    : 'https://lh4.googleusercontent.com/-TwOIwh3D1A8/UO778CAxPPI/AAAAAAAAAAs/OCCMIc4x15Q/s0/earth_specular_2048.jpg',
             moon             : 'https://lh5.googleusercontent.com/-aNQMfL_vk0Y/UO778cyNi4I/AAAAAAAAAAw/PH7n7x9bXd0/s0/moon_1024.jpg',
-            nasa             : 'https://lh5.googleusercontent.com/-CbIm_4bIcvk/UPBJxjE2tvI/AAAAAAAAACA/-O2F95sT67o/s0/nasa.jpg'
+            nasa             : 'https://lh5.googleusercontent.com/-CbIm_4bIcvk/UPBJxjE2tvI/AAAAAAAAACA/-O2F95sT67o/s0/nasa.jpg',
+            background       : 'https://dl.dropboxusercontent.com/u/45900723/JSQuest/pix/planet_everest-wide-1920.jpg'
         },
         /**
          * Remote music
@@ -32,5 +33,14 @@ var Config = {
         music : {
             playlist         : 'http://dl.dropbox.com/u/45900723/JSQuest/music/3.json'
         }
+    },
+    /**
+     * Different data for the quest
+     */
+    data: {
+        /**
+         * Id if the div, which contains background image for level 3
+         */
+        level3DivId: 'level3'
     }
 };

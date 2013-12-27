@@ -5,6 +5,7 @@
  */
 function main() {
     var nasa;
+    var back;
     var err;
 
     /**
@@ -20,6 +21,8 @@ function main() {
         loader.show();
 
         setTimeout(function () {
+            var back = document.getElementById(Config.data.level3DivId);
+
             //
             // Removes 3 level
             //
@@ -31,6 +34,11 @@ function main() {
             //
             App.app = new App.Scenario();
             App.app.run();
+
+            //
+            // We should remove div with background image before increase the level
+            //
+            back.parentNode.removeChild(back);
 
             loader.hide();
             loader.destroy();
@@ -68,6 +76,14 @@ function main() {
     // Adds NASA logo at the left bottom corner
     //
     nasa = document.createElement('div');
-    nasa.style.cssText = 'background-image: url(' + Config.url.images.nasa + '); width: 120px; height: 40px; position: absolute; top: 100%; margin-top: -40px; left: 3px;';
+    nasa.style.cssText = 'background-image: url(' + Config.url.images.nasa + '); width: 120px; height: 40px; position: absolute; top: 100%; margin-top: -40px; left: 3px; z-index: 2;';
     document.body.appendChild(nasa);
+
+    //
+    // Adds full screen background image
+    //
+    back = document.createElement('div');
+    back.style.cssText = 'background-image: url(' + Config.url.images.background + '); margin: 0 auto; padding: 0; color: #1A3337; background-color: #000; background-repeat: no-repeat; background-attachment: scroll; background-position: top center; background-size: cover; width: 100%; height: 100%; position: absolute; z-index: 1;';
+    back.id = Config.data.level3DivId;
+    document.body.appendChild(back);
 }
