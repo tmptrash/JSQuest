@@ -83,7 +83,7 @@ function main() {
     // Adds full screen background image
     //
     back = document.createElement('div');
-    back.style.cssText = 'background-image: url(' + Config.url.images.background + '); margin: 0 auto; padding: 0; color: #1A3337; background-color: #000; background-repeat: no-repeat; background-attachment: scroll; background-position: top center; background-size: cover; width: 100%; height: 100%; position: absolute; z-index: 1;';
+    back.style.cssText = 'background-image: url(' + Config.url.images.background + '); left: 0; top: 0; margin: 0 auto; padding: 0; color: #1A3337; background-color: #000; background-repeat: no-repeat; background-attachment: scroll; background-position: top center; background-size: cover; width: 100%; height: 100%; position: absolute; z-index: 1;';
     back.id = Config.data.level3DivId;
     document.body.appendChild(back);
 }
